@@ -1,24 +1,16 @@
 package com.example.vivic.nolost.activity;
 
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.vivic.nolost.R;
-import com.example.vivic.nolost.fragment.FoundFragment;
 import com.example.vivic.nolost.fragment.LostFragment;
-
-import java.util.ArrayList;
-import java.util.List;
 
 
 public class MainActivity extends BaseActivity {
@@ -51,6 +43,8 @@ public class MainActivity extends BaseActivity {
         });
         drawerLayout = findViewById(R.id.drawer);
 
+        FrameLayout container = findViewById(R.id.container);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, LostFragment.newInstance(null)).commitAllowingStateLoss();
     }
 
     /**
