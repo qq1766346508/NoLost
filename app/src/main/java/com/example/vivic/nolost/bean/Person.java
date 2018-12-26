@@ -1,12 +1,21 @@
 package com.example.vivic.nolost.bean;
 
-public class Person {
-    public static final int SEX_MAN = 0;
-    public static final int SEX_WOMAN = 1;
-    public static final int SEX_SECRET = 2;
+import cn.bmob.v3.BmobObject;
+
+public class Person extends BmobObject {
 
     public String nickName;
-    public int sex;
+    public String sex;
     public String school;
     public String portrait;
+
+
+    @Override
+    public String toString() {
+        return " Person:" +
+                " nickName:" + nickName +
+                " sex:" + sex +
+                " school:" + school +
+                " portrait:" + portrait;
+    }
 }
