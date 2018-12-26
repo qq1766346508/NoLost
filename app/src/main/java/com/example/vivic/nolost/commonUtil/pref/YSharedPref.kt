@@ -170,19 +170,19 @@ abstract class YSharedPref(protected val mPref: SharedPreferences) {
         } else mPref.contains(key)
     }
 
-    fun putObject(key: String, obj: Any) {
-        // TODO: 2018/6/13 liaodongming
-        // Gson gson = new Gson();
-        // String json = gson.toJson(obj);
-        // put(key, json);
-    }
-
-    fun getObj(key: String, className: Class<*>): Any? {
-        // TODO: 2018/6/13 liaodongming
-        // Gson gson = new Gson();
-        // String json = getString(key, "");
-        // Object obj = gson.fromJson(json, className);
-        // return obj;
-        return null
-    }
+//    fun putObject(key: String, obj: Any) {
+//        // TODO: 2018/6/13 liaodongming
+//        // Gson gson = new Gson();
+//        // String json = gson.toJson(obj);
+//        // put(key, json);
+//    }
+//
+//    fun getObj(key: String, className: Class<*>): Any? {
+//        // TODO: 2018/6/13 liaodongming
+//        // Gson gson = new Gson();
+//        // String json = getString(key, "");
+//        // Object obj = gson.fromJson(json, className);
+//        // return obj;
+//        return null
+//    }
 }

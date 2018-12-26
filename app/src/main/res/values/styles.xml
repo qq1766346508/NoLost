@@ -19,4 +19,14 @@
         <item name="android:backgroundDimAmount">0.6</item>
     </style>
 
+    <style name="edit_error" >
+        <item name="android:color">@android:color/holo_red_light</item>
+    </style>
+
+    <style name="edit_normal" >
+        <item name="android:textColorHint">#1919FF</item>
+        <item name="colorControlNormal">#1919FF</item>
+        <item name="colorControlActivated">#1919FF</item>
+    </style>
+
 </resources>
