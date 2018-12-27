@@ -5,12 +5,12 @@
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_avatar"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:id="@+id/iv_user_avatar"
+        android:layout_width="34dp"
+        android:layout_height="34dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:src="@mipmap/ic_launcher"
+        android:src="@drawable/huaji"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -23,7 +23,7 @@
 
 
     <TextView
-        android:id="@+id/tv_user_nickName"
+        android:id="@+id/tv_goods_createor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -42,7 +42,7 @@
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@id/gl_0.15v"
-        app:layout_constraintTop_toBottomOf="@+id/tv_user_nickName" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_goods_createor" />
 
     <TextView
         android:id="@+id/tv_goods_location"
@@ -53,48 +53,55 @@
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp"
         app:layout_constraintStart_toEndOf="@id/tv_goods_time"
-        app:layout_constraintTop_toBottomOf="@+id/tv_user_nickName" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_goods_createor" />
 
-    <TextView
-        android:id="@+id/tv_goods_type"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:background="@android:color/holo_red_dark"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
-    <TextView
-        android:id="@+id/tv_goods_details"
+    <LinearLayout
+        android:id="@+id/content"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:text="安康路附近撒打开了价方式来看驾驶的离开家法律上看见弗兰克撒旦教福利卡萨留声机得分阿卡丽"
-        android:textColor="@android:color/black"
-        android:textSize="14sp"
+        android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/gl_0.15v"
-        app:layout_constraintTop_toBottomOf="@id/tv_goods_time" />
+        app:layout_constraintTop_toBottomOf="@id/tv_goods_time">
 
-    <ImageView
-        android:id="@+id/iv_goods_photo"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginTop="8dp"
-        android:scaleType="centerInside"
-        android:src="@mipmap/ic_launcher"
-        app:layout_constraintStart_toStartOf="@id/gl_0.15v"
-        app:layout_constraintTop_toBottomOf="@+id/tv_goods_details" />
+
+        <TextView
+            android:id="@+id/tv_goods_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="物品名称:手机"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            app:layout_constraintTop_toBottomOf="@+id/content" />
+
+        <TextView
+            android:id="@+id/tv_goods_details"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="物品详情：安康机sadfas asfsafasfasfsadffafsdfdfdfdfdfdfaafdasdfasfasfs得分阿卡丽"
+            android:textColor="@android:color/black"
+            android:textSize="14sp" />
+
+        <com.goyourfly.multi_picture.MultiPictureView
+            android:id="@+id/mutiIvPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:editable="false"
+            app:imageLayoutMode="DYNAMIC"
+            />
+
+    </LinearLayout>
+
 
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"
         android:background="@color/div_color"
-        app:layout_constraintTop_toBottomOf="@+id/iv_goods_photo" />
+        app:layout_constraintTop_toBottomOf="@+id/content" />
 
 
 </android.support.constraint.ConstraintLayout>

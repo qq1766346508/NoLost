@@ -11,7 +11,7 @@ public class Goods {
     public String name;
     public String detail;
     public List<BmobFile> photoList;
-    public String place;
+    public String location;
     public String time;
     public String createor;
     public Integer type;
