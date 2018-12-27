@@ -1,17 +1,18 @@
-package com.example.vivic.nolost.fragment;
+package com.example.vivic.nolost.Lost.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.vivic.nolost.R;
-import com.example.vivic.nolost.activity.LoginActivity;
+import com.example.vivic.nolost.Login.LoginActivity;
 
 public class LostFragment extends Fragment {
     private static final String TAG = LostFragment.class.getSimpleName();
@@ -23,6 +24,7 @@ public class LostFragment extends Fragment {
     }
 
     private View rootView;
+    private RecyclerView recyclerView;
 
     @Nullable
     @Override
@@ -38,13 +40,8 @@ public class LostFragment extends Fragment {
     }
 
     private void initview() {
-        TextView tv = rootView.findViewById(R.id.tv_test);
-        tv.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getActivity(), LoginActivity.class));
-            }
-        });
+       recyclerView=rootView.findViewById(R.id.rv_goods);
+
 
     }
 

@@ -10,7 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import com.example.vivic.nolost.R;
-import com.example.vivic.nolost.fragment.LostFragment;
+import com.example.vivic.nolost.Lost.fragment.LostFragment;
 
 
 public class MainActivity extends BaseActivity {

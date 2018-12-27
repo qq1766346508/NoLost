@@ -6,4 +6,5 @@
 
     <color name="standard_color">#2e8abb</color>
     <color name="protece_green">#44BBFFE7</color>
+    <color name="div_color">#50bbbbbb</color>
 </resources>
