@@ -1,18 +1,12 @@
 package com.example.vivic.nolost.activity;
 
-import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 
 import com.example.vivic.nolost.R;
-
-import java.util.HashMap;
-
-import cn.smssdk.EventHandler;
-import cn.smssdk.SMSSDK;
-import cn.smssdk.gui.RegisterPage;
+import com.example.vivic.nolost.commonUtil.NoDoubleClickListener;
 
 public class LoginActivity extends BaseActivity {
 
@@ -24,6 +18,19 @@ public class LoginActivity extends BaseActivity {
     }
 
     private void initview() {
+
+        Button btn = findViewById(R.id.btn_register);
+        btn.setOnClickListener(new NoDoubleClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+                startActivity(new Intent(LoginActivity.this, LoginActivity.class));
+            }
+
+            @Override
+            protected void onDoubleClick() {
+
+            }
+        });
 
     }
 }

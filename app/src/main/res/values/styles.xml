@@ -9,6 +9,14 @@
         <!--<item name="android:windowIsTranslucent">true</item>-->
     </style>
 
+    <style name="baseActivity" parent="Theme.Design.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowIsTranslucent">false</item>
+        <item name="android:windowBackground">@null</item>
+        <item name="android:statusBarColor">#2e8abb</item>
+    </style>
+
     <style name="Dialog_Fullscreen">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsTranslucent">true</item>

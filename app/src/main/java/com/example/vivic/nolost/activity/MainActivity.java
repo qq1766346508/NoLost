@@ -71,4 +71,9 @@ public class MainActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
     }
+
+    @Override
+    public void finish() {
+        super.finish();
+    }
 }
