@@ -23,4 +23,5 @@
             android:layout_height="wrap_content"></com.scwang.smartrefresh.layout.footer.ClassicsFooter>
     </com.scwang.smartrefresh.layout.SmartRefreshLayout>
 
+
 </android.support.design.widget.CoordinatorLayout>

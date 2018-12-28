@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.goyourfly.multi_picture.ImageLoader;
 import com.goyourfly.multi_picture.MultiPictureView;
-import com.mob.MobSDK;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -22,7 +21,6 @@ public class NoLostApplication extends Application {
     public void onCreate() {
         super.onCreate();
         context = getApplicationContext();
-        MobSDK.init(this);
         Bmob.initialize(this, Application_ID);
         MultiPictureView.setImageLoader(new ImageLoader() {
             @Override

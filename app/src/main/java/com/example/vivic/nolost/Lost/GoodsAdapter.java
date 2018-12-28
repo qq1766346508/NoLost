@@ -78,7 +78,6 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
 
         public void initItem(Goods goods) {
             tvNickName.setText(goods.name);
-
             mutiIvPhoto.addItem(Uri.parse("https://avatars1.githubusercontent.com/u/7019862?s=88&v=4"));
         }
     }

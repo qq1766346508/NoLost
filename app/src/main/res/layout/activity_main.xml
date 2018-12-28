@@ -24,23 +24,24 @@
                 app:layout_scrollFlags="scroll|enterAlways|snap"
                 app:navigationIcon="@drawable/ic_menu_white_24dp"
                 app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-                app:title="Test"></android.support.v7.widget.Toolbar>
+                app:title="@string/toolbar_title"></android.support.v7.widget.Toolbar>
         </android.support.design.widget.AppBarLayout>
 
         <FrameLayout
             android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/protece_green"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"></FrameLayout>
+
 
     </android.support.design.widget.CoordinatorLayout>
 
     <android.support.design.widget.NavigationView
         android:id="@+id/nav_view"
-        android:layout_width="match_parent"
+        android:layout_width="250dp"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        app:itemIconTint="@color/standard_color"
         app:headerLayout="@layout/nav_header"
         app:menu="@menu/nav_menu">
 

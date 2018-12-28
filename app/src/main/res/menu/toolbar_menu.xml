@@ -6,6 +6,10 @@
         android:id="@+id/menu_search"
         android:icon="@drawable/ic_search_white_24dp"
         android:title="Search"
-        app:showAsAction="always">
-    </item>
+        app:showAsAction="always"/>
+    <item
+        android:id="@+id/menu_add"
+        android:icon="@drawable/ic_add_white_24dp"
+        android:title="Add"
+        app:showAsAction="always" />
 </menu>

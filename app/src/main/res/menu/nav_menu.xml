@@ -2,18 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/nav_test1"
-        android:title="test1">
+        android:id="@+id/nav_user"
+        android:icon="@drawable/ic_person_white_24dp"
+        android:title="@string/nav_user">
 
     </item>
     <item
-        android:id="@+id/nav_test2"
-        android:title="test2">
+        android:id="@+id/nav_weather"
+        android:icon="@drawable/ic_cloud_white_24dp"
+        android:title="@string/nav_weather">
 
     </item>
     <item
-        android:id="@+id/nav_test3"
-        android:title="test3">
+        android:id="@+id/nav_setting"
+        android:icon="@drawable/ic_settings_white_24dp"
+        android:title="@string/nav_setting">
 
     </item>
 </menu>

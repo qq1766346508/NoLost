@@ -3,6 +3,10 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="nav_setting">设置</string>
+    <string name="toolbar_title">NoLost</string>
+    <string name="nav_user">用户中心</string>
+    <string name="nav_weather">天气</string>
 
 
 </resources>

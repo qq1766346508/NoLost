@@ -1,21 +1,24 @@
 package com.example.vivic.nolost.activity;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
-import android.widget.Toast;
 
-import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.Lost.fragment.LostFragment;
+import com.example.vivic.nolost.R;
+import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil;
 
 
 public class MainActivity extends BaseActivity {
 
     private DrawerLayout drawerLayout;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,8 +36,10 @@ public class MainActivity extends BaseActivity {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_search:
-                        Toast.makeText(getApplicationContext(), "search", Toast.LENGTH_SHORT).show();
+                        ToastUtil.showToast("search");
                         break;
+                    case R.id.menu_add:
+                        ToastUtil.showToast("add");
                     default:
                         break;
                 }
@@ -45,14 +50,30 @@ public class MainActivity extends BaseActivity {
 
         FrameLayout container = findViewById(R.id.container);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, LostFragment.newInstance(null)).commitAllowingStateLoss();
+
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.nav_user:
+                        ToastUtil.showToast("用户中心");
+                        break;
+                    case R.id.nav_weather:
+                        ToastUtil.showToast("天气");
+                        break;
+                    case R.id.nav_setting:
+                        ToastUtil.showToast("设置");
+                        break;
+                    default:
+                        break;
+                }
+                return false;
+            }
+        });
     }
 
-    /**
-     * 侧栏点击事件
-     *
-     * @param item
-     * @return
-     */
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
