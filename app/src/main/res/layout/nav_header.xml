@@ -7,7 +7,7 @@
     android:background="@color/standard_color">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/portrait"
+        android:id="@+id/avatar"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginBottom="8dp"
@@ -28,9 +28,9 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
+        android:text="xiaowei"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/portrait"
-        tool:text="xiaowei" />
+        app:layout_constraintTop_toBottomOf="@+id/avatar" />
 
 </android.support.constraint.ConstraintLayout>
