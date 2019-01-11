@@ -1,15 +1,12 @@
 package com.example.vivic.nolost.search;
 
 import android.app.DialogFragment;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.Button;
 
 import com.example.vivic.nolost.R;
 
@@ -33,6 +30,11 @@ public class SearchOption extends DialogFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //init
+        initview();
+    }
+
+    private void initview() {
+        Button btnCancel = rootView.findViewById(R.id.btn_option_cancel);
+        btnCancel.setOnClickListener(v -> dismissAllowingStateLoss());
     }
 }

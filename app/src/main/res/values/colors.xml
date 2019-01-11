@@ -7,4 +7,7 @@
     <color name="standard_color">#2e8abb</color>
     <color name="protect_green">#44BBFFE7</color>
     <color name="div_color">#50bbbbbb</color>
+
+    <color name="grey">#bbbbbb</color>
+    <color name="grey_btn">#50bbbbbb</color>
 </resources>

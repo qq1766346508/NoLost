@@ -42,4 +42,15 @@
         <item name="android:colorControlActivated">#fff</item>
     </style>
 
+    <style name="ed_option_content">
+        <item name="android:colorControlNormal">#000</item>
+        <item name="android:colorControlActivated">@color/standard_color</item>
+    </style>
+
+    <style name="option_button_style">
+        <item name="android:gravity">center</item>
+        <item name="android:button">@null</item>
+        <item name="android:background">@drawable/option_selector</item>
+    </style>
+
 </resources>

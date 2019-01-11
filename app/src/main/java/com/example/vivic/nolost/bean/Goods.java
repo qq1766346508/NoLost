@@ -13,7 +13,6 @@ public class Goods extends BmobObject {
     public String detail;
     public List<BmobFile> photoList;
     public String location;
-    public String time;
     public MyUser createor;
     public String type;
 }

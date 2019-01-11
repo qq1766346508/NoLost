@@ -13,6 +13,7 @@ import android.widget.ImageView;
 
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.activity.BaseActivity;
+import com.example.vivic.nolost.commonUtil.NoDoubleClickListener;
 
 public class SearchActivity extends BaseActivity {
 
@@ -35,10 +36,21 @@ public class SearchActivity extends BaseActivity {
         edSearchContent.requestFocus();
         inputMethodManager.showSoftInput(edSearchContent, 0);
         Button btnOption = findViewById(R.id.btn_search_option);
+        btnOption.setOnClickListener(new NoDoubleClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+                showSearchOption();
+            }
+
+            @Override
+            protected void onDoubleClick() {
+
+            }
+        });
     }
 
     private void showSearchOption() {
-        Log.d(TAG, "initSearchOption: 展示搜索选择框");
+        Log.d(TAG, "showSearchOption: ");
         Fragment searchOption = getSupportFragmentManager().findFragmentByTag("SearchOption");
         if (searchOption != null && searchOption.isAdded()) {
             getSupportFragmentManager().beginTransaction().show(searchOption).commitAllowingStateLoss();

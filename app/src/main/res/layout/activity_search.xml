@@ -27,7 +27,7 @@
             android:layout_gravity="center_vertical"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:hint="请输入关键字"
+            android:hint=" 物品名称/地点/详细信息"
             android:maxLength="12"
             android:singleLine="true"
             android:textColor="#fff"
