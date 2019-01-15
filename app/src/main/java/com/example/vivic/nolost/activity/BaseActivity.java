@@ -1,13 +1,11 @@
 package com.example.vivic.nolost.activity;
 
-import android.content.pm.ActivityInfo;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
 import com.example.vivic.nolost.R;
-import com.example.vivic.nolost.commonUtil.LeakCanaryUtils;
 
 public class BaseActivity extends AppCompatActivity {
     private static final String TAG = BaseActivity.class.getSimpleName();
