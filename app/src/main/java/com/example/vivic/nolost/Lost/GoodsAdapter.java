@@ -25,7 +25,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
 
     public GoodsAdapter(List<Goods> goodsList, Context context) {
         this.context = context;
-        if (goodsList.size() == 0) {
+        if (goodsList == null) {
             this.goodsList = new ArrayList<>();
         } else {
             this.goodsList = goodsList;

@@ -1,71 +1,162 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".Lost.activity.PublishActivity">
+    android:layout_height="match_parent">
 
-    <FrameLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:background="@color/standard_color">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".Lost.activity.PublishActivity">
 
-        <ImageView
-            android:id="@+id/iv_publish_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="start"
-            android:padding="16dp"
-            android:src="@drawable/ic_arrow_back_white_24dp" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/standard_color">
 
-        <TextView
-            android:layout_width="wrap_content"
+            <ImageView
+                android:id="@+id/iv_publish_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:padding="16dp"
+                android:src="@drawable/ic_arrow_back_white_24dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="发布物品"
+                android:textColor="#fff"
+                android:textSize="18sp" />
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp">
+
+            <TextView
+                android:id="@+id/tv_publish_status"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="物品状态:"
+                android:textColor="#000" />
+
+            <RadioGroup
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    style="@style/option_button_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="丢失" />
+
+                <RadioButton
+                    style="@style/option_button_style"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="拾获" />
+            </RadioGroup>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="物品名称:"
+                android:textColor="#000"
+                android:textSize="14sp" />
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:gravity="center_vertical"
+            android:paddingStart="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="丢失地点:"
+                android:textColor="#000"
+                android:textSize="14sp" />
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="200dp"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="10dp"
+                android:text="物品詳情:"
+                android:textColor="#000"
+                android:textSize="14sp" />
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="#fff" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="10dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="10dp"
+                android:text="添加图片:"
+                android:textColor="#000"
+                android:textSize="14sp" />
+
+            <android.support.design.widget.TextInputEditText
+                android:layout_width="match_parent"
+                android:layout_height="80dp"
+                android:background="#fff" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/btn_publish"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
             android:layout_gravity="center"
-            android:text="发布物品"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/bg_btn_publish"
+            android:text="立刻发布"
             android:textColor="#fff"
-            android:textSize="18sp" />
-    </FrameLayout>
+            android:textSize="18dp"
+            android:textStyle="bold" />
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp">
-
-        <TextView
-            android:id="@+id/tv_publish_status"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="物品状态:"
-            android:textColor="#000"
-            android:textSize="14sp" />
-
-        <RadioGroup
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@+id/tv_publish_status"
-            android:orientation="horizontal">
-
-            <RadioButton
-                style="@style/option_button_style"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="丢失" />
-
-            <RadioButton
-                style="@style/option_button_style"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="拾获" />
-        </RadioGroup>
-    </RelativeLayout>
-    
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="60dp"></RelativeLayout>
-
-</LinearLayout>
+    </LinearLayout>
+</android.support.v4.widget.NestedScrollView>
