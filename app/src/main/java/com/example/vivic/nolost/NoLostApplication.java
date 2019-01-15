@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.example.vivic.nolost.commonUtil.LeakCanaryUtils;
 import com.goyourfly.multi_picture.ImageLoader;
 import com.goyourfly.multi_picture.MultiPictureView;
 
@@ -22,6 +23,7 @@ public class NoLostApplication extends Application {
         super.onCreate();
         context = getApplicationContext();
         Bmob.initialize(this, Application_ID);
+        LeakCanaryUtils.install(this);
         MultiPictureView.setImageLoader(new ImageLoader() {
             @Override
             public void loadImage(@NotNull ImageView imageView, @NotNull Uri uri) {

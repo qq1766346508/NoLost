@@ -18,6 +18,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".activity.BaseActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/baseActivity" />
         <activity
             android:name=".activity.MainActivity"

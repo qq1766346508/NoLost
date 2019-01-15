@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import com.example.vivic.nolost.Lost.GoodsAdapter;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.bean.Goods;
+import com.example.vivic.nolost.commonUtil.LeakCanaryUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -81,6 +82,10 @@ public class LostFragment extends Fragment {
         return list;
     }
 
-
+    @Override
+    public void onDestroy() {
+        LeakCanaryUtils.watch(this);
+        super.onDestroy();
+    }
 }
 
