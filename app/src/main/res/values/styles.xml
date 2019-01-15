@@ -32,9 +32,9 @@
     </style>
 
     <style name="edit_normal">
-        <item name="android:textColorHint">#1919FF</item>
-        <item name="colorControlNormal">#1919FF</item>
-        <item name="colorControlActivated">#1919FF</item>
+        <item name="android:textColorHint">@color/standard_color</item>
+        <item name="colorControlNormal">@color/standard_color</item>
+        <item name="colorControlActivated">@color/standard_color</item>
     </style>
 
     <style name="ed_search_content">

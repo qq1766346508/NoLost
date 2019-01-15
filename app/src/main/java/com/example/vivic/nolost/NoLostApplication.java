@@ -23,6 +23,7 @@ public class NoLostApplication extends Application {
         super.onCreate();
         context = getApplicationContext();
         Bmob.initialize(this, Application_ID);
+        MobSDK.init(this);
         LeakCanaryUtils.install(this);
         MultiPictureView.setImageLoader(new ImageLoader() {
             @Override

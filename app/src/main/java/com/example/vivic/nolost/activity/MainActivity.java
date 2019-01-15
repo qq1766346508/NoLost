@@ -14,6 +14,8 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.vivic.nolost.Login.LoginActivity;
+import com.example.vivic.nolost.Lost.activity.PublishActivity;
 import com.example.vivic.nolost.Lost.fragment.LostFragment;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil;
@@ -21,6 +23,9 @@ import com.example.vivic.nolost.search.SearchActivity;
 
 
 public class MainActivity extends BaseActivity {
+
+    private static final String TAG = "MainActivity";
+    private static final int REQUEST_CODE_PUBLISH = 0;
 
     private DrawerLayout drawerLayout;
     private NavigationView navigationView;
@@ -46,7 +51,7 @@ public class MainActivity extends BaseActivity {
                         startActivity(new Intent(MainActivity.this, SearchActivity.class));
                         break;
                     case R.id.menu_add:
-                        ToastUtil.showToast("add");
+                        startActivityForResult(new Intent(MainActivity.this, PublishActivity.class), REQUEST_CODE_PUBLISH);
                     default:
                         break;
                 }
@@ -68,7 +73,7 @@ public class MainActivity extends BaseActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.nav_user:
-                        ToastUtil.showToast("用户中心");
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
                         break;
                     case R.id.nav_weather:
                         ToastUtil.showToast("天气");

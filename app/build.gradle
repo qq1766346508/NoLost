@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
-
+apply plugin: 'com.mob.sdk'
 
 android {
     compileSdkVersion 27
@@ -25,7 +25,15 @@ android {
     }
     useLibrary 'org.apache.http.legacy'
 }
+MobSDK {
+    appKey "29774b530489f"
+    appSecret "654e8bea34c229e6eb00659edfdc6d01"
 
+    SMSSDK {}
+    ShareSDK {
+
+    }
+}
 
 dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
