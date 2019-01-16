@@ -30,7 +30,16 @@ MobSDK {
     appSecret "654e8bea34c229e6eb00659edfdc6d01"
 
     SMSSDK {}
-    ShareSDK {}
+    ShareSDK {
+        devInfo{
+            SinaWeibo {
+                appKey "94899488"
+                appSecret "4353b4d799af8de1a5905f48f120c660"
+                callbackUri "http://www.sharesdk.cn"
+                shareByAppClient false
+            }
+        }
+    }
 }
 
 dependencies {
