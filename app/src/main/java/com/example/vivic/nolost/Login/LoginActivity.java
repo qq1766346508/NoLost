@@ -12,6 +12,8 @@ import com.example.vivic.nolost.activity.BaseActivity;
 import com.example.vivic.nolost.commonUtil.NoDoubleClickListener;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 import cn.sharesdk.framework.Platform;
 import cn.sharesdk.framework.PlatformActionListener;
@@ -60,6 +62,13 @@ public class LoginActivity extends BaseActivity {
                         @Override
                         public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
                             Log.d(TAG, "onComplete: ");
+                            Iterator ite = hashMap.entrySet().iterator();
+                            while (ite.hasNext()) {
+                                Map.Entry entry = (Map.Entry) ite.next();
+                                Object key = entry.getKey();
+                                Object value = entry.getValue();
+                                Log.d(TAG, "onComplete: key:" + key + ",value:" + value + "\n");
+                            }
                         }
 
                         @Override
