@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.example.vivic.nolost.commonUtil.LeakCanaryUtils;
 import com.goyourfly.multi_picture.ImageLoader;
 import com.goyourfly.multi_picture.MultiPictureView;
+import com.mob.MobSDK;
 
 import org.jetbrains.annotations.NotNull;
 
