@@ -9,7 +9,7 @@
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:layout_marginTop="8dp"
-        android:src="@drawable/huaji"
+        android:src="@drawable/icon_default_avatar"
         app:layout_constraintEnd_toStartOf="@+id/gl_0.15v"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

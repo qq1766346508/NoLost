@@ -13,7 +13,7 @@
         android:layout_width="180dp"
         android:layout_height="180dp"
         android:layout_marginBottom="10dp"
-        android:src="@drawable/noicon"
+        android:src="@drawable/noicon120"
         app:layout_constraintBottom_toTopOf="@+id/tv_user"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -73,11 +73,36 @@
     </android.support.design.widget.TextInputLayout>
 
 
-    <ImageView
-        android:id="@+id/iv_login_weibo"
-        android:layout_width="35dp"
-        android:layout_height="35dp"
-        android:src="@drawable/icon_weibo_48" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_password">
+
+        <ImageView
+            android:id="@+id/iv_login_weixin"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/icon_weixin_50" />
+
+        <ImageView
+            android:id="@+id/iv_login_weibo"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/icon_weibo_48" />
+
+        <ImageView
+            android:id="@+id/iv_login_qq"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginStart="20dp"
+            android:src="@drawable/icon_qq_50" />
+
+    </LinearLayout>
 
 
     <android.support.constraint.Guideline
