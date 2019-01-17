@@ -21,13 +21,14 @@ import com.example.vivic.nolost.Login.LoginEvent;
 import com.example.vivic.nolost.Lost.activity.PublishActivity;
 import com.example.vivic.nolost.Lost.fragment.LostFragment;
 import com.example.vivic.nolost.R;
+import com.example.vivic.nolost.commonUtil.BindEventBus;
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil;
 import com.example.vivic.nolost.search.SearchActivity;
 
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-
+@BindEventBus
 public class MainActivity extends BaseActivity {
 
     private static final String TAG = "MainActivity";

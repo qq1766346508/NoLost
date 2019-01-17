@@ -1,5 +1,7 @@
 package com.example.vivic.nolost.bean;
 
+import org.jetbrains.annotations.NotNull;
+
 import cn.bmob.v3.BmobUser;
 
 public class MyUser extends BmobUser {
@@ -25,4 +27,6 @@ public class MyUser extends BmobUser {
                 ", avatar:" + avatar +
                 ", contact:" + contact;
     }
+
+
 }

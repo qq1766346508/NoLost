@@ -9,6 +9,9 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.activity.BaseActivity;
+import com.example.vivic.nolost.commonUtil.BindEventBus;
+import com.example.vivic.nolost.commonUtil.NetworkUtil;
+import com.example.vivic.nolost.commonUtil.NoDoubleClickListener;
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil;
 
 import org.greenrobot.eventbus.Subscribe;
@@ -16,6 +19,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import cn.sharesdk.sina.weibo.SinaWeibo;
 
+@BindEventBus
 public class LoginActivity extends BaseActivity {
     private static final String TAG = "LoginActivity";
 
@@ -33,10 +37,19 @@ public class LoginActivity extends BaseActivity {
     private void initview() {
         ivIcon = findViewById(R.id.iv_login_icon);
         ImageView ivWeibo = findViewById(R.id.iv_login_weibo);
-        ivWeibo.setOnClickListener(new View.OnClickListener() {
+        ivWeibo.setOnClickListener(new NoDoubleClickListener() {
             @Override
-            public void onClick(View v) {
+            protected void onNoDoubleClick(View v) {
+                if (!NetworkUtil.isConnected()) {
+                    ToastUtil.showToast("当前无网络");
+                    return;
+                }
                 loginViewModel.loginByThird(SinaWeibo.NAME);
+            }
+
+            @Override
+            protected void onDoubleClick() {
+
             }
         });
     }
@@ -44,8 +57,8 @@ public class LoginActivity extends BaseActivity {
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void LoginCallback(LoginEvent loginEvent) {
-        if (loginEvent.loginResult){
-            ToastUtil.showToast("登录成功，欢迎"+loginEvent.myUser.nickName);
+        if (loginEvent.loginResult) {
+            ToastUtil.showToast("登录成功，欢迎" + loginEvent.myUser.nickName);
             Glide.with(this).load(loginEvent.myUser.avatar).into(ivIcon);
         }
     }
