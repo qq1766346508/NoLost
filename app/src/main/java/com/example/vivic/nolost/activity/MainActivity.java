@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
@@ -14,12 +15,17 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.vivic.nolost.Login.LoginActivity;
+import com.example.vivic.nolost.Login.LoginEvent;
 import com.example.vivic.nolost.Lost.activity.PublishActivity;
 import com.example.vivic.nolost.Lost.fragment.LostFragment;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil;
 import com.example.vivic.nolost.search.SearchActivity;
+
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 
 public class MainActivity extends BaseActivity {
@@ -31,6 +37,8 @@ public class MainActivity extends BaseActivity {
     private NavigationView navigationView;
 
     private View headerView;
+    private ImageView IvAvatar;
+    private TextView tvNickname;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,13 +96,19 @@ public class MainActivity extends BaseActivity {
             }
         });
         headerView = navigationView.getHeaderView(0);
-        ImageView IvAvatar = headerView.findViewById(R.id.avatar);
-        TextView tvNickname = headerView.findViewById(R.id.nickname);
+        IvAvatar = headerView.findViewById(R.id.avatar);
+        tvNickname = headerView.findViewById(R.id.nickname);
 
         tvNickname.setText("xiaoming");
-
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void LoginCallback(LoginEvent loginEvent) {
+        if (loginEvent.loginResult) {
+            Glide.with(this).load(loginEvent.myUser.avatar).into(IvAvatar);
+            tvNickname.setText(loginEvent.myUser.nickName);
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -108,5 +122,14 @@ public class MainActivity extends BaseActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.toolbar_menu, menu);
         return true;
+    }
+
+    @Override
+    public void onBackPressed() { //处理返回键先关闭抽屉
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)) {
+            drawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 }
