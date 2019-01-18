@@ -107,7 +107,7 @@ public class MainActivity extends BaseActivity {
     public void LoginCallback(LoginEvent loginEvent) {
         if (loginEvent.loginResult) {
             Glide.with(this).load(loginEvent.myUser.avatar).into(IvAvatar);
-            tvNickname.setText(loginEvent.myUser.nickName);
+            tvNickname.setText(loginEvent.myUser.getUsername());
         }
     }
 

@@ -33,6 +33,7 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d(TAG, "onDestroy: " + getClass().getSimpleName());
         if (getClass().isAnnotationPresent(BindEventBus.class)) {
             EventBus.getDefault().unregister(this);
         }

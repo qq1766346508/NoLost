@@ -32,37 +32,5 @@ public class LoginViewModel extends ViewModel {
         return CommonPref.instance().getBoolean(HAS_LOGIN, false);
     }
 
-    public void loginByThird(String platform) {
-        Platform plat = ShareSDK.getPlatform(platform);
-        if (!plat.isAuthValid()) {
-            plat.setPlatformActionListener(new PlatformActionListener() {
-                @Override
-                public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) { //成功回调在子线程，ui修改要回到主线程
-                    Log.d(TAG, "onComplete: ");
-                    myUser = new MyUser();
-                    myUser.thirdId = plat.getDb().getUserId();
-                    myUser.nickName = plat.getDb().getUserName();
-                    myUser.sex = plat.getDb().getUserGender();
-                    myUser.avatar = plat.getDb().getUserIcon();
-                    Log.d(TAG, "onComplete: " + myUser.toString());
-                    EventBus.getDefault().post(new LoginEvent(platform.getName(), true, myUser));
-                }
-
-                @Override
-                public void onError(Platform platform, int i, Throwable throwable) {
-                    Log.d(TAG, "onError: code = " + throwable);
-                    ToastUtil.showToast("授权失败");
-                }
-
-                @Override
-                public void onCancel(Platform platform, int i) {
-                    Log.d(TAG, "onCancel: ");
-                    ToastUtil.showToast("取消授权");
-                }
-            });
-        }
-        plat.SSOSetting(false);
-        plat.showUser(null);
-    }
 }
 

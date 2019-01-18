@@ -9,8 +9,6 @@ public class MyUser extends BmobUser {
     public static final String SEX_MAN = "man";
     public static final String SEX_WOMAN = "woman";
 
-    public String thirdId;
-    public String nickName;
     public String sex;
     public String school;
     public String avatar;
@@ -20,8 +18,7 @@ public class MyUser extends BmobUser {
     @Override
     public String toString() {
         return " MyUser:" +
-                ", thirdId:" + thirdId +
-                ", nickName:" + nickName +
+                ", Username:" + getUsername() +
                 ", sex:" + sex +
                 ", school:" + school +
                 ", avatar:" + avatar +
