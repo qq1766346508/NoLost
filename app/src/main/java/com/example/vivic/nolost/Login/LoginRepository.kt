@@ -90,7 +90,15 @@ object LoginRepository {
                 thirdUser.username = plat.db.userName
                 thirdUser.avatar = plat.db.userIcon
                 thirdUser.sex = plat.db.userGender
+                thirdUser.background = hashMap.get("cover_image_phone").toString()
                 loginByThird(bmobThirdUserAuth, thirdUser, iLoginCallback)
+//                val ite = hashMap.entries.iterator()
+//                while (ite.hasNext()) {
+//                    val entry = ite.next() as Map.Entry<*, *>
+//                    val key = entry.key
+//                    val value = entry.value
+//                    Log.d(TAG, "key : $key -value : $value")
+//                }
             }
 
             override fun onError(platform: Platform, i: Int, throwable: Throwable) {

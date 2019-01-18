@@ -1,8 +1,11 @@
 package com.example.vivic.nolost.activity;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.constraint.ConstraintLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -17,6 +20,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.SimpleTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.Login.LogOutEvent;
 import com.example.vivic.nolost.Login.LoginActivity;
@@ -50,6 +55,7 @@ public class MainActivity extends BaseActivity {
     private ImageView IvAvatar;
     private TextView tvNickname;
     private MenuItem itemLogout;
+    private ConstraintLayout clBackground;
 
 
     @Override
@@ -125,15 +131,17 @@ public class MainActivity extends BaseActivity {
         headerView = navigationView.getHeaderView(0);
         IvAvatar = headerView.findViewById(R.id.avatar);
         tvNickname = headerView.findViewById(R.id.nickname);
+        clBackground = headerView.findViewById(R.id.cl_background);
         Menu menu = navigationView.getMenu();
         itemLogout = menu.findItem(R.id.nav_logout);
 
         MyUser currentUser = BmobUser.getCurrentUser(MyUser.class);
         if (currentUser != null) {
             Log.i(TAG, "currentUser: " + currentUser.toString());
-            itemLogout.setVisible(true);
-            GlideApp.with(this).load(currentUser.avatar).placeholder(R.drawable.icon_default_avatar).into(IvAvatar);
-            tvNickname.setText(currentUser.getUsername());
+//            itemLogout.setVisible(true);
+//            GlideApp.with(this).load(currentUser.avatar).placeholder(R.drawable.icon_default_avatar).into(IvAvatar);
+//            tvNickname.setText(currentUser.getUsername());
+            LoginCallback(new LoginEvent(true, currentUser));
         } else {
             Log.i(TAG, "currentUser == null ");
         }
@@ -145,6 +153,12 @@ public class MainActivity extends BaseActivity {
             GlideApp.with(this).load(loginEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(IvAvatar);
             tvNickname.setText(loginEvent.myUser.getUsername());
             itemLogout.setVisible(true);
+            Glide.with(this).load(loginEvent.myUser.background).into(new SimpleTarget<Drawable>() {
+                @Override
+                public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                    clBackground.setBackground(resource);
+                }
+            });
         }
     }
 
@@ -153,6 +167,7 @@ public class MainActivity extends BaseActivity {
         Glide.with(this).load(R.drawable.icon_default_avatar).into(IvAvatar);
         tvNickname.setText("");
         itemLogout.setVisible(false);
+        clBackground.setBackgroundColor(getResources().getColor(R.color.standard_color));
     }
 
 

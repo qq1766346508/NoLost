@@ -13,6 +13,7 @@ public class MyUser extends BmobUser {
     public String location;
     public String avatar;
     public String contact;
+    public String background;
 
 
     @Override
@@ -22,6 +23,7 @@ public class MyUser extends BmobUser {
                 ", sex:" + sex +
                 ", location:" + location +
                 ", avatar:" + avatar +
+                ", background:" + background +
                 ", contact:" + contact;
     }
 
