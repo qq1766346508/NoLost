@@ -7,13 +7,11 @@ import android.os.Bundle;
 import android.support.v7.widget.AppCompatEditText;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.R;
@@ -169,7 +167,7 @@ public class LoginActivity extends BaseActivity {
 
                     @Override
                     public void error(Throwable throwable) {
-                        ToastUtil.showToast("第三方授权失败");
+                        runOnUiThread(() -> ToastUtil.showToast("第三方授权失败"));
                     }
                 });
             }
@@ -216,4 +214,9 @@ public class LoginActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+    }
 }

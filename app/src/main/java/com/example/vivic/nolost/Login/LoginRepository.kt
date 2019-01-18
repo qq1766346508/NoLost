@@ -77,15 +77,15 @@ object LoginRepository {
         if (plat.isAuthValid) {
             plat.removeAccount(true)
         }
-        plat.SSOSetting(false)
         plat.platformActionListener = object : PlatformActionListener {
             override fun onComplete(platform: Platform, i: Int, hashMap: HashMap<String, Any>) { //成功回调在子线程，ui修改要回到主线程
                 Log.d(TAG, "onComplete: ${platform.db.exportData()}")
                 val snsType = getNameThird(platform.name)
-                val acessToken = platform.db.token
+                val accessToken = platform.db.token
                 val expiresIn = platform.db.expiresIn.toString()
                 val userId = platform.db.userId
-                val bmobThirdUserAuth = BmobUser.BmobThirdUserAuth(snsType, acessToken, expiresIn, userId)
+                Log.i(TAG, "snsType:$snsType,accessToken:$accessToken,expiresIn:$expiresIn,userId:$userId")
+                val bmobThirdUserAuth = BmobUser.BmobThirdUserAuth(snsType, accessToken, expiresIn, userId)
                 val thirdUser = MyUser()
                 thirdUser.username = plat.db.userName
                 thirdUser.avatar = plat.db.userIcon
@@ -108,8 +108,11 @@ object LoginRepository {
 
             override fun onCancel(platform: Platform, i: Int) {
                 Log.d(TAG, "onCancel: ")
+                iLoginCallback.error(null)
+
             }
         }
+        plat.SSOSetting(false)
         plat.showUser(null)
     }
 
