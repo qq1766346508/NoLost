@@ -37,7 +37,8 @@
         <activity
             android:name=".search.SearchActivity"
             android:windowSoftInputMode="adjustResize" />
-        <activity android:name=".Lost.activity.PublishActivity"></activity>
+        <activity android:name=".Lost.activity.PublishActivity" />
+        <activity android:name=".userCenter.UserCenterActivity"></activity>
     </application>
 
 </manifest>

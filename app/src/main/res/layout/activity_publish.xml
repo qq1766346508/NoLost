@@ -10,7 +10,7 @@
         android:orientation="vertical"
         tools:context=".Lost.activity.PublishActivity">
 
-        <FrameLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/standard_color">
@@ -30,7 +30,7 @@
                 android:text="发布物品"
                 android:textColor="#fff"
                 android:textSize="18sp" />
-        </FrameLayout>
+        </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"

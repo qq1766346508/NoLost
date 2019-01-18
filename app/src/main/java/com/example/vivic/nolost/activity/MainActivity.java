@@ -32,9 +32,11 @@ import com.example.vivic.nolost.Lost.fragment.LostFragment;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.bean.MyUser;
 import com.example.vivic.nolost.commonUtil.BindEventBus;
+import com.example.vivic.nolost.commonUtil.NoDoubleClickListener;
 import com.example.vivic.nolost.commonUtil.confirmDialog.ConfirmDialog;
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil;
 import com.example.vivic.nolost.search.SearchActivity;
+import com.example.vivic.nolost.userCenter.UserCenterActivity;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -103,7 +105,7 @@ public class MainActivity extends BaseActivity {
                         if (BmobUser.getCurrentUser(MyUser.class) == null) {
                             startActivity(new Intent(MainActivity.this, LoginActivity.class));
                         } else {
-                            ToastUtil.showToast("用户中心");
+                            startActivity(new Intent(MainActivity.this, UserCenterActivity.class));
                         }
                         break;
                     case R.id.nav_weather:
@@ -130,6 +132,19 @@ public class MainActivity extends BaseActivity {
         });
         headerView = navigationView.getHeaderView(0);
         IvAvatar = headerView.findViewById(R.id.avatar);
+        IvAvatar.setOnClickListener(new NoDoubleClickListener() {
+            @Override
+            protected void onNoDoubleClick(View v) {
+                if (BmobUser.getCurrentUser(MyUser.class) == null) {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                }
+            }
+
+            @Override
+            protected void onDoubleClick() {
+
+            }
+        });
         tvNickname = headerView.findViewById(R.id.nickname);
         clBackground = headerView.findViewById(R.id.cl_background);
         Menu menu = navigationView.getMenu();
@@ -138,9 +153,6 @@ public class MainActivity extends BaseActivity {
         MyUser currentUser = BmobUser.getCurrentUser(MyUser.class);
         if (currentUser != null) {
             Log.i(TAG, "currentUser: " + currentUser.toString());
-//            itemLogout.setVisible(true);
-//            GlideApp.with(this).load(currentUser.avatar).placeholder(R.drawable.icon_default_avatar).into(IvAvatar);
-//            tvNickname.setText(currentUser.getUsername());
             LoginCallback(new LoginEvent(true, currentUser));
         } else {
             Log.i(TAG, "currentUser == null ");
@@ -153,7 +165,7 @@ public class MainActivity extends BaseActivity {
             GlideApp.with(this).load(loginEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(IvAvatar);
             tvNickname.setText(loginEvent.myUser.getUsername());
             itemLogout.setVisible(true);
-            Glide.with(this).load(loginEvent.myUser.background).into(new SimpleTarget<Drawable>() {
+            GlideApp.with(this).load(loginEvent.myUser.background).into(new SimpleTarget<Drawable>() {
                 @Override
                 public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                     clBackground.setBackground(resource);

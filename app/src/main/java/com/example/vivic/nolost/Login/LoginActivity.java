@@ -42,6 +42,7 @@ public class LoginActivity extends BaseActivity {
     private AppCompatEditText etAccount;
     private AppCompatEditText etPassword;
     private InputMethodManager inputMethodManager;
+    private ILoginCallback<MyUser> iLoginCallback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -150,6 +151,19 @@ public class LoginActivity extends BaseActivity {
     private void thirdLogin() {
         ivIcon = findViewById(R.id.iv_login_icon);
         ImageView ivWeibo = findViewById(R.id.iv_login_weibo);
+        iLoginCallback = new ILoginCallback<MyUser>() {
+            @Override
+            public void success(MyUser myUser) {
+                ToastUtil.showToast("第三方授权成功");
+                CommonPref.instance().putString(LoginRepository.INSTANCE.getLAST_PLATFORM(), SinaWeibo.NAME);
+                showConfirmDialog(myUser);
+            }
+
+            @Override
+            public void error(Throwable throwable) {
+                runOnUiThread(() -> ToastUtil.showToast("第三方授权失败"));
+            }
+        };
         ivWeibo.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
@@ -157,25 +171,14 @@ public class LoginActivity extends BaseActivity {
                     ToastUtil.showToast("当前无网络");
                     return;
                 }
-                LoginRepository.INSTANCE.loginByShareSdk(SinaWeibo.NAME, new ILoginCallback<MyUser>() {
-                    @Override
-                    public void success(MyUser myUser) {
-                        ToastUtil.showToast("第三方授权成功");
-                        CommonPref.instance().putString(LoginRepository.INSTANCE.getLAST_PLATFORM(), SinaWeibo.NAME);
-                        showConfirmDialog(myUser);
-                    }
-
-                    @Override
-                    public void error(Throwable throwable) {
-                        runOnUiThread(() -> ToastUtil.showToast("第三方授权失败"));
-                    }
-                });
+                LoginRepository.INSTANCE.loginByShareSdk(SinaWeibo.NAME, iLoginCallback);
             }
 
             @Override
             protected void onDoubleClick() {
 
             }
+
         });
     }
 
@@ -200,6 +203,7 @@ public class LoginActivity extends BaseActivity {
                         });
                     }
                 })
+                .canceledOnTouchOutside(false)
                 .cancelText(" ")
                 .build();
         confirmDialog.show(this);
@@ -217,6 +221,6 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        iLoginCallback = null;
     }
 }

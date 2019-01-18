@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 apply plugin: 'com.mob.sdk'
+apply plugin: 'kotlin-android-extensions'
 
 android {
     compileSdkVersion 28
@@ -31,7 +32,7 @@ MobSDK {
 
     SMSSDK {}
     ShareSDK {
-        devInfo{
+        devInfo {
             SinaWeibo {
                 appKey "94899488"
                 appSecret "59bc17971c97b60502017ab7d9d93b3b"
