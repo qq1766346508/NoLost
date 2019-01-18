@@ -40,6 +40,8 @@
             android:id="@+id/et_user_account"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:imeOptions="actionNext"
+            android:singleLine="true"
             android:textSize="14sp" />
     </android.support.design.widget.TextInputLayout>
 
@@ -69,7 +71,10 @@
             android:id="@+id/et_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:imeOptions="actionDone"
+            android:imeActionLabel="登录"
             android:inputType="textPassword"
+            android:singleLine="true"
             android:textSize="14sp" />
     </android.support.design.widget.TextInputLayout>
 
@@ -119,7 +124,9 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="64dp"
         android:layout_marginEnd="32dp"
+        android:background="@drawable/selector_bg_btn"
         android:text="登录"
+        android:textColor="#fff"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/guideline_0.5v" />
 
@@ -129,7 +136,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
+        android:background="@drawable/selector_bg_btn"
         android:text="注册"
+        android:textColor="#fff"
         app:layout_constraintBaseline_toBaselineOf="@+id/btn_login"
         app:layout_constraintStart_toEndOf="@+id/guideline_0.5v" />
 

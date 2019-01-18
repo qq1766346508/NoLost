@@ -152,7 +152,7 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_marginTop="10dp"
-            android:background="@drawable/bg_btn_publish"
+            android:background="@drawable/selector_bg_btn"
             android:text="立刻发布"
             android:textColor="#fff"
             android:textSize="18dp"

@@ -10,11 +10,13 @@ import cn.sharesdk.framework.PlatformActionListener
 import cn.sharesdk.framework.ShareSDK
 import cn.sharesdk.sina.weibo.SinaWeibo
 import com.example.vivic.nolost.bean.MyUser
+import com.example.vivic.nolost.commonUtil.pref.CommonPref
 import org.json.JSONObject
 import java.util.*
 
 object LoginRepository {
     private val TAG = javaClass.simpleName
+    public val LAST_PLATFORM = "LAST_PLATFORM"
 
     /**
      * myUser:username+password,注册成功自动调用登录
@@ -70,35 +72,36 @@ object LoginRepository {
     /**
      * shareSdk第三方登录
      */
-    fun loginByThird(platform: String, iLoginCallback: ILoginCallback<MyUser>) {
+    fun loginByShareSdk(platform: String, iLoginCallback: ILoginCallback<MyUser>) {
         val plat = ShareSDK.getPlatform(platform)
-        if (!plat.isAuthValid) {
-            plat.platformActionListener = object : PlatformActionListener {
-                override fun onComplete(platform: Platform, i: Int, hashMap: HashMap<String, Any>) { //成功回调在子线程，ui修改要回到主线程
-                    Log.d(TAG, "onComplete: ${platform.db.exportData()}")
-                    val snsType = getNameThird(platform.name)
-                    val acessToken = platform.db.token
-                    val expiresIn = platform.db.expiresIn.toString()
-                    val userId = platform.db.userId
-                    val bmobThirdUserAuth = BmobUser.BmobThirdUserAuth(snsType, acessToken, expiresIn, userId)
-                    val thirdUser = MyUser()
-                    thirdUser.username = plat.db.userName
-                    thirdUser.avatar = plat.db.userIcon
-                    thirdUser.sex = plat.db.userGender
-                    loginByThird(bmobThirdUserAuth, thirdUser, iLoginCallback)
-                }
-
-                override fun onError(platform: Platform, i: Int, throwable: Throwable) {
-                    Log.d(TAG, "onError: code = $throwable")
-                    iLoginCallback.error(throwable)
-                }
-
-                override fun onCancel(platform: Platform, i: Int) {
-                    Log.d(TAG, "onCancel: ")
-                }
-            }
+        if (plat.isAuthValid) {
+            plat.removeAccount(true)
         }
         plat.SSOSetting(false)
+        plat.platformActionListener = object : PlatformActionListener {
+            override fun onComplete(platform: Platform, i: Int, hashMap: HashMap<String, Any>) { //成功回调在子线程，ui修改要回到主线程
+                Log.d(TAG, "onComplete: ${platform.db.exportData()}")
+                val snsType = getNameThird(platform.name)
+                val acessToken = platform.db.token
+                val expiresIn = platform.db.expiresIn.toString()
+                val userId = platform.db.userId
+                val bmobThirdUserAuth = BmobUser.BmobThirdUserAuth(snsType, acessToken, expiresIn, userId)
+                val thirdUser = MyUser()
+                thirdUser.username = plat.db.userName
+                thirdUser.avatar = plat.db.userIcon
+                thirdUser.sex = plat.db.userGender
+                loginByThird(bmobThirdUserAuth, thirdUser, iLoginCallback)
+            }
+
+            override fun onError(platform: Platform, i: Int, throwable: Throwable) {
+                Log.d(TAG, "onError: code = $throwable")
+                iLoginCallback.error(throwable)
+            }
+
+            override fun onCancel(platform: Platform, i: Int) {
+                Log.d(TAG, "onCancel: ")
+            }
+        }
         plat.showUser(null)
     }
 
@@ -180,8 +183,17 @@ object LoginRepository {
     }
 
     fun logOut() {
-        Log.d(TAG, "logOut")
-        BmobUser.logOut()
+        val currentUser = BmobUser.getCurrentUser(MyUser::class.java)
+        if (currentUser == null) {
+            Log.d(TAG, "currentUser == null")
+        } else {
+            Log.i(TAG, "currentUser is $currentUser")
+            BmobUser.logOut()
+            Log.d(TAG, "logOut")
+        }
+        val platform = CommonPref.instance()?.getString(LAST_PLATFORM)
+        val plat = ShareSDK.getPlatform(platform)
+        plat?.removeAccount(true)
     }
 
 

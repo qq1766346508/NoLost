@@ -10,7 +10,7 @@ public class MyUser extends BmobUser {
     public static final String SEX_WOMAN = "woman";
 
     public String sex;
-    public String school;
+    public String location;
     public String avatar;
     public String contact;
 
@@ -20,7 +20,7 @@ public class MyUser extends BmobUser {
         return " MyUser:" +
                 ", Username:" + getUsername() +
                 ", sex:" + sex +
-                ", school:" + school +
+                ", location:" + location +
                 ", avatar:" + avatar +
                 ", contact:" + contact;
     }
