@@ -140,16 +140,6 @@ object LoginRepository {
         })
     }
 
-    fun getCurrentUser(iLoginCallback: ILoginCallback<MyUser>) {
-        val user = BmobUser.getCurrentUser(MyUser::class.java)
-        if (user == null) {
-            Log.d(TAG, "getCurrentUser success,Myuser:$user")
-            iLoginCallback.success(user)
-        } else {
-            Log.d(TAG, "getCurrentUser failed")
-            iLoginCallback.error(null)
-        }
-    }
 
     /**
      * 更新只会向后台更新，本地还得查询一次,并将结果返回

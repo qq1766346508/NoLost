@@ -20,9 +20,9 @@ import com.example.vivic.nolost.bean.MyUser;
 import com.example.vivic.nolost.commonUtil.BindEventBus;
 import com.example.vivic.nolost.commonUtil.NetworkUtil;
 import com.example.vivic.nolost.commonUtil.NoDoubleClickListener;
-import com.example.vivic.nolost.commonUtil.confirmDialog.ConfirmDialog;
 import com.example.vivic.nolost.commonUtil.pref.CommonPref;
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil;
+import com.xiasuhuei321.loadingdialog.view.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -43,6 +43,7 @@ public class LoginActivity extends BaseActivity {
     private AppCompatEditText etPassword;
     private InputMethodManager inputMethodManager;
     private ILoginCallback<MyUser> iLoginCallback;
+    private LoadingDialog loadingDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -116,7 +117,12 @@ public class LoginActivity extends BaseActivity {
 
             }
         });
-
+        loadingDialog = new LoadingDialog(this);
+        loadingDialog.setLoadingText("请稍后")
+                .setSuccessText("请求成功")
+                .closeFailedAnim()
+                .closeSuccessAnim()
+                .setFailedText("请求失败");
     }
 
     private void normalLogin() {
@@ -154,14 +160,13 @@ public class LoginActivity extends BaseActivity {
         iLoginCallback = new ILoginCallback<MyUser>() {
             @Override
             public void success(MyUser myUser) {
-                ToastUtil.showToast("第三方授权成功");
                 CommonPref.instance().putString(LoginRepository.INSTANCE.getLAST_PLATFORM(), SinaWeibo.NAME);
-                showConfirmDialog(myUser);
+                updateUserInfo(myUser);
             }
 
             @Override
             public void error(Throwable throwable) {
-                runOnUiThread(() -> ToastUtil.showToast("第三方授权失败"));
+                loadingDialog.loadFailed();
             }
         };
         ivWeibo.setOnClickListener(new NoDoubleClickListener() {
@@ -172,6 +177,7 @@ public class LoginActivity extends BaseActivity {
                     return;
                 }
                 LoginRepository.INSTANCE.loginByShareSdk(SinaWeibo.NAME, iLoginCallback);
+                loadingDialog.show();
             }
 
             @Override
@@ -182,32 +188,23 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    private void showConfirmDialog(MyUser myUser) {
+    private void updateUserInfo(MyUser myUser) {
         Log.i(TAG, "third User: " + myUser.toString());
-        ConfirmDialog confirmDialog = new ConfirmDialog.Builder()
-                .content("用第三方登录会自动更改为第三方平台数据.")
-                .confirmListener(new ConfirmDialog.Builder.ConfirmListener() {
-                    @Override
-                    public void onConfirm() {
-                        LoginRepository.INSTANCE.updateUserByNewUser(myUser, new ILoginCallback<MyUser>() {
-                            @Override
-                            public void success(MyUser result) {
-                                ToastUtil.showToast("更新成功");
-                                EventBus.getDefault().post(new LoginEvent(true, result));
-                            }
+        LoginRepository.INSTANCE.updateUserByNewUser(myUser, new ILoginCallback<MyUser>() {
+            @Override
+            public void success(MyUser result) {
+                loadingDialog.loadSuccess();
+                EventBus.getDefault().post(new LoginEvent(true, result));
+            }
 
-                            @Override
-                            public void error(Throwable throwable) {
-                                ToastUtil.showToast("更新失败");
-                            }
-                        });
-                    }
-                })
-                .canceledOnTouchOutside(false)
-                .cancelText(" ")
-                .build();
-        confirmDialog.show(this);
+            @Override
+            public void error(Throwable throwable) {
+                loadingDialog.loadFailed();
+            }
+        });
     }
+
+    ;
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -222,5 +219,6 @@ public class LoginActivity extends BaseActivity {
     protected void onDestroy() {
         super.onDestroy();
         iLoginCallback = null;
+        loadingDialog.close();
     }
 }
