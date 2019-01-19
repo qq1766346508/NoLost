@@ -42,7 +42,7 @@ public class LoginActivity extends BaseActivity {
     private AppCompatEditText etAccount;
     private AppCompatEditText etPassword;
     private InputMethodManager inputMethodManager;
-    private ILoginCallback<MyUser> iLoginCallback;
+    private ILoginCallback<MyUser> iSdkLoginCallback;
     private LoadingDialog loadingDialog;
 
     @Override
@@ -53,7 +53,9 @@ public class LoginActivity extends BaseActivity {
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
         initview();
         thirdLogin();
+        initCallback();
     }
+
 
     private void initview() {
         Button btnLogin = findViewById(R.id.btn_login);
@@ -90,7 +92,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void success(MyUser result) {
                         ToastUtil.showToast("sign success,welcome:" + result.getUsername());
-                        EventBus.getDefault().post(new LoginEvent(true, result));
+                        EventBus.getDefault().post(new UpdateUserInfoEvent(true, result));
                     }
 
                     @Override
@@ -143,7 +145,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void success(MyUser result) {
                 ToastUtil.showToast("login success,welcome:" + result.getUsername());
-                EventBus.getDefault().post(new LoginEvent(true, result));
+                EventBus.getDefault().post(new UpdateUserInfoEvent(true, result));
             }
 
             @Override
@@ -157,18 +159,6 @@ public class LoginActivity extends BaseActivity {
     private void thirdLogin() {
         ivIcon = findViewById(R.id.iv_login_icon);
         ImageView ivWeibo = findViewById(R.id.iv_login_weibo);
-        iLoginCallback = new ILoginCallback<MyUser>() {
-            @Override
-            public void success(MyUser myUser) {
-                CommonPref.instance().putString(LoginRepository.INSTANCE.getLAST_PLATFORM(), SinaWeibo.NAME);
-                updateUserInfo(myUser);
-            }
-
-            @Override
-            public void error(Throwable throwable) {
-                loadingDialog.loadFailed();
-            }
-        };
         ivWeibo.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
@@ -176,7 +166,7 @@ public class LoginActivity extends BaseActivity {
                     ToastUtil.showToast("当前无网络");
                     return;
                 }
-                LoginRepository.INSTANCE.loginByShareSdk(SinaWeibo.NAME, iLoginCallback);
+                LoginRepository.INSTANCE.loginByShareSdk(SinaWeibo.NAME, iSdkLoginCallback);
                 loadingDialog.show();
             }
 
@@ -194,7 +184,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void success(MyUser result) {
                 loadingDialog.loadSuccess();
-                EventBus.getDefault().post(new LoginEvent(true, result));
+                EventBus.getDefault().post(new UpdateUserInfoEvent(true, result));
             }
 
             @Override
@@ -204,13 +194,26 @@ public class LoginActivity extends BaseActivity {
         });
     }
 
-    ;
+    private void initCallback() {
+        iSdkLoginCallback = new ILoginCallback<MyUser>() {
+            @Override
+            public void success(MyUser myUser) {
+                CommonPref.instance().putString(LoginRepository.INSTANCE.getLAST_PLATFORM(), SinaWeibo.NAME);
+                updateUserInfo(myUser);
+            }
+
+            @Override
+            public void error(Throwable throwable) {
+                loadingDialog.loadFailed();
+            }
+        };
+    }
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void LoginCallback(LoginEvent loginEvent) {
-        if (loginEvent.loginResult) {
-            GlideApp.with(this).load(loginEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(ivIcon);
+    public void LoginCallback(UpdateUserInfoEvent updateUserInfoEvent) {
+        if (updateUserInfoEvent.loginResult) {
+            GlideApp.with(this).load(updateUserInfoEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(ivIcon);
             finish();
         }
     }
@@ -218,7 +221,7 @@ public class LoginActivity extends BaseActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        iLoginCallback = null;
+        iSdkLoginCallback = null;
         loadingDialog.close();
     }
 }

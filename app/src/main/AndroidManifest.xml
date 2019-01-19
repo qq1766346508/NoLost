@@ -39,6 +39,9 @@
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".Lost.activity.PublishActivity" />
         <activity android:name=".userCenter.UserCenterActivity"></activity>
+        <activity
+            android:name=".userCenter.EditActivity"
+            android:windowSoftInputMode="adjustResize"></activity>
     </application>
 
 </manifest>

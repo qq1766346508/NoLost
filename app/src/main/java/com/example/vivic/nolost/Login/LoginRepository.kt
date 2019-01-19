@@ -89,7 +89,7 @@ object LoginRepository {
                 val thirdUser = MyUser()
                 thirdUser.username = plat.db.userName
                 thirdUser.avatar = plat.db.userIcon
-                thirdUser.sex = plat.db.userGender
+                thirdUser.gender = plat.db.userGender
                 thirdUser.background = hashMap.get("cover_image_phone").toString()
                 loginByThird(bmobThirdUserAuth, thirdUser, iLoginCallback)
 //                val ite = hashMap.entries.iterator()
@@ -144,7 +144,7 @@ object LoginRepository {
     /**
      * 更新只会向后台更新，本地还得查询一次,并将结果返回
      */
-    fun updateUserByNewUser(newUser: MyUser, iLoginCallback: ILoginCallback<MyUser>) {
+    fun updateUserByNewUser(newUser: MyUser, iLoginCallback: ILoginCallback<MyUser>?) {
         val currentUser = BmobUser.getCurrentUser(MyUser::class.java)
         newUser.update(currentUser.objectId, object : UpdateListener() {
             override fun done(p0: BmobException?) {
@@ -155,7 +155,7 @@ object LoginRepository {
                         override fun done(p0: MyUser?, p1: BmobException?) {
                             if (p1 == null) {
                                 Log.d(TAG, "BmobQuery success,user:$p0")
-                                iLoginCallback.success(p0)
+                                iLoginCallback?.success(p0)
                             } else {
                                 Log.d(TAG, "BmobQuery failed,exception:$p1")
                             }
@@ -163,7 +163,22 @@ object LoginRepository {
                     })
                 } else {
                     Log.d(TAG, "updateUserByObjectId failed,exception:$p0")
-                    iLoginCallback.error(p0)
+                    iLoginCallback?.error(p0)
+                }
+            }
+        })
+    }
+
+    /**
+     * 控制台修改数据，用户重开APP会拉取信息，并更新本地
+     */
+    fun fetchUserInfo() {
+        BmobUser.fetchUserInfo(object : FetchUserInfoListener<BmobUser>() {
+            override fun done(p0: BmobUser?, p1: BmobException?) {
+                if (p1 == null) {
+                    Log.d(TAG, "fetchUserInfo fail ;BmobException :$p1")
+                } else {
+                    Log.i(TAG, "fetchUserInfo success,user:$p0")
                 }
             }
         })

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".userCenter.EditActivity">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/standard_color">
+
+        <ImageView
+            android:id="@+id/iv_edit_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="16dp"
+            android:src="@drawable/ic_arrow_back_white_24dp" />
+
+        <TextView
+            android:id="@+id/tv_edit_title"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="56dp"
+            android:gravity="center"
+            android:textColor="#fff"
+            android:textSize="18sp"
+            tools:text="hhh" />
+
+        <TextView
+            android:id="@+id/tv_edit_save"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="end|center"
+            android:gravity="center"
+            android:background="@drawable/btn_selector"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:text="@string/edit_save"
+            android:textColor="#fff" />
+    </FrameLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        android:theme="@style/ed_option_content"
+        app:counterEnabled="true"
+        app:counterMaxLength="15"
+        app:errorEnabled="true"
+        app:errorTextAppearance="@style/edit_error">
+
+        <android.support.design.widget.TextInputEditText
+            android:id="@+id/et_edit_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:singleLine="true"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:maxLength="15"
+            android:textColor="#000"
+            android:textSize="14sp" />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+</LinearLayout>

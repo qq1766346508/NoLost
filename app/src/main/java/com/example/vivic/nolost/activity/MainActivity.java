@@ -25,8 +25,8 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.Login.LogOutEvent;
 import com.example.vivic.nolost.Login.LoginActivity;
-import com.example.vivic.nolost.Login.LoginEvent;
 import com.example.vivic.nolost.Login.LoginRepository;
+import com.example.vivic.nolost.Login.UpdateUserInfoEvent;
 import com.example.vivic.nolost.Lost.activity.PublishActivity;
 import com.example.vivic.nolost.Lost.fragment.LostFragment;
 import com.example.vivic.nolost.R;
@@ -36,6 +36,7 @@ import com.example.vivic.nolost.commonUtil.NoDoubleClickListener;
 import com.example.vivic.nolost.commonUtil.confirmDialog.ConfirmDialog;
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil;
 import com.example.vivic.nolost.search.SearchActivity;
+import com.example.vivic.nolost.userCenter.GenderHelper;
 import com.example.vivic.nolost.userCenter.UserCenterActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -55,6 +56,7 @@ public class MainActivity extends BaseActivity {
 
     private View headerView;
     private ImageView IvAvatar;
+    private ImageView ivGender;
     private TextView tvNickname;
     private MenuItem itemLogout;
     private ConstraintLayout clBackground;
@@ -131,7 +133,8 @@ public class MainActivity extends BaseActivity {
             }
         });
         headerView = navigationView.getHeaderView(0);
-        IvAvatar = headerView.findViewById(R.id.avatar);
+        IvAvatar = headerView.findViewById(R.id.iv_nav_avatar);
+        ivGender = headerView.findViewById(R.id.iv_nav_gender);
         IvAvatar.setOnClickListener(new NoDoubleClickListener() {
             @Override
             protected void onNoDoubleClick(View v) {
@@ -145,7 +148,7 @@ public class MainActivity extends BaseActivity {
 
             }
         });
-        tvNickname = headerView.findViewById(R.id.nickname);
+        tvNickname = headerView.findViewById(R.id.tv_nav_nickname);
         clBackground = headerView.findViewById(R.id.cl_background);
         Menu menu = navigationView.getMenu();
         itemLogout = menu.findItem(R.id.nav_logout);
@@ -153,19 +156,29 @@ public class MainActivity extends BaseActivity {
         MyUser currentUser = BmobUser.getCurrentUser(MyUser.class);
         if (currentUser != null) {
             Log.i(TAG, "currentUser: " + currentUser.toString());
-            LoginCallback(new LoginEvent(true, currentUser));
+            LoginCallback(new UpdateUserInfoEvent(true, currentUser));
         } else {
             Log.i(TAG, "currentUser == null ");
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void LoginCallback(LoginEvent loginEvent) {
-        if (loginEvent.loginResult) {
-            GlideApp.with(this).load(loginEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(IvAvatar);
-            tvNickname.setText(loginEvent.myUser.getUsername());
+    public void LoginCallback(UpdateUserInfoEvent updateUserInfoEvent) {
+        if (updateUserInfoEvent.loginResult) {
+            GlideApp.with(this).load(updateUserInfoEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(IvAvatar);
+            tvNickname.setText(updateUserInfoEvent.myUser.getUsername());
             itemLogout.setVisible(true);
-            GlideApp.with(this).load(loginEvent.myUser.background).into(new SimpleTarget<Drawable>() {
+            ivGender.setVisibility(View.VISIBLE);
+            if (updateUserInfoEvent.myUser.gender != null) {
+                if (GenderHelper.INSTANCE.formatGender(updateUserInfoEvent.myUser.gender).equalsIgnoreCase(GenderHelper.MAN)) {
+                    ivGender.setImageResource(R.drawable.icon_boy);
+                } else if (GenderHelper.INSTANCE.formatGender(updateUserInfoEvent.myUser.gender).equalsIgnoreCase(GenderHelper.FEMALE)) {
+                    ivGender.setImageResource(R.drawable.icon_girl);
+                } else {
+                    ivGender.setImageResource(R.drawable.icon_gender_secret);
+                }
+            }
+            GlideApp.with(this).load(updateUserInfoEvent.myUser.background).into(new SimpleTarget<Drawable>() {
                 @Override
                 public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                     clBackground.setBackground(resource);
@@ -179,6 +192,7 @@ public class MainActivity extends BaseActivity {
         Glide.with(this).load(R.drawable.icon_default_avatar).into(IvAvatar);
         tvNickname.setText("");
         itemLogout.setVisible(false);
+        ivGender.setVisibility(View.INVISIBLE);
         clBackground.setBackgroundColor(getResources().getColor(R.color.standard_color));
     }
 

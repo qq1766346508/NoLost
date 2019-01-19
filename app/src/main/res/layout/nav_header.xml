@@ -8,13 +8,13 @@
     android:background="@color/standard_color">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/avatar"
+        android:id="@+id/iv_nav_avatar"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:src="@drawable/icon_default_avatar"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,13 +22,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/nickname"
+        android:id="@+id/tv_nav_nickname"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="10dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:shadowColor="#000"
         android:shadowDx="3"
         android:shadowDy="3"
@@ -36,7 +36,18 @@
         android:textColor="#fff"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/avatar"
+        app:layout_constraintTop_toBottomOf="@+id/iv_nav_avatar"
         tool:text="xiaowei" />
+
+    <ImageView
+        android:visibility="invisible"
+        android:id="@+id/iv_nav_gender"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/icon_gender_secret"
+        app:layout_constraintBottom_toBottomOf="@+id/tv_nav_nickname"
+        app:layout_constraintStart_toEndOf="@+id/tv_nav_nickname"
+        app:layout_constraintTop_toTopOf="@+id/tv_nav_nickname" />
 
 </android.support.constraint.ConstraintLayout>
