@@ -12,16 +12,17 @@ class Goods : BmobObject() {
     var type: String? = null
 
     companion object {
-        val TYPE_LOST = "type_lost"
-        val TYPE_FOUND = "type_found"
+        const val TYPE_LOST = "lost"
+        const val TYPE_FOUND = "found"
     }
 
     override fun toString(): String {
-        return "Goods:name:$name" +
+        return "Goods:" +
+                "type:$type" +
+                ",name:$name" +
                 ",location:$location" +
                 ",detail:$detail" +
                 ",photoList:$photoList" +
-                ",createor:${createor.toString()}" +
-                ",type:$type"
+                "\n createor:${createor.toString()}"
     }
 }

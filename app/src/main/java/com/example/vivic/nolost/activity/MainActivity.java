@@ -26,7 +26,7 @@ import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.Login.LogOutEvent;
 import com.example.vivic.nolost.Login.LoginActivity;
 import com.example.vivic.nolost.userCenter.UserRepository;
-import com.example.vivic.nolost.Login.UpdateUserInfoEvent;
+import com.example.vivic.nolost.Login.UserEvent;
 import com.example.vivic.nolost.Lost.activity.PublishActivity;
 import com.example.vivic.nolost.Lost.fragment.LostFragment;
 import com.example.vivic.nolost.R;
@@ -73,20 +73,17 @@ public class MainActivity extends BaseActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
-        toolbar.setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.menu_search:
-                        startActivity(new Intent(MainActivity.this, SearchActivity.class));
-                        break;
-                    case R.id.menu_add:
-                        startActivityForResult(new Intent(MainActivity.this, PublishActivity.class), REQUEST_CODE_PUBLISH);
-                    default:
-                        break;
-                }
-                return true;
+        toolbar.setOnMenuItemClickListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_search:
+                    startActivity(new Intent(MainActivity.this, SearchActivity.class));
+                    break;
+                case R.id.menu_add:
+                    startActivityForResult(new Intent(MainActivity.this, PublishActivity.class), REQUEST_CODE_PUBLISH);
+                default:
+                    break;
             }
+            return true;
         });
         drawerLayout = findViewById(R.id.drawer);
 
@@ -156,29 +153,29 @@ public class MainActivity extends BaseActivity {
         MyUser currentUser = BmobUser.getCurrentUser(MyUser.class);
         if (currentUser != null) {
             Log.i(TAG, "currentUser: " + currentUser.toString());
-            LoginCallback(new UpdateUserInfoEvent(true, currentUser));
+            LoginCallback(new UserEvent(true, currentUser));
         } else {
             Log.i(TAG, "currentUser == null ");
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void LoginCallback(UpdateUserInfoEvent updateUserInfoEvent) {
-        if (updateUserInfoEvent.loginResult) {
-            GlideApp.with(this).load(updateUserInfoEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(IvAvatar);
-            tvNickname.setText(updateUserInfoEvent.myUser.getUsername());
+    public void LoginCallback(UserEvent userEvent) {
+        if (userEvent.loginResult) {
+            GlideApp.with(this).load(userEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(IvAvatar);
+            tvNickname.setText(userEvent.myUser.getUsername());
             itemLogout.setVisible(true);
             ivGender.setVisibility(View.VISIBLE);
-            if (updateUserInfoEvent.myUser.gender != null) {
-                if (GenderHelper.INSTANCE.formatGender(updateUserInfoEvent.myUser.gender).equalsIgnoreCase(GenderHelper.MAN)) {
+            if (userEvent.myUser.gender != null) {
+                if (GenderHelper.INSTANCE.formatGender(userEvent.myUser.gender).equalsIgnoreCase(GenderHelper.MAN)) {
                     ivGender.setImageResource(R.drawable.icon_boy);
-                } else if (GenderHelper.INSTANCE.formatGender(updateUserInfoEvent.myUser.gender).equalsIgnoreCase(GenderHelper.FEMALE)) {
+                } else if (GenderHelper.INSTANCE.formatGender(userEvent.myUser.gender).equalsIgnoreCase(GenderHelper.FEMALE)) {
                     ivGender.setImageResource(R.drawable.icon_girl);
                 } else {
                     ivGender.setImageResource(R.drawable.icon_gender_secret);
                 }
             }
-            GlideApp.with(this).load(updateUserInfoEvent.myUser.background).centerCrop().into(new SimpleTarget<Drawable>() {
+            GlideApp.with(this).load(userEvent.myUser.background).centerCrop().into(new SimpleTarget<Drawable>() {
                 @Override
                 public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                     clBackground.setBackground(resource);

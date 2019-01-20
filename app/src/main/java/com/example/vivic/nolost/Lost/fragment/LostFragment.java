@@ -3,7 +3,6 @@ package com.example.vivic.nolost.Lost.fragment;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -11,18 +10,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.vivic.nolost.Lost.GoodsAdapter;
+import com.example.vivic.nolost.Lost.GoodsEvent;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.bean.Goods;
+import com.example.vivic.nolost.commonUtil.BindEventBus;
 import com.example.vivic.nolost.commonUtil.LeakCanaryUtils;
+import com.example.vivic.nolost.fragment.BaseFragment;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.util.ArrayList;
 import java.util.List;
 
-public class LostFragment extends Fragment {
+@BindEventBus
+public class LostFragment extends BaseFragment {
     private static final String TAG = LostFragment.class.getSimpleName();
 
     public static LostFragment newInstance(Bundle bundle) {
@@ -80,6 +86,12 @@ public class LostFragment extends Fragment {
             list.add(goods);
         }
         return list;
+    }
+
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    private void updateGoodsList(GoodsEvent goodsEvent) {
+        //数据查询
     }
 
     @Override

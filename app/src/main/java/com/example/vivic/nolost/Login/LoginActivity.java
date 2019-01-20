@@ -95,7 +95,7 @@ public class LoginActivity extends BaseActivity {
                     @Override
                     public void success(MyUser result) {
                         ToastUtil.showToast("sign success,welcome:" + result.getUsername());
-                        EventBus.getDefault().post(new UpdateUserInfoEvent(true, result));
+                        EventBus.getDefault().post(new UserEvent(true, result));
                     }
 
                     @Override
@@ -148,7 +148,7 @@ public class LoginActivity extends BaseActivity {
             @Override
             public void success(MyUser result) {
                 ToastUtil.showToast("login success,welcome:" + result.getUsername());
-                EventBus.getDefault().post(new UpdateUserInfoEvent(true, result));
+                EventBus.getDefault().post(new UserEvent(true, result));
             }
 
             @Override
@@ -199,7 +199,7 @@ public class LoginActivity extends BaseActivity {
             public void success(MyUser result) {
                 loadingDialog.loadSuccess();
                 CommonPref.instance().putString(UserRepository.INSTANCE.getLAST_PLATFORM(), currentThirdPlatform);
-                EventBus.getDefault().post(new UpdateUserInfoEvent(true, result));
+                EventBus.getDefault().post(new UserEvent(true, result));
             }
 
             @Override
@@ -211,9 +211,9 @@ public class LoginActivity extends BaseActivity {
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    public void LoginCallback(UpdateUserInfoEvent updateUserInfoEvent) {
-        if (updateUserInfoEvent.loginResult) {
-            GlideApp.with(this).load(updateUserInfoEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(ivIcon);
+    public void LoginCallback(UserEvent userEvent) {
+        if (userEvent.loginResult) {
+            GlideApp.with(this).load(userEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(ivIcon);
             finish();
         }
     }

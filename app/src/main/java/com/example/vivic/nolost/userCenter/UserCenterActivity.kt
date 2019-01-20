@@ -8,7 +8,7 @@ import android.view.View
 import cn.bmob.v3.BmobUser
 import com.example.vivic.nolost.GlideApp
 import com.example.vivic.nolost.Login.IBmobCallback
-import com.example.vivic.nolost.Login.UpdateUserInfoEvent
+import com.example.vivic.nolost.Login.UserEvent
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser
@@ -159,7 +159,7 @@ class UserCenterActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        EventBus.getDefault().post(UpdateUserInfoEvent(true, BmobUser.getCurrentUser(MyUser::class.java)))
+        EventBus.getDefault().post(UserEvent(true, BmobUser.getCurrentUser(MyUser::class.java)))
         compositeDisposable.clear()
     }
 }
