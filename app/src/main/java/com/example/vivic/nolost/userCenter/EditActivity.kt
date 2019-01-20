@@ -5,8 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
-import com.example.vivic.nolost.Login.IUserCallback
-import com.example.vivic.nolost.Login.UserRepository
+import com.example.vivic.nolost.Login.IBmobCallback
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser
@@ -61,7 +60,7 @@ class EditActivity : BaseActivity() {
             }
         }
 
-        compositeDisposable.addAll(UserRepository.updateUserByNewUser(editUser, object : IUserCallback<MyUser> {
+        compositeDisposable.addAll(UserRepository.updateUserByNewUser(editUser, object : IBmobCallback<MyUser> {
 
             override fun success(result: MyUser?) {
                 tv_edit_save.isEnabled = true

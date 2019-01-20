@@ -7,9 +7,8 @@ import android.util.Log
 import android.view.View
 import cn.bmob.v3.BmobUser
 import com.example.vivic.nolost.GlideApp
-import com.example.vivic.nolost.Login.IUserCallback
+import com.example.vivic.nolost.Login.IBmobCallback
 import com.example.vivic.nolost.Login.UpdateUserInfoEvent
-import com.example.vivic.nolost.Login.UserRepository
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser
@@ -39,16 +38,13 @@ class UserCenterActivity : BaseActivity() {
     private val genderDialog: CommonBottomDialog by lazy {
         CommonBottomDialog.Builder(this)
                 .item("男") {
-                    iv_user_center_gender.setImageResource(R.drawable.icon_boy)
-                    updateGender("man")
+                    updateGender(GenderHelper.MAN)
                 }
                 .item("女") {
-                    iv_user_center_gender.setImageResource(R.drawable.icon_girl)
-                    updateGender("female")
+                    updateGender(GenderHelper.FEMALE)
                 }
                 .item("私密") {
-                    iv_user_center_gender.setImageResource(R.drawable.icon_gender_secret)
-                    updateGender("secret")
+                    updateGender(GenderHelper.SECRET)
                 }
                 .cancel("取消") {
                     fl_user_center_gender.isEnabled = true
@@ -142,15 +138,20 @@ class UserCenterActivity : BaseActivity() {
     fun updateGender(gender: String) {
         val myUser = MyUser()
         myUser.gender = gender
-        compositeDisposable.add(UserRepository.updateUserByNewUser(myUser, object : IUserCallback<MyUser> {
+        compositeDisposable.add(UserRepository.updateUserByNewUser(myUser, object : IBmobCallback<MyUser> {
             override fun success(result: MyUser?) {
                 fl_user_center_gender.isEnabled = true
+                when (gender) {
+                    GenderHelper.MAN -> iv_user_center_gender.setImageResource(R.drawable.icon_boy)
+                    GenderHelper.FEMALE -> iv_user_center_gender.setImageResource(R.drawable.icon_girl)
+                    GenderHelper.SECRET -> iv_user_center_gender.setImageResource(R.drawable.icon_gender_secret)
+                }
                 ToastUtil.showToast("更新成功")
             }
 
             override fun error(throwable: Throwable?) {
                 fl_user_center_gender.isEnabled = true
-                ToastUtil.showToast("失败")
+                ToastUtil.showToast("失败" + throwable.toString())
             }
 
         }))

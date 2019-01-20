@@ -3,7 +3,7 @@ package com.example.vivic.nolost;
 import android.app.Application;
 import android.content.Context;
 
-import com.example.vivic.nolost.Login.UserRepository;
+import com.example.vivic.nolost.userCenter.UserRepository;
 import com.example.vivic.nolost.commonUtil.LeakCanaryUtils;
 import com.goyourfly.multi_picture.ImageLoader;
 import com.goyourfly.multi_picture.MultiPictureView;

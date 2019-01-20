@@ -1,4 +1,4 @@
-package com.example.vivic.nolost.Login
+package com.example.vivic.nolost.userCenter
 
 import android.util.Log
 import cn.bmob.v3.BmobQuery
@@ -9,6 +9,7 @@ import cn.sharesdk.framework.Platform
 import cn.sharesdk.framework.PlatformActionListener
 import cn.sharesdk.framework.ShareSDK
 import cn.sharesdk.sina.weibo.SinaWeibo
+import com.example.vivic.nolost.Login.IBmobCallback
 import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.commonUtil.pref.CommonPref
 import io.reactivex.disposables.Disposable
@@ -22,15 +23,17 @@ object UserRepository {
     /**
      * myUser:username+password,注册成功自动调用登录
      */
-    fun signByUser(myUser: MyUser, iUserCallback: IUserCallback<MyUser>): Disposable {
+    fun signByUser(myUser: MyUser, iBmobCallback: IBmobCallback<MyUser>): Disposable {
+        var disposable: Disposable? = null
         return myUser.signUp(object : SaveListener<MyUser>() {
             override fun done(p0: MyUser?, p1: BmobException?) {
                 if (p1 == null) {
                     Log.d(TAG, "signByNamePassword success,Myuser:$p0")
-                    loginByUser(myUser, iUserCallback)
+                    disposable = loginByUser(myUser, iBmobCallback)
                 } else {
                     Log.d(TAG, "signByNamePassword fail :$p1")
-                    iUserCallback.error(p1)
+                    iBmobCallback.error(p1)
+                    disposable?.dispose()
                 }
             }
         })
@@ -39,32 +42,32 @@ object UserRepository {
     /**
      * myUser:username+password
      */
-    fun loginByUser(myUser: MyUser, iUserCallback: IUserCallback<MyUser>): Disposable {
+    fun loginByUser(myUser: MyUser, iBmobCallback: IBmobCallback<MyUser>): Disposable {
         return myUser.login(object : SaveListener<MyUser>() {
             override fun done(p0: MyUser?, p1: BmobException?) {
                 if (p1 == null) {
                     Log.d(TAG, "loginbyUser success,Myuser:$p0")
-                    iUserCallback.success(p0)
+                    iBmobCallback.success(p0)
                 } else {
                     Log.d(TAG, "loginbyUser failed,BmobException:$p1")
-                    iUserCallback.error(p1)
+                    iBmobCallback.error(p1)
                 }
             }
         })
     }
 
-    fun signOrLoginByUser(myUser: MyUser, iUserCallback: IUserCallback<MyUser>) {
+    fun signOrLoginByUser(myUser: MyUser, iBmobCallback: IBmobCallback<MyUser>) {
     }
 
-    fun loginByThird(bmobThirdUserAuth: BmobUser.BmobThirdUserAuth, thirdUser: MyUser, iUserCallback: IUserCallback<MyUser>): Disposable {
+    fun loginByThird(bmobThirdUserAuth: BmobUser.BmobThirdUserAuth, thirdUser: MyUser, iBmobCallback: IBmobCallback<MyUser>): Disposable {
         return BmobUser.loginWithAuthData(bmobThirdUserAuth, object : LogInListener<JSONObject>() {
             override fun done(p0: JSONObject?, p1: BmobException?) {
                 if (p1 == null) {
                     Log.d(TAG, "loginByThird success,${bmobThirdUserAuth.snsType},JSONObject:$p0")
-                    iUserCallback.success(thirdUser)
+                    iBmobCallback.success(thirdUser)
                 } else {
                     Log.d(TAG, "loginByThird failed,BmobException:$p1")
-                    iUserCallback.error(p1)
+                    iBmobCallback.error(p1)
                 }
             }
         })
@@ -73,7 +76,7 @@ object UserRepository {
     /**
      * shareSdk第三方登录
      */
-    fun loginByShareSdk(platform: String, iUserCallback: IUserCallback<MyUser>) {
+    fun loginByShareSdk(platform: String, iBmobCallback: IBmobCallback<MyUser>) {
         var disposable: Disposable? = null
         val plat = ShareSDK.getPlatform(platform)
         if (plat.isAuthValid) {
@@ -93,7 +96,7 @@ object UserRepository {
                 thirdUser.avatar = plat.db.userIcon
                 thirdUser.gender = plat.db.userGender
                 thirdUser.background = hashMap.get("cover_image_phone").toString()
-                disposable = loginByThird(bmobThirdUserAuth, thirdUser, iUserCallback)
+                disposable = loginByThird(bmobThirdUserAuth, thirdUser, iBmobCallback)
 //                val ite = hashMap.entries.iterator()
 //                while (ite.hasNext()) {
 //                    val entry = ite.next() as Map.Entry<*, *>
@@ -105,13 +108,13 @@ object UserRepository {
 
             override fun onError(platform: Platform, i: Int, throwable: Throwable) {
                 Log.d(TAG, "onError: code = $throwable")
-                iUserCallback.error(throwable)
+                iBmobCallback.error(throwable)
                 disposable?.isDisposed
             }
 
             override fun onCancel(platform: Platform, i: Int) {
                 Log.d(TAG, "onCancel: ")
-                iUserCallback.error(null)
+                iBmobCallback.error(null)
                 disposable?.isDisposed
             }
         }
@@ -129,15 +132,15 @@ object UserRepository {
     }
 
 
-    fun changePassword(oldPassword: String, newPassword: String, iUserCallback: IUserCallback<MyUser>) {
+    fun changePassword(oldPassword: String, newPassword: String, iBmobCallback: IBmobCallback<MyUser>) {
         BmobUser.updateCurrentUserPassword(oldPassword, newPassword, object : UpdateListener() {
             override fun done(p0: BmobException?) {
                 if (p0 == null) {
                     Log.d(TAG, "changePassword success")
-                    iUserCallback.success(null)
+                    iBmobCallback.success(null)
                 } else {
                     Log.d(TAG, "changePassword fail,BmobException:$p0")
-                    iUserCallback.error(p0)
+                    iBmobCallback.error(p0)
                 }
             }
         })
@@ -147,7 +150,7 @@ object UserRepository {
     /**
      * 更新只会向后台更新，本地还得查询一次,并将结果返回
      */
-    fun updateUserByNewUser(newUser: MyUser, iUserCallback: IUserCallback<MyUser>?): Disposable {
+    fun updateUserByNewUser(newUser: MyUser, iBmobCallback: IBmobCallback<MyUser>?): Disposable {
         var disposable: Disposable? = null
         val currentUser = BmobUser.getCurrentUser(MyUser::class.java)
         disposable = newUser.update(currentUser.objectId, object : UpdateListener() {
@@ -159,7 +162,7 @@ object UserRepository {
                         override fun done(p0: MyUser?, p1: BmobException?) {
                             if (p1 == null) {
                                 Log.d(TAG, "BmobQuery success,user:$p0")
-                                iUserCallback?.success(p0)
+                                iBmobCallback?.success(p0)
                             } else {
                                 Log.d(TAG, "BmobQuery failed,exception:$p1")
                             }
@@ -167,7 +170,7 @@ object UserRepository {
                     })
                 } else {
                     Log.d(TAG, "updateUserByObjectId failed,exception:$p0")
-                    iUserCallback?.error(p0)
+                    iBmobCallback?.error(p0)
                 }
             }
         })
@@ -189,15 +192,15 @@ object UserRepository {
         })
     }
 
-    fun queryByUser(query: BmobQuery<MyUser>, iUserCallback: IUserCallback<MutableList<MyUser>>) {
+    fun queryByUser(query: BmobQuery<MyUser>, iBmobCallback: IBmobCallback<MutableList<MyUser>>) {
         query.findObjects(object : FindListener<MyUser>() {
             override fun done(p0: MutableList<MyUser>?, p1: BmobException?) {
                 if (p1 == null) {
                     Log.d(TAG, "queryByUser success,user:$p0")
-                    iUserCallback.success(p0)
+                    iBmobCallback.success(p0)
                 } else {
                     Log.d(TAG, "queryByUser failed,exception:$p1")
-                    iUserCallback.error(p1)
+                    iBmobCallback.error(p1)
                 }
             }
         })

@@ -22,6 +22,7 @@ import com.example.vivic.nolost.commonUtil.NetworkUtil;
 import com.example.vivic.nolost.commonUtil.NoDoubleClickListener;
 import com.example.vivic.nolost.commonUtil.pref.CommonPref;
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil;
+import com.example.vivic.nolost.userCenter.UserRepository;
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog;
 
 import org.greenrobot.eventbus.EventBus;
@@ -90,7 +91,7 @@ public class LoginActivity extends BaseActivity {
                 MyUser myUser = new MyUser();
                 myUser.setUsername(userAccount);
                 myUser.setPassword(userPassword);
-                compositeDisposable.add(UserRepository.INSTANCE.signByUser(myUser, new IUserCallback<MyUser>() {
+                compositeDisposable.add(UserRepository.INSTANCE.signByUser(myUser, new IBmobCallback<MyUser>() {
                     @Override
                     public void success(MyUser result) {
                         ToastUtil.showToast("sign success,welcome:" + result.getUsername());
@@ -143,7 +144,7 @@ public class LoginActivity extends BaseActivity {
         MyUser myUser = new MyUser();
         myUser.setUsername(userAccount);
         myUser.setPassword(userPassword);
-        compositeDisposable.add(UserRepository.INSTANCE.loginByUser(myUser, new IUserCallback<MyUser>() {
+        compositeDisposable.add(UserRepository.INSTANCE.loginByUser(myUser, new IBmobCallback<MyUser>() {
             @Override
             public void success(MyUser result) {
                 ToastUtil.showToast("login success,welcome:" + result.getUsername());
@@ -169,7 +170,7 @@ public class LoginActivity extends BaseActivity {
                     return;
                 }
                 currentThirdPlatform = SinaWeibo.NAME;
-                UserRepository.INSTANCE.loginByShareSdk(SinaWeibo.NAME, new IUserCallback<MyUser>() {
+                UserRepository.INSTANCE.loginByShareSdk(SinaWeibo.NAME, new IBmobCallback<MyUser>() {
                     @Override
                     public void success(MyUser myUser) {
                         updateUserInfo(myUser);
@@ -193,7 +194,7 @@ public class LoginActivity extends BaseActivity {
 
     private void updateUserInfo(MyUser myUser) {
         Log.i(TAG, "third User: " + myUser.toString());
-        compositeDisposable.add(UserRepository.INSTANCE.updateUserByNewUser(myUser, new IUserCallback<MyUser>() {
+        compositeDisposable.add(UserRepository.INSTANCE.updateUserByNewUser(myUser, new IBmobCallback<MyUser>() {
             @Override
             public void success(MyUser result) {
                 loadingDialog.loadSuccess();

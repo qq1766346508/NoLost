@@ -25,7 +25,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.Login.LogOutEvent;
 import com.example.vivic.nolost.Login.LoginActivity;
-import com.example.vivic.nolost.Login.UserRepository;
+import com.example.vivic.nolost.userCenter.UserRepository;
 import com.example.vivic.nolost.Login.UpdateUserInfoEvent;
 import com.example.vivic.nolost.Lost.activity.PublishActivity;
 import com.example.vivic.nolost.Lost.fragment.LostFragment;

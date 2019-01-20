@@ -76,7 +76,7 @@ public class LostFragment extends Fragment {
         List<Goods> list = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
             Goods goods = new Goods();
-            goods.name = String.valueOf(i);
+            goods.setName(String.valueOf(i));
             list.add(goods);
         }
         return list;
