@@ -49,8 +49,7 @@
 
     <style name="option_button_style">
         <item name="android:gravity">center</item>
-        <item name="android:button">@null</item>
-        <item name="android:background">@drawable/option_selector</item>
+        <item name="android:button">@drawable/option_selector</item>
     </style>
 
 </resources>

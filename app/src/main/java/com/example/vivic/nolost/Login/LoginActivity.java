@@ -30,6 +30,7 @@ import org.greenrobot.eventbus.ThreadMode;
 
 import cn.bmob.v3.exception.BmobException;
 import cn.sharesdk.sina.weibo.SinaWeibo;
+import io.reactivex.disposables.CompositeDisposable;
 
 @BindEventBus
 public class LoginActivity extends BaseActivity {
@@ -42,8 +43,9 @@ public class LoginActivity extends BaseActivity {
     private AppCompatEditText etAccount;
     private AppCompatEditText etPassword;
     private InputMethodManager inputMethodManager;
-    private ILoginCallback<MyUser> iSdkLoginCallback;
     private LoadingDialog loadingDialog;
+    private String currentThirdPlatform;
+    private CompositeDisposable compositeDisposable;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,9 +53,9 @@ public class LoginActivity extends BaseActivity {
         setContentView(R.layout.activity_login);
         loginViewModel = ViewModelProviders.of(this).get(LoginViewModel.class);
         inputMethodManager = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        compositeDisposable = new CompositeDisposable();
         initview();
         thirdLogin();
-        initCallback();
     }
 
 
@@ -88,7 +90,7 @@ public class LoginActivity extends BaseActivity {
                 MyUser myUser = new MyUser();
                 myUser.setUsername(userAccount);
                 myUser.setPassword(userPassword);
-                LoginRepository.INSTANCE.signByUser(myUser, new ILoginCallback<MyUser>() {
+                compositeDisposable.add(UserRepository.INSTANCE.signByUser(myUser, new IUserCallback<MyUser>() {
                     @Override
                     public void success(MyUser result) {
                         ToastUtil.showToast("sign success,welcome:" + result.getUsername());
@@ -100,7 +102,7 @@ public class LoginActivity extends BaseActivity {
                         BmobException exception = (BmobException) throwable;
                         ToastUtil.showToast("sign fail," + exception.toString());
                     }
-                });
+                }));
             }
 
             @Override
@@ -141,7 +143,7 @@ public class LoginActivity extends BaseActivity {
         MyUser myUser = new MyUser();
         myUser.setUsername(userAccount);
         myUser.setPassword(userPassword);
-        LoginRepository.INSTANCE.loginByUser(myUser, new ILoginCallback<MyUser>() {
+        compositeDisposable.add(UserRepository.INSTANCE.loginByUser(myUser, new IUserCallback<MyUser>() {
             @Override
             public void success(MyUser result) {
                 ToastUtil.showToast("login success,welcome:" + result.getUsername());
@@ -153,7 +155,7 @@ public class LoginActivity extends BaseActivity {
                 BmobException exception = (BmobException) throwable;
                 ToastUtil.showToast("login fail," + exception.toString());
             }
-        });
+        }));
     }
 
     private void thirdLogin() {
@@ -166,7 +168,18 @@ public class LoginActivity extends BaseActivity {
                     ToastUtil.showToast("当前无网络");
                     return;
                 }
-                LoginRepository.INSTANCE.loginByShareSdk(SinaWeibo.NAME, iSdkLoginCallback);
+                currentThirdPlatform = SinaWeibo.NAME;
+                UserRepository.INSTANCE.loginByShareSdk(SinaWeibo.NAME, new IUserCallback<MyUser>() {
+                    @Override
+                    public void success(MyUser myUser) {
+                        updateUserInfo(myUser);
+                    }
+
+                    @Override
+                    public void error(Throwable throwable) {
+                        loadingDialog.loadFailed();
+                    }
+                });
                 loadingDialog.show();
             }
 
@@ -180,10 +193,11 @@ public class LoginActivity extends BaseActivity {
 
     private void updateUserInfo(MyUser myUser) {
         Log.i(TAG, "third User: " + myUser.toString());
-        LoginRepository.INSTANCE.updateUserByNewUser(myUser, new ILoginCallback<MyUser>() {
+        compositeDisposable.add(UserRepository.INSTANCE.updateUserByNewUser(myUser, new IUserCallback<MyUser>() {
             @Override
             public void success(MyUser result) {
                 loadingDialog.loadSuccess();
+                CommonPref.instance().putString(UserRepository.INSTANCE.getLAST_PLATFORM(), currentThirdPlatform);
                 EventBus.getDefault().post(new UpdateUserInfoEvent(true, result));
             }
 
@@ -191,22 +205,7 @@ public class LoginActivity extends BaseActivity {
             public void error(Throwable throwable) {
                 loadingDialog.loadFailed();
             }
-        });
-    }
-
-    private void initCallback() {
-        iSdkLoginCallback = new ILoginCallback<MyUser>() {
-            @Override
-            public void success(MyUser myUser) {
-                CommonPref.instance().putString(LoginRepository.INSTANCE.getLAST_PLATFORM(), SinaWeibo.NAME);
-                updateUserInfo(myUser);
-            }
-
-            @Override
-            public void error(Throwable throwable) {
-                loadingDialog.loadFailed();
-            }
-        };
+        }));
     }
 
 
@@ -219,9 +218,15 @@ public class LoginActivity extends BaseActivity {
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        loadingDialog.loadFailed();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
-        iSdkLoginCallback = null;
         loadingDialog.close();
+        compositeDisposable.clear();
     }
 }

@@ -7,15 +7,16 @@ import android.util.Log
 import android.view.View
 import cn.bmob.v3.BmobUser
 import com.example.vivic.nolost.GlideApp
-import com.example.vivic.nolost.Login.ILoginCallback
+import com.example.vivic.nolost.Login.IUserCallback
 import com.example.vivic.nolost.Login.UpdateUserInfoEvent
-import com.example.vivic.nolost.Login.LoginRepository
+import com.example.vivic.nolost.Login.UserRepository
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.commonUtil.NoDoubleClickListener
 import com.example.vivic.nolost.commonUtil.bottomDialog.CommonBottomDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_user_center.*
 import org.greenrobot.eventbus.EventBus
 
@@ -28,7 +29,9 @@ class UserCenterActivity : BaseActivity() {
         val REQUEST_CODE_USERNAME = 2
     }
 
-    private var iGenderCallback: ILoginCallback<MyUser>? = null
+    private val compositeDisposable: CompositeDisposable by lazy {
+        CompositeDisposable()
+    }
 
     private val currentUser: MyUser by lazy {
         BmobUser.getCurrentUser(MyUser::class.java)
@@ -57,8 +60,7 @@ class UserCenterActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_center)
         loadUserInfo()
-        initView();
-        initCallBack()
+        initView()
     }
 
 
@@ -119,23 +121,8 @@ class UserCenterActivity : BaseActivity() {
             }
 
         })
-    }
-
-    private fun initCallBack() {
         genderDialog.setOnCancelListener {
             fl_user_center_gender.isEnabled = true
-        }
-        iGenderCallback = object : ILoginCallback<MyUser> {
-            override fun success(result: MyUser?) {
-                fl_user_center_gender.isEnabled = true
-                ToastUtil.showToast("更新成功")
-            }
-
-            override fun error(throwable: Throwable?) {
-                fl_user_center_gender.isEnabled = true
-                ToastUtil.showToast("失败")
-            }
-
         }
 
     }
@@ -155,12 +142,23 @@ class UserCenterActivity : BaseActivity() {
     fun updateGender(gender: String) {
         val myUser = MyUser()
         myUser.gender = gender
-        LoginRepository.updateUserByNewUser(myUser, iGenderCallback)
+        compositeDisposable.add(UserRepository.updateUserByNewUser(myUser, object : IUserCallback<MyUser> {
+            override fun success(result: MyUser?) {
+                fl_user_center_gender.isEnabled = true
+                ToastUtil.showToast("更新成功")
+            }
+
+            override fun error(throwable: Throwable?) {
+                fl_user_center_gender.isEnabled = true
+                ToastUtil.showToast("失败")
+            }
+
+        }))
     }
 
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().post(UpdateUserInfoEvent(true, BmobUser.getCurrentUser(MyUser::class.java)))
-        iGenderCallback = null
+        compositeDisposable.clear()
     }
 }

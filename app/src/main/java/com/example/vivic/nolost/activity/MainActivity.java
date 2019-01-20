@@ -25,7 +25,7 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.Login.LogOutEvent;
 import com.example.vivic.nolost.Login.LoginActivity;
-import com.example.vivic.nolost.Login.LoginRepository;
+import com.example.vivic.nolost.Login.UserRepository;
 import com.example.vivic.nolost.Login.UpdateUserInfoEvent;
 import com.example.vivic.nolost.Lost.activity.PublishActivity;
 import com.example.vivic.nolost.Lost.fragment.LostFragment;
@@ -120,7 +120,7 @@ public class MainActivity extends BaseActivity {
                         new ConfirmDialog.Builder().content("确定注销？").confirmListener(new ConfirmDialog.Builder.ConfirmListener() {
                             @Override
                             public void onConfirm() {
-                                LoginRepository.INSTANCE.logOut();
+                                UserRepository.INSTANCE.logOut();
                                 EventBus.getDefault().post(new LogOutEvent());
                                 ToastUtil.showToast("已退出");
                             }
@@ -178,7 +178,7 @@ public class MainActivity extends BaseActivity {
                     ivGender.setImageResource(R.drawable.icon_gender_secret);
                 }
             }
-            GlideApp.with(this).load(updateUserInfoEvent.myUser.background).into(new SimpleTarget<Drawable>() {
+            GlideApp.with(this).load(updateUserInfoEvent.myUser.background).centerCrop().into(new SimpleTarget<Drawable>() {
                 @Override
                 public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                     clBackground.setBackground(resource);

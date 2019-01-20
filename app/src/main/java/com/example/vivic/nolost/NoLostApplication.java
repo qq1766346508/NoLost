@@ -2,17 +2,12 @@ package com.example.vivic.nolost;
 
 import android.app.Application;
 import android.content.Context;
-import android.net.Uri;
-import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
-import com.example.vivic.nolost.Login.LoginRepository;
+import com.example.vivic.nolost.Login.UserRepository;
 import com.example.vivic.nolost.commonUtil.LeakCanaryUtils;
 import com.goyourfly.multi_picture.ImageLoader;
 import com.goyourfly.multi_picture.MultiPictureView;
 import com.mob.MobSDK;
-
-import org.jetbrains.annotations.NotNull;
 
 import cn.bmob.v3.Bmob;
 
@@ -28,7 +23,7 @@ public class NoLostApplication extends Application {
         MobSDK.init(this);
         LeakCanaryUtils.install(this);
         MultiPictureView.setImageLoader((ImageLoader) (imageView, uri) -> GlideApp.with(imageView.getContext()).load(uri).centerCrop().into(imageView));
-        LoginRepository.INSTANCE.fetchUserInfo();
+        UserRepository.INSTANCE.fetchUserInfo();
     }
 
     public static Context getContext() {

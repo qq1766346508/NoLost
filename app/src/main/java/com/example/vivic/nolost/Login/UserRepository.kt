@@ -11,25 +11,26 @@ import cn.sharesdk.framework.ShareSDK
 import cn.sharesdk.sina.weibo.SinaWeibo
 import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.commonUtil.pref.CommonPref
+import io.reactivex.disposables.Disposable
 import org.json.JSONObject
 import java.util.*
 
-object LoginRepository {
+object UserRepository {
     private val TAG = javaClass.simpleName
     public val LAST_PLATFORM = "LAST_PLATFORM"
 
     /**
      * myUser:username+password,注册成功自动调用登录
      */
-    fun signByUser(myUser: MyUser, iLoginCallback: ILoginCallback<MyUser>) {
-        myUser.signUp(object : SaveListener<MyUser>() {
+    fun signByUser(myUser: MyUser, iUserCallback: IUserCallback<MyUser>): Disposable {
+        return myUser.signUp(object : SaveListener<MyUser>() {
             override fun done(p0: MyUser?, p1: BmobException?) {
                 if (p1 == null) {
                     Log.d(TAG, "signByNamePassword success,Myuser:$p0")
-                    loginByUser(myUser, iLoginCallback)
+                    loginByUser(myUser, iUserCallback)
                 } else {
                     Log.d(TAG, "signByNamePassword fail :$p1")
-                    iLoginCallback.error(p1)
+                    iUserCallback.error(p1)
                 }
             }
         })
@@ -38,32 +39,32 @@ object LoginRepository {
     /**
      * myUser:username+password
      */
-    fun loginByUser(myUser: MyUser, iLoginCallback: ILoginCallback<MyUser>) {
-        myUser.login(object : SaveListener<MyUser>() {
+    fun loginByUser(myUser: MyUser, iUserCallback: IUserCallback<MyUser>): Disposable {
+        return myUser.login(object : SaveListener<MyUser>() {
             override fun done(p0: MyUser?, p1: BmobException?) {
                 if (p1 == null) {
                     Log.d(TAG, "loginbyUser success,Myuser:$p0")
-                    iLoginCallback.success(p0)
+                    iUserCallback.success(p0)
                 } else {
                     Log.d(TAG, "loginbyUser failed,BmobException:$p1")
-                    iLoginCallback.error(p1)
+                    iUserCallback.error(p1)
                 }
             }
         })
     }
 
-    fun signOrLoginByUser(myUser: MyUser, iLoginCallback: ILoginCallback<MyUser>) {
+    fun signOrLoginByUser(myUser: MyUser, iUserCallback: IUserCallback<MyUser>) {
     }
 
-    fun loginByThird(bmobThirdUserAuth: BmobUser.BmobThirdUserAuth, thirdUser: MyUser, iLoginCallback: ILoginCallback<MyUser>) {
-        BmobUser.loginWithAuthData(bmobThirdUserAuth, object : LogInListener<JSONObject>() {
+    fun loginByThird(bmobThirdUserAuth: BmobUser.BmobThirdUserAuth, thirdUser: MyUser, iUserCallback: IUserCallback<MyUser>): Disposable {
+        return BmobUser.loginWithAuthData(bmobThirdUserAuth, object : LogInListener<JSONObject>() {
             override fun done(p0: JSONObject?, p1: BmobException?) {
                 if (p1 == null) {
                     Log.d(TAG, "loginByThird success,${bmobThirdUserAuth.snsType},JSONObject:$p0")
-                    iLoginCallback.success(thirdUser)
+                    iUserCallback.success(thirdUser)
                 } else {
                     Log.d(TAG, "loginByThird failed,BmobException:$p1")
-                    iLoginCallback.error(p1)
+                    iUserCallback.error(p1)
                 }
             }
         })
@@ -72,7 +73,8 @@ object LoginRepository {
     /**
      * shareSdk第三方登录
      */
-    fun loginByShareSdk(platform: String, iLoginCallback: ILoginCallback<MyUser>) {
+    fun loginByShareSdk(platform: String, iUserCallback: IUserCallback<MyUser>) {
+        var disposable: Disposable? = null
         val plat = ShareSDK.getPlatform(platform)
         if (plat.isAuthValid) {
             plat.removeAccount(true)
@@ -91,7 +93,7 @@ object LoginRepository {
                 thirdUser.avatar = plat.db.userIcon
                 thirdUser.gender = plat.db.userGender
                 thirdUser.background = hashMap.get("cover_image_phone").toString()
-                loginByThird(bmobThirdUserAuth, thirdUser, iLoginCallback)
+                disposable = loginByThird(bmobThirdUserAuth, thirdUser, iUserCallback)
 //                val ite = hashMap.entries.iterator()
 //                while (ite.hasNext()) {
 //                    val entry = ite.next() as Map.Entry<*, *>
@@ -103,13 +105,14 @@ object LoginRepository {
 
             override fun onError(platform: Platform, i: Int, throwable: Throwable) {
                 Log.d(TAG, "onError: code = $throwable")
-                iLoginCallback.error(throwable)
+                iUserCallback.error(throwable)
+                disposable?.isDisposed
             }
 
             override fun onCancel(platform: Platform, i: Int) {
                 Log.d(TAG, "onCancel: ")
-                iLoginCallback.error(null)
-
+                iUserCallback.error(null)
+                disposable?.isDisposed
             }
         }
         plat.SSOSetting(false)
@@ -126,15 +129,15 @@ object LoginRepository {
     }
 
 
-    fun changePassword(oldPassword: String, newPassword: String, iLoginCallback: ILoginCallback<MyUser>) {
+    fun changePassword(oldPassword: String, newPassword: String, iUserCallback: IUserCallback<MyUser>) {
         BmobUser.updateCurrentUserPassword(oldPassword, newPassword, object : UpdateListener() {
             override fun done(p0: BmobException?) {
                 if (p0 == null) {
                     Log.d(TAG, "changePassword success")
-                    iLoginCallback.success(null)
+                    iUserCallback.success(null)
                 } else {
                     Log.d(TAG, "changePassword fail,BmobException:$p0")
-                    iLoginCallback.error(p0)
+                    iUserCallback.error(p0)
                 }
             }
         })
@@ -144,18 +147,19 @@ object LoginRepository {
     /**
      * 更新只会向后台更新，本地还得查询一次,并将结果返回
      */
-    fun updateUserByNewUser(newUser: MyUser, iLoginCallback: ILoginCallback<MyUser>?) {
+    fun updateUserByNewUser(newUser: MyUser, iUserCallback: IUserCallback<MyUser>?): Disposable {
+        var disposable: Disposable? = null
         val currentUser = BmobUser.getCurrentUser(MyUser::class.java)
-        newUser.update(currentUser.objectId, object : UpdateListener() {
+        disposable = newUser.update(currentUser.objectId, object : UpdateListener() {
             override fun done(p0: BmobException?) {
                 if (p0 == null) {
                     Log.d(TAG, "updateUserByObjectId success")
                     val query = BmobQuery<MyUser>()
-                    query.getObject(currentUser.objectId, object : QueryListener<MyUser>() {
+                    disposable = query.getObject(currentUser.objectId, object : QueryListener<MyUser>() {
                         override fun done(p0: MyUser?, p1: BmobException?) {
                             if (p1 == null) {
                                 Log.d(TAG, "BmobQuery success,user:$p0")
-                                iLoginCallback?.success(p0)
+                                iUserCallback?.success(p0)
                             } else {
                                 Log.d(TAG, "BmobQuery failed,exception:$p1")
                             }
@@ -163,10 +167,11 @@ object LoginRepository {
                     })
                 } else {
                     Log.d(TAG, "updateUserByObjectId failed,exception:$p0")
-                    iLoginCallback?.error(p0)
+                    iUserCallback?.error(p0)
                 }
             }
         })
+        return disposable!!
     }
 
     /**
@@ -184,15 +189,15 @@ object LoginRepository {
         })
     }
 
-    fun queryByUser(query: BmobQuery<MyUser>, iLoginCallback: ILoginCallback<MutableList<MyUser>>) {
+    fun queryByUser(query: BmobQuery<MyUser>, iUserCallback: IUserCallback<MutableList<MyUser>>) {
         query.findObjects(object : FindListener<MyUser>() {
             override fun done(p0: MutableList<MyUser>?, p1: BmobException?) {
                 if (p1 == null) {
                     Log.d(TAG, "queryByUser success,user:$p0")
-                    iLoginCallback.success(p0)
+                    iUserCallback.success(p0)
                 } else {
                     Log.d(TAG, "queryByUser failed,exception:$p1")
-                    iLoginCallback.error(p1)
+                    iUserCallback.error(p1)
                 }
             }
         })

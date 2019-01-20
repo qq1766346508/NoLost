@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
@@ -46,30 +47,29 @@
                 android:textColor="#000" />
 
             <RadioGroup
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
 
                 <RadioButton
                     style="@style/option_button_style"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
                     android:text="丢失" />
 
                 <RadioButton
                     style="@style/option_button_style"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_width="60dp"
+                    android:layout_height="30dp"
                     android:text="拾获" />
             </RadioGroup>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="65dp"
             android:gravity="center_vertical"
+            android:paddingEnd="10dp"
             android:paddingStart="10dp">
 
             <TextView
@@ -80,16 +80,34 @@
                 android:textColor="#000"
                 android:textSize="14sp" />
 
-            <android.support.design.widget.TextInputEditText
-                android:layout_width="200dp"
-                android:layout_height="wrap_content" />
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ed_option_content"
+                app:counterEnabled="true"
+                app:counterMaxLength="15"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/edit_error">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_publish_goodsname"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="15"
+                    android:singleLine="true"
+                    android:textColor="#000"
+                    android:textSize="14sp" />
+            </android.support.design.widget.TextInputLayout>
+
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="60dp"
+            android:layout_height="65dp"
             android:gravity="center_vertical"
-            android:paddingStart="10dp">
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
+            >
 
             <TextView
                 android:layout_width="wrap_content"
@@ -99,9 +117,26 @@
                 android:textColor="#000"
                 android:textSize="14sp" />
 
-            <android.support.design.widget.TextInputEditText
-                android:layout_width="200dp"
-                android:layout_height="wrap_content" />
+
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:theme="@style/ed_option_content"
+                app:counterEnabled="true"
+                app:counterMaxLength="15"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/edit_error">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_publish_goodslocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:maxLength="15"
+                    android:singleLine="true"
+                    android:textColor="#000"
+                    android:textSize="14sp"
+                    tools:text="大幅度发的大幅度发的注册青蛙二人他才坐下来吃做小车" />
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -119,10 +154,26 @@
                 android:textColor="#000"
                 android:textSize="14sp" />
 
-            <android.support.design.widget.TextInputEditText
+            <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="#fff" />
+                android:layout_height="wrap_content"
+                android:theme="@style/ed_option_content"
+                app:counterEnabled="true"
+                app:counterMaxLength="70"
+                app:errorEnabled="true"
+                app:errorTextAppearance="@style/edit_error">
+
+                <android.support.design.widget.TextInputEditText
+                    android:id="@+id/et_publish_goodsdetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="#fff"
+                    android:gravity="start"
+                    android:maxLength="70"
+                    android:textColor="#000"
+                    android:textSize="14sp"
+                    tools:text="的索拉卡房间里sfsfdsfsfsfsfdsfsfafzczxc的撒dafdf看afsfsfsfsf风景浮动舒服" />
+            </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
         <LinearLayout
@@ -140,10 +191,6 @@
                 android:textColor="#000"
                 android:textSize="14sp" />
 
-            <android.support.design.widget.TextInputEditText
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:background="#fff" />
         </LinearLayout>
 
         <Button

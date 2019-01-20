@@ -88,17 +88,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_password">
 
-        <ImageView
-            android:id="@+id/iv_login_weixin"
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:src="@drawable/icon_weixin_50" />
+        <!--<ImageView-->
+            <!--android:id="@+id/iv_login_weixin"-->
+            <!--android:layout_width="35dp"-->
+            <!--android:layout_height="35dp"-->
+            <!--android:src="@drawable/icon_weixin_50" />-->
 
         <ImageView
             android:id="@+id/iv_login_weibo"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:layout_marginStart="20dp"
             android:src="@drawable/icon_weibo_48" />
 
         <ImageView

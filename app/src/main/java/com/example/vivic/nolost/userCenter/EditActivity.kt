@@ -5,19 +5,22 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
-import com.example.vivic.nolost.Login.ILoginCallback
-import com.example.vivic.nolost.Login.LoginRepository
+import com.example.vivic.nolost.Login.IUserCallback
+import com.example.vivic.nolost.Login.UserRepository
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_edit.*
 
 class EditActivity : BaseActivity() {
 
     private var inputMethodManager: InputMethodManager? = null
     private var title: String = ""
-    private var iUpdateCallback: ILoginCallback<MyUser>? = null
+    private val compositeDisposable: CompositeDisposable by lazy {
+        CompositeDisposable()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,23 +28,6 @@ class EditActivity : BaseActivity() {
         inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         inputMethodManager?.showSoftInput(et_edit_content, 0)
         initView()
-        iUpdateCallback = object : ILoginCallback<MyUser> {
-
-            override fun success(result: MyUser?) {
-                tv_edit_save.isEnabled = true
-                ToastUtil.showToast("更新成功")
-                val intent = Intent()
-                intent.putExtra("edit_response", et_edit_content.text.toString())
-                setResult(Activity.RESULT_OK, intent)
-                finish()
-            }
-
-            override fun error(throwable: Throwable?) {
-                tv_edit_save.isEnabled = true
-                ToastUtil.showToast("更新失败" + throwable.toString())
-            }
-
-        }
     }
 
     private fun initView() {
@@ -75,11 +61,27 @@ class EditActivity : BaseActivity() {
             }
         }
 
-        LoginRepository.updateUserByNewUser(editUser, iUpdateCallback!!)
+        compositeDisposable.addAll(UserRepository.updateUserByNewUser(editUser, object : IUserCallback<MyUser> {
+
+            override fun success(result: MyUser?) {
+                tv_edit_save.isEnabled = true
+                ToastUtil.showToast("更新成功")
+                val intent = Intent()
+                intent.putExtra("edit_response", et_edit_content.text.toString())
+                setResult(Activity.RESULT_OK, intent)
+                finish()
+            }
+
+            override fun error(throwable: Throwable?) {
+                tv_edit_save.isEnabled = true
+                ToastUtil.showToast("更新失败" + throwable.toString())
+            }
+
+        }))
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        iUpdateCallback = null
+        compositeDisposable.clear()
     }
 }
