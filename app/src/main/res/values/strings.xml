@@ -15,7 +15,7 @@
     <string name="user_center_title">个人中心</string>
     <string name="edit_save">保存</string>
     <string name="search_option">筛选器</string>
-    <string name="search_hint"> 物品名称/地点/详细信息</string>
+    <string name="search_hint">&#160;物品名称/地点/详细信息</string>
     <string name="login_account_hint">请输入用户名</string>
     <string name="login_password_hint">请输入密码</string>
     <string name="login_login">登录</string>

@@ -10,6 +10,9 @@ import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
+import com.example.vivic.nolost.userCenter.UserCenterActivity.Companion.EDIT_CONTENT
+import com.example.vivic.nolost.userCenter.UserCenterActivity.Companion.EDIT_RESULT
+import com.example.vivic.nolost.userCenter.UserCenterActivity.Companion.EDIT_TITLE
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_edit.*
 
@@ -33,12 +36,11 @@ class EditActivity : BaseActivity() {
     private fun initView() {
         iv_edit_back.setOnClickListener { finish() }
         val intent = intent
-        title = intent.getStringExtra("edit_title")
+        title = intent.getStringExtra(EDIT_TITLE)
         tv_edit_title.text = title
-        val content = intent.getStringExtra("edit_content")
+        val content = intent.getStringExtra(EDIT_CONTENT)
         et_edit_content.setText(content)
         et_edit_content.setSelection(content.length)
-
         tv_edit_save.setOnClickListener {
             updateUserIInfo()
         }
@@ -67,7 +69,7 @@ class EditActivity : BaseActivity() {
                 tv_edit_save.isEnabled = true
                 ToastUtil.showToast("更新成功")
                 val intent = Intent()
-                intent.putExtra("edit_response", et_edit_content.text.toString())
+                intent.putExtra(EDIT_RESULT, et_edit_content.text.toString())
                 setResult(Activity.RESULT_OK, intent)
                 finish()
             }

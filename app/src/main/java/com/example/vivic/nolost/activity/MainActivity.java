@@ -166,20 +166,20 @@ public class MainActivity extends BaseActivity {
     @Subscribe(threadMode = ThreadMode.MAIN)
     public void LoginCallback(UserEvent userEvent) {
         if (userEvent.loginResult) {
-            GlideApp.with(this).load(userEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(IvAvatar);
+            GlideApp.with(this).load(userEvent.myUser.getAvatar()).placeholder(R.drawable.icon_default_avatar).into(IvAvatar);
             tvNickname.setText(userEvent.myUser.getUsername());
             itemLogout.setVisible(true);
             ivGender.setVisibility(View.VISIBLE);
-            if (userEvent.myUser.gender != null) {
-                if (GenderHelper.INSTANCE.formatGender(userEvent.myUser.gender).equalsIgnoreCase(GenderHelper.MAN)) {
+            if (userEvent.myUser.getGender() != null) {
+                if (GenderHelper.INSTANCE.formatGender(userEvent.myUser.getGender()).equalsIgnoreCase(GenderHelper.MAN)) {
                     ivGender.setImageResource(R.drawable.icon_boy);
-                } else if (GenderHelper.INSTANCE.formatGender(userEvent.myUser.gender).equalsIgnoreCase(GenderHelper.FEMALE)) {
+                } else if (GenderHelper.INSTANCE.formatGender(userEvent.myUser.getGender()).equalsIgnoreCase(GenderHelper.FEMALE)) {
                     ivGender.setImageResource(R.drawable.icon_girl);
                 } else {
                     ivGender.setImageResource(R.drawable.icon_gender_secret);
                 }
             }
-            GlideApp.with(this).asDrawable().load(userEvent.myUser.background).centerCrop().into(new SimpleTarget<Drawable>() {
+            GlideApp.with(this).asDrawable().load(userEvent.myUser.getBackground()).centerCrop().into(new SimpleTarget<Drawable>() {
                 @Override
                 public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                     clBackground.setBackground(resource);
@@ -219,5 +219,11 @@ public class MainActivity extends BaseActivity {
         } else {
             super.onBackPressed();
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Glide.get(this).clearMemory();
     }
 }

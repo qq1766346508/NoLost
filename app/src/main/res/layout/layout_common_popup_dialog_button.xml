@@ -8,6 +8,7 @@
         android:textColor="#000"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:background="@drawable/btn_selector"
         android:layout_gravity="center"
         android:layout_alignParentBottom="true"
         android:layout_width="match_parent"

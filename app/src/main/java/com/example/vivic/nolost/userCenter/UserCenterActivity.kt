@@ -12,7 +12,6 @@ import com.example.vivic.nolost.Login.UserEvent
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser
-import com.example.vivic.nolost.commonUtil.NoDoubleClickListener
 import com.example.vivic.nolost.commonUtil.bottomDialog.CommonBottomDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import io.reactivex.disposables.CompositeDisposable
@@ -26,6 +25,9 @@ class UserCenterActivity : BaseActivity() {
         const val REQUEST_CODE_CONTACT = 0
         const val REQUEST_CODE_LOCATION = 1
         const val REQUEST_CODE_USERNAME = 2
+        const val EDIT_TITLE = "edit_title"
+        const val EDIT_CONTENT = "edit_content"
+        const val EDIT_RESULT = "edit_result"
     }
 
     private val compositeDisposable: CompositeDisposable by lazy {
@@ -65,7 +67,7 @@ class UserCenterActivity : BaseActivity() {
         GlideApp.with(this).load(currentUser.avatar).placeholder(R.drawable.icon_default_avatar).into(iv_user_center_avatar)
         tv_user_center_username.text = currentUser.username
         currentUser.gender?.let {
-            when (GenderHelper.formatGender(currentUser.gender)) {
+            when (GenderHelper.formatGender(it)) {
                 GenderHelper.MAN -> iv_user_center_gender.setImageResource(R.drawable.icon_boy)
                 GenderHelper.FEMALE -> iv_user_center_gender.setImageResource(R.drawable.icon_girl)
                 GenderHelper.SECRET -> iv_user_center_gender.setImageResource(R.drawable.icon_gender_secret)
@@ -81,42 +83,29 @@ class UserCenterActivity : BaseActivity() {
             fl_user_center_gender.isEnabled = false
             genderDialog.show()
         }
-        fl_user_username.setOnClickListener(object : NoDoubleClickListener() {
-            override fun onNoDoubleClick(v: View?) {
-                val intent = Intent(this@UserCenterActivity, EditActivity::class.java)
-                intent.putExtra("edit_title", getString(R.string.user_center_username))
-                intent.putExtra("edit_content", tv_user_center_username.text.toString())
-                startActivityForResult(intent, REQUEST_CODE_USERNAME)
+        fl_user_username.isEnabled = currentUser.platform.isNullOrEmpty()
+        iv_user_center_username_aw.visibility = if (currentUser.platform.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
+        fl_user_username.setOnClickListener {
+            val intent = Intent(this@UserCenterActivity, EditActivity::class.java).apply {
+                this.putExtra(EDIT_TITLE, getString(R.string.user_center_username))
+                this.putExtra(EDIT_CONTENT, tv_user_center_username.text.toString())
             }
-
-            override fun onDoubleClick() {
+            startActivityForResult(intent, REQUEST_CODE_USERNAME)
+        }
+        fl_user_contact.setOnClickListener {
+            val intent = Intent(this@UserCenterActivity, EditActivity::class.java).apply {
+                this.putExtra(EDIT_TITLE, getString(R.string.user_center_contact))
+                this.putExtra(EDIT_CONTENT, tv_user_contact.text.toString())
             }
-
-        })
-        fl_user_contact.setOnClickListener(object : NoDoubleClickListener() {
-            override fun onNoDoubleClick(v: View?) {
-                val intent = Intent(this@UserCenterActivity, EditActivity::class.java)
-                intent.putExtra("edit_title", getString(R.string.user_center_contact))
-                intent.putExtra("edit_content", tv_user_contact.text.toString())
-                startActivityForResult(intent, REQUEST_CODE_CONTACT)
+            startActivityForResult(intent, REQUEST_CODE_CONTACT)
+        }
+        fl_user_location.setOnClickListener {
+            val intent = Intent(this@UserCenterActivity, EditActivity::class.java).apply {
+                this.putExtra(EDIT_TITLE, getString(R.string.user_center_location))
+                this.putExtra(EDIT_CONTENT, tv_user_location.text.toString())
             }
-
-            override fun onDoubleClick() {
-            }
-
-        })
-        fl_user_location.setOnClickListener(object : NoDoubleClickListener() {
-            override fun onNoDoubleClick(v: View?) {
-                val intent = Intent(this@UserCenterActivity, EditActivity::class.java)
-                intent.putExtra("edit_title", getString(R.string.user_center_location))
-                intent.putExtra("edit_content", tv_user_location.text.toString())
-                startActivityForResult(intent, REQUEST_CODE_LOCATION)
-            }
-
-            override fun onDoubleClick() {
-            }
-
-        })
+            startActivityForResult(intent, REQUEST_CODE_LOCATION)
+        }
         genderDialog.setOnCancelListener {
             fl_user_center_gender.isEnabled = true
         }
@@ -127,15 +116,15 @@ class UserCenterActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                REQUEST_CODE_USERNAME -> tv_user_center_username.text = data?.getStringExtra("edit_response")
-                REQUEST_CODE_CONTACT -> tv_user_contact.text = data?.getStringExtra("edit_response")
-                REQUEST_CODE_LOCATION -> tv_user_location.text = data?.getStringExtra("edit_response")
+                REQUEST_CODE_USERNAME -> tv_user_center_username.text = data?.getStringExtra(EDIT_RESULT)
+                REQUEST_CODE_CONTACT -> tv_user_contact.text = data?.getStringExtra(EDIT_RESULT)
+                REQUEST_CODE_LOCATION -> tv_user_location.text = data?.getStringExtra(EDIT_RESULT)
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
     }
 
-    fun updateGender(gender: String) {
+    private fun updateGender(gender: String) {
         val myUser = MyUser()
         myUser.gender = gender
         compositeDisposable.add(UserRepository.updateUserByNewUser(myUser, object : IBmobCallback<MyUser> {

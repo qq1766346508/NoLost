@@ -92,19 +92,21 @@ object UserRepository {
                 val userId = platform.db.userId
                 Log.i(TAG, "snsType:$snsType,accessToken:$accessToken,expiresIn:$expiresIn,userId:$userId")
                 val bmobThirdUserAuth = BmobUser.BmobThirdUserAuth(snsType, accessToken, expiresIn, userId)
-                val thirdUser = MyUser()
-                thirdUser.username = plat.db.userName
-                thirdUser.avatar = plat.db.userIcon
-                thirdUser.gender = plat.db.userGender
-                thirdUser.background = hashMap.get("cover_image_phone").toString()
-                disposable = loginByThird(bmobThirdUserAuth, thirdUser, iBmobCallback)
-                val ite = hashMap.entries.iterator()
-                while (ite.hasNext()) {
-                    val entry = ite.next() as Map.Entry<*, *>
-                    val key = entry.key
-                    val value = entry.value
-                    Log.d(TAG, "key : $key -value : $value")
+                val thirdUser = MyUser().apply {
+                    this.platform = snsType
+                    this.username = plat.db.userName
+                    this.avatar = plat.db.userIcon
+                    this.gender = plat.db.userGender
+                    this.background = hashMap.get("cover_image_phone").toString()
                 }
+                disposable = loginByThird(bmobThirdUserAuth, thirdUser, iBmobCallback)
+//                val ite = hashMap.entries.iterator()
+//                while (ite.hasNext()) {
+//                    val entry = ite.next() as Map.Entry<*, *>
+//                    val key = entry.key
+//                    val value = entry.value
+//                    Log.d(TAG, "key : $key -value : $value")
+//                }
             }
 
             override fun onError(platform: Platform, i: Int, throwable: Throwable) {
