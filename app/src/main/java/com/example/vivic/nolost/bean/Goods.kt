@@ -23,6 +23,6 @@ class Goods : BmobObject() {
                 ",location:$location" +
                 ",detail:$detail" +
                 ",photoList:$photoList" +
-                "\n createor:${createor.toString()}"
+                "\n createor:$createor"
     }
 }

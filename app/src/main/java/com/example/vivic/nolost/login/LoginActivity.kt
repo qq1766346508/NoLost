@@ -10,7 +10,6 @@ import cn.bmob.v3.exception.BmobException
 import cn.sharesdk.sina.weibo.SinaWeibo
 import cn.sharesdk.tencent.qq.QQ
 import com.example.vivic.nolost.R
-import com.example.vivic.nolost.R.id.btn_sign
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.bmob.IBmobCallback

@@ -26,6 +26,4 @@ object DataRepository {
             }
         })
     }
-
-//    fun queryData
 }

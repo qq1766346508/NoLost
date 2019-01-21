@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 
 import com.example.vivic.nolost.commonUtil.BindEventBus;
+import com.example.vivic.nolost.commonUtil.LeakCanaryUtils;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -23,6 +24,7 @@ public class BaseFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+        LeakCanaryUtils.watch(this);
         if (this.getClass().isAnnotationPresent(BindEventBus.class)) {
             EventBus.getDefault().unregister(this);
         }

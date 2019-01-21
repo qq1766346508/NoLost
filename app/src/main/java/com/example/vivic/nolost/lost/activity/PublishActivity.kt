@@ -7,15 +7,15 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import cn.bmob.v3.BmobUser
-import com.example.vivic.nolost.bmob.IBmobCallback
-import com.example.vivic.nolost.bmob.DataRepository
-import com.example.vivic.nolost.lost.GoodsEvent
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.Goods
 import com.example.vivic.nolost.bean.MyUser
+import com.example.vivic.nolost.bmob.DataRepository
+import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
+import com.example.vivic.nolost.lost.GoodsEvent
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_publish.*
 import org.greenrobot.eventbus.EventBus
@@ -77,7 +77,7 @@ class PublishActivity : BaseActivity() {
             compositeDisposable.add(DataRepository.saveData(goods, object : IBmobCallback<String> {
                 override fun success(result: String?) {
                     ToastUtil.showToast("提交成功")
-                    EventBus.getDefault().post(GoodsEvent(goods, GoodsEvent.operate.save))
+                    EventBus.getDefault().post(GoodsEvent(goods, GoodsEvent.Operate.UPDATE))
                     finish()
                 }
 
