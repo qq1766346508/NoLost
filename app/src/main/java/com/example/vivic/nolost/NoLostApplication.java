@@ -24,6 +24,7 @@ public class NoLostApplication extends Application {
         LeakCanaryUtils.install(this);
         MultiPictureView.setImageLoader((ImageLoader) (imageView, uri) -> GlideApp.with(imageView.getContext()).load(uri).centerCrop().into(imageView));
         UserRepository.INSTANCE.fetchUserInfo();
+        //teset
     }
 
     public static Context getContext() {
