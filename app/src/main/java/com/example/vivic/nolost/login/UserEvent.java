@@ -1,4 +1,4 @@
-package com.example.vivic.nolost.login;
+package com.example.vivic.nolost.Login;
 
 import com.example.vivic.nolost.bean.MyUser;
 

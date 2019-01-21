@@ -17,11 +17,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.vivic.nolost.GlideApp
-import com.example.vivic.nolost.Login.LogOutEvent
-import com.example.vivic.nolost.Login.LoginActivity
-import com.example.vivic.nolost.Login.UserEvent
-import com.example.vivic.nolost.Lost.activity.PublishActivity
-import com.example.vivic.nolost.Lost.fragment.LostFragment
+import com.example.vivic.nolost.login.LogOutEvent
+import com.example.vivic.nolost.login.LoginActivity
+import com.example.vivic.nolost.login.UserEvent
+import com.example.vivic.nolost.lost.activity.PublishActivity
+import com.example.vivic.nolost.lost.fragment.LostFragment
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.commonUtil.BindEventBus
@@ -30,7 +30,7 @@ import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.search.SearchActivity
 import com.example.vivic.nolost.userCenter.GenderHelper
 import com.example.vivic.nolost.userCenter.UserCenterActivity
-import com.example.vivic.nolost.userCenter.UserRepository
+import com.example.vivic.nolost.bmob.UserRepository
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -46,7 +46,7 @@ class MainActivity : BaseActivity() {
 
     //DrawerView的子控件实例无法直接通过id获取
     private var headerView: View? = null
-    private var IvAvatar: ImageView? = null
+    private var ivAvatar: ImageView? = null
     private var ivGender: ImageView? = null
     private var tvNickname: TextView? = null
     private var itemLogout: MenuItem? = null
@@ -105,9 +105,9 @@ class MainActivity : BaseActivity() {
             false
         }
         headerView = nav_main_view.getHeaderView(0)
-        IvAvatar = headerView?.findViewById(R.id.iv_nav_avatar)
+        ivAvatar = headerView?.findViewById(R.id.iv_nav_avatar)
         ivGender = headerView?.findViewById(R.id.iv_nav_gender)
-        IvAvatar?.setOnClickListener { it ->
+        ivAvatar?.setOnClickListener { it ->
             if (BmobUser.getCurrentUser(MyUser::class.java) == null) {
                 startActivity(Intent(this@MainActivity, LoginActivity::class.java))
             } else {
@@ -122,16 +122,16 @@ class MainActivity : BaseActivity() {
         val currentUser = BmobUser.getCurrentUser(MyUser::class.java)
         if (currentUser != null) {
             Log.i(TAG, "currentUser: " + currentUser.toString())
-            LoginCallback(UserEvent(true, currentUser))
+            loginCallback(UserEvent(true, currentUser))
         } else {
             Log.i(TAG, "currentUser == null ")
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun LoginCallback(userEvent: UserEvent) {
+    fun loginCallback(userEvent: UserEvent) {
         if (userEvent.loginResult) {
-            GlideApp.with(this).load(userEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(IvAvatar!!)
+            GlideApp.with(this).load(userEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(ivAvatar!!)
             tvNickname?.text = userEvent.myUser.username
             itemLogout?.isVisible = true
             ivGender?.visibility = View.VISIBLE
@@ -151,8 +151,8 @@ class MainActivity : BaseActivity() {
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun Logout(logOutEvent: LogOutEvent) {
-        Glide.with(this).load(R.drawable.icon_default_avatar).into(IvAvatar!!)
+    fun logout(logOutEvent: LogOutEvent) {
+        Glide.with(this).load(R.drawable.icon_default_avatar).into(ivAvatar!!)
         tvNickname?.text = ""
         itemLogout?.isVisible = false
         ivGender?.visibility = View.INVISIBLE

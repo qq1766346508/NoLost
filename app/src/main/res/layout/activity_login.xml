@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:focusable="true"
     android:focusableInTouchMode="true"
-    tools:context=".Login.LoginActivity">
+    tools:context=".login.LoginActivity">
 
 
     <ImageView

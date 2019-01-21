@@ -9,15 +9,15 @@ import android.widget.Button
 
 import com.example.vivic.nolost.R
 
-class SearchOption : DialogFragment() {
+class SearchOptionFragment : DialogFragment() {
     private var rootView: View? = null
 
     companion object {
 
-        private val TAG = SearchOption::class.java.simpleName
+        private val TAG = SearchOptionFragment::class.java.simpleName
 
-        val instance: SearchOption
-            get() = SearchOption()
+        val instance: SearchOptionFragment
+            get() = SearchOptionFragment()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

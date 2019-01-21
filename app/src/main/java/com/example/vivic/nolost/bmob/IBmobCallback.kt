@@ -1,4 +1,4 @@
-package com.example.vivic.nolost.Login
+package com.example.vivic.nolost.bmob
 
 interface IBmobCallback<T> {
     fun success(result: T?)

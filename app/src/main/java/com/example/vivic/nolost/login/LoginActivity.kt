@@ -1,4 +1,4 @@
-package com.example.vivic.nolost.login
+package com.example.vivic.nolost.Login
 
 
 import android.content.Context
@@ -10,7 +10,6 @@ import android.view.inputmethod.InputMethodManager
 import cn.bmob.v3.exception.BmobException
 import cn.sharesdk.sina.weibo.SinaWeibo
 import cn.sharesdk.tencent.qq.QQ
-import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser
@@ -18,7 +17,7 @@ import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.NoDoubleClickListener
 import com.example.vivic.nolost.commonUtil.pref.CommonPref
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
-import com.example.vivic.nolost.bmob.UserRepository
+import com.example.vivic.nolost.userCenter.UserRepository
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_login.*

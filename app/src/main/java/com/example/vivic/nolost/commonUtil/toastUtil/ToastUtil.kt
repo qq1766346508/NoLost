@@ -27,13 +27,13 @@ object ToastUtil {
     }
 
     /**
-     * 返回一个ToastCompat对象， 默认显示的Gravity是center
+     * 返回一个ToastCompat对象， 默认显示的Gravity是//center
      * @param message String
      * @return Toast
      */
     private fun getDefaultToast(message: String): Toast {
         val toast = ToastCompat.makeText(sApplication, message, Toast.LENGTH_LONG)
-        toast.setGravity(Gravity.CENTER, 0, 0)
+//        toast.setGravity(Gravity.CENTER, 0, 0)
         return toast
     }
 

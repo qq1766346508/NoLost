@@ -1,4 +1,4 @@
-package com.example.vivic.nolost.userCenter
+package com.example.vivic.nolost.bmob
 
 import android.util.Log
 import cn.bmob.v3.BmobQuery
@@ -10,7 +10,6 @@ import cn.sharesdk.framework.PlatformActionListener
 import cn.sharesdk.framework.ShareSDK
 import cn.sharesdk.sina.weibo.SinaWeibo
 import cn.sharesdk.tencent.qq.QQ
-import com.example.vivic.nolost.Login.IBmobCallback
 import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.commonUtil.pref.CommonPref
 import io.reactivex.disposables.Disposable

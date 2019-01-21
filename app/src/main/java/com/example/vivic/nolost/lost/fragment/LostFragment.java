@@ -1,4 +1,4 @@
-package com.example.vivic.nolost.Lost.fragment;
+package com.example.vivic.nolost.lost.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.vivic.nolost.Lost.GoodsAdapter;
-import com.example.vivic.nolost.Lost.GoodsEvent;
+import com.example.vivic.nolost.lost.GoodsAdapter;
+import com.example.vivic.nolost.lost.GoodsEvent;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.bean.Goods;
 import com.example.vivic.nolost.commonUtil.BindEventBus;

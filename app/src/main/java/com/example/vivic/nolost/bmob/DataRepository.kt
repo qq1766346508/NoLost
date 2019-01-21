@@ -1,10 +1,9 @@
-package com.example.vivic.nolost.Lost
+package com.example.vivic.nolost.bmob
 
 import android.util.Log
 import cn.bmob.v3.BmobObject
 import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.SaveListener
-import com.example.vivic.nolost.Login.IBmobCallback
 import io.reactivex.disposables.Disposable
 
 object DataRepository {

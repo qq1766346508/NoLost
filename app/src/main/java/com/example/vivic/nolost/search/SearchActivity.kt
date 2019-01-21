@@ -40,7 +40,7 @@ class SearchActivity : BaseActivity() {
         if (searchOption != null && searchOption.isAdded) {
             supportFragmentManager.beginTransaction().show(searchOption).commitAllowingStateLoss()
         } else {
-            SearchOption.instance.show(supportFragmentManager, "SearchOption")
+            SearchOptionFragment.instance.show(supportFragmentManager, "SearchOption")
         }
     }
 

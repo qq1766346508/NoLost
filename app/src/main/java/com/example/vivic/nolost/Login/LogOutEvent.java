@@ -1,4 +1,4 @@
-package com.example.vivic.nolost.Login;
+package com.example.vivic.nolost.login;
 
 public class LogOutEvent {
 }

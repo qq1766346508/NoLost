@@ -6,9 +6,10 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import cn.bmob.v3.BmobUser
+import com.example.vivic.nolost.bmob.UserRepository
 import com.example.vivic.nolost.GlideApp
-import com.example.vivic.nolost.Login.IBmobCallback
-import com.example.vivic.nolost.Login.UserEvent
+import com.example.vivic.nolost.bmob.IBmobCallback
+import com.example.vivic.nolost.login.UserEvent
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser

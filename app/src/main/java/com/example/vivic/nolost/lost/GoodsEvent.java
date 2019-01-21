@@ -1,4 +1,4 @@
-package com.example.vivic.nolost.Lost;
+package com.example.vivic.nolost.lost;
 
 import com.example.vivic.nolost.bean.Goods;
 
