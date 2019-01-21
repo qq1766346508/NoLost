@@ -17,12 +17,12 @@ class Goods : BmobObject() {
     }
 
     override fun toString(): String {
-        return "Goods:" +
+        return "\n Goods:" +
                 "type:$type" +
                 ",name:$name" +
                 ",location:$location" +
                 ",detail:$detail" +
                 ",photoList:$photoList" +
-                "\n createor:$createor"
+                "\n createor:$createor \n"
     }
 }

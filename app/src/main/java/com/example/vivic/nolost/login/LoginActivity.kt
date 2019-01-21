@@ -31,9 +31,7 @@ class LoginActivity : BaseActivity() {
 
     private var loadingDialog: LoadingDialog? = null
     private var currentThirdPlatform: String? = null
-    private val compositeDisposable: CompositeDisposable by lazy {
-        CompositeDisposable()
-    }
+
     private val inputMethodManager: InputMethodManager by lazy {
         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }

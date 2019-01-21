@@ -28,9 +28,6 @@ class PublishActivity : BaseActivity() {
         val TAG = PublishActivity::class.java.simpleName
     }
 
-    private val compositeDisposable: CompositeDisposable by lazy {
-        CompositeDisposable()
-    }
     private val inputMethodManager: InputMethodManager by lazy {
         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }

@@ -31,9 +31,7 @@ class UserCenterActivity : BaseActivity() {
         const val EDIT_RESULT = "edit_result"
     }
 
-    private val compositeDisposable: CompositeDisposable by lazy {
-        CompositeDisposable()
-    }
+
 
     private val currentUser: MyUser by lazy {
         BmobUser.getCurrentUser(MyUser::class.java)

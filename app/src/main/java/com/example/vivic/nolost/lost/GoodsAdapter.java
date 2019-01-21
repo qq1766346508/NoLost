@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.bean.Goods;
 import com.goyourfly.multi_picture.MultiPictureView;
@@ -36,6 +37,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
     public GoodsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_goods, parent, false);
         GoodsViewHolder holder = new GoodsViewHolder(itemView);
+        context = parent.getContext();
         return holder;
     }
 
@@ -64,20 +66,35 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
 
     public class GoodsViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView ivUserAvatar;
-        TextView tvNickName;
-        MultiPictureView mutiIvPhoto;
+        ImageView ivCreatorAvatar;
+        TextView tvCreatorName;
+        TextView tvGoodsTime;
+        TextView tvGoodsLocation;
+        TextView tvGoodsName;
+        TextView tvGoodsDetail;
+
+        MultiPictureView mpvGoodsPhoto;
 
 
         public GoodsViewHolder(View itemView) {
             super(itemView);
-            tvNickName = itemView.findViewById(R.id.tv_goods_createor);
-            mutiIvPhoto = itemView.findViewById(R.id.mutiIvPhoto);
+            ivCreatorAvatar = itemView.findViewById(R.id.iv_item_goods_avatar);
+            tvCreatorName = itemView.findViewById(R.id.tv_item_goods_createor);
+            tvGoodsTime = itemView.findViewById(R.id.tv_item_goods_time);
+            tvGoodsLocation = itemView.findViewById(R.id.tv_item_goods_location);
+            tvGoodsName = itemView.findViewById(R.id.tv_item_goods_name);
+            tvGoodsDetail = itemView.findViewById(R.id.tv_item_goods_details);
+            mpvGoodsPhoto = itemView.findViewById(R.id.mpv_item_goods_photo);
         }
 
         public void initItem(Goods goods) {
-            tvNickName.setText(goods.getName());
-//            mutiIvPhoto.addItem(Uri.parse("https://avatars1.githubusercontent.com/u/7019862?s=88&v=4"));
+            GlideApp.with(context).load(goods.getCreateor().getAvatar()).placeholder(R.drawable.icon_default_avatar).into(ivCreatorAvatar);
+            tvCreatorName.setText(goods.getName());
+            tvGoodsTime.setText(goods.getUpdatedAt());
+            tvGoodsLocation.setText(goods.getLocation());
+            tvGoodsName.setText(goods.getName());
+            tvGoodsDetail.setText(goods.getDetail());
+//            mpvGoodsPhoto.addItem(Uri.parse("https://avatars1.githubusercontent.com/u/7019862?s=88&v=4"));
         }
     }
 }

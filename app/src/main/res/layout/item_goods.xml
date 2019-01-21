@@ -5,7 +5,7 @@
     android:layout_height="wrap_content">
 
     <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/iv_user_avatar"
+        android:id="@+id/iv_item_goods_avatar"
         android:layout_width="34dp"
         android:layout_height="34dp"
         android:layout_marginTop="8dp"
@@ -23,7 +23,7 @@
 
 
     <TextView
-        android:id="@+id/tv_goods_createor"
+        android:id="@+id/tv_item_goods_createor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -35,26 +35,26 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tv_goods_time"
+        android:id="@+id/tv_item_goods_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="2018-01-01 12:00:00"
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp"
         app:layout_constraintStart_toStartOf="@id/gl_0.15v"
-        app:layout_constraintTop_toBottomOf="@+id/tv_goods_createor" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_goods_createor" />
 
     <TextView
-        android:id="@+id/tv_goods_location"
+        android:id="@+id/tv_item_goods_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="足球场"
         android:drawableStart="@drawable/ic_location_on_blue_800_18dp"
+        android:text="足球场"
         android:textColor="@android:color/darker_gray"
         android:textSize="12sp"
-        app:layout_constraintStart_toEndOf="@id/tv_goods_time"
-        app:layout_constraintTop_toBottomOf="@+id/tv_goods_createor" />
+        app:layout_constraintStart_toEndOf="@id/tv_item_goods_time"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_goods_createor" />
 
     <LinearLayout
         android:id="@+id/content"
@@ -64,11 +64,11 @@
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/gl_0.15v"
-        app:layout_constraintTop_toBottomOf="@id/tv_goods_time">
+        app:layout_constraintTop_toBottomOf="@id/tv_item_goods_time">
 
 
         <TextView
-            android:id="@+id/tv_goods_name"
+            android:id="@+id/tv_item_goods_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -78,7 +78,7 @@
             app:layout_constraintTop_toBottomOf="@+id/content" />
 
         <TextView
-            android:id="@+id/tv_goods_details"
+            android:id="@+id/tv_item_goods_details"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -87,12 +87,11 @@
             android:textSize="14sp" />
 
         <com.goyourfly.multi_picture.MultiPictureView
-            android:id="@+id/mutiIvPhoto"
+            android:id="@+id/mpv_item_goods_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:editable="false"
-            app:imageLayoutMode="DYNAMIC"
-            />
+            app:imageLayoutMode="DYNAMIC" />
 
     </LinearLayout>
 

@@ -2,7 +2,9 @@ package com.example.vivic.nolost.bmob
 
 import android.util.Log
 import cn.bmob.v3.BmobObject
+import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.SaveListener
 import io.reactivex.disposables.Disposable
 
@@ -25,5 +27,9 @@ object DataRepository {
                 }
             }
         })
+    }
+
+    fun <T> queryData(bmobQuery: BmobQuery<T>, findListener: FindListener<T>): Disposable {
+        return bmobQuery.findObjects(findListener)
     }
 }

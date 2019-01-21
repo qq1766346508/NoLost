@@ -7,10 +7,14 @@ import com.bumptech.glide.Glide
 
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.commonUtil.BindEventBus
+import io.reactivex.disposables.CompositeDisposable
 
 import org.greenrobot.eventbus.EventBus
 
 open class BaseActivity : AppCompatActivity() {
+       protected val compositeDisposable: CompositeDisposable by lazy {
+        CompositeDisposable()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,7 +37,7 @@ open class BaseActivity : AppCompatActivity() {
             EventBus.getDefault().unregister(this)
         }
         Glide.get(this).clearMemory()
-
+        compositeDisposable.clear()
     }
 
     companion object {

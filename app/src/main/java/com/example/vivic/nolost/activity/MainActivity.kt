@@ -118,7 +118,7 @@ class MainActivity : BaseActivity() {
         clBackground = headerView?.findViewById(R.id.cl_background)
         val menu = nav_main_view.menu
         itemLogout = menu.findItem(R.id.nav_logout)
-
+        //进入主页面初始化抽屉
         val currentUser = BmobUser.getCurrentUser(MyUser::class.java)
         if (currentUser != null) {
             Log.i(TAG, "currentUser: " + currentUser.toString())

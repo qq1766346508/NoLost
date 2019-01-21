@@ -2,12 +2,16 @@ package com.example.vivic.nolost.lost.fragment
 
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import cn.bmob.v3.BmobQuery
+import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.FindListener
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.bean.Goods
+import com.example.vivic.nolost.bmob.DataRepository
 import com.example.vivic.nolost.commonUtil.BindEventBus
 import com.example.vivic.nolost.fragment.BaseFragment
 import com.example.vivic.nolost.lost.GoodsAdapter
@@ -40,19 +44,20 @@ class LostFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initview()
+        initGoodsList(null)
     }
 
     private fun initview() {
         rv_lost_content.layoutManager = LinearLayoutManager(context)
-        goodsAdapter = GoodsAdapter(initList(), context)
+        goodsAdapter = GoodsAdapter(initGoodsList(null), context)
         rv_lost_content.adapter = goodsAdapter
         srl_lost_refresh.setOnRefreshListener { refreshLayout ->
-            goodsAdapter!!.clearData()
-            goodsAdapter!!.addData(initList())
+            goodsAdapter?.clearData()
+            goodsAdapter?.addData(initGoodsList(null))
             refreshLayout.finishRefresh(2000)
         }
         srl_lost_refresh.setOnLoadMoreListener { refreshLayout ->
-            goodsAdapter!!.addData(initList())
+            goodsAdapter?.addData(initList())
             refreshLayout.finishLoadMore(2000)
         }
     }
@@ -69,14 +74,32 @@ class LostFragment : BaseFragment() {
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    fun initGoodsList(goodsEvent: GoodsEvent) {
+    fun initGoodsList(goodsEvent: GoodsEvent?): MutableList<Goods> {
         val list = mutableListOf<Goods>()
-        val query = BmobQuery<Goods>()
-        query.setLimit(3)
-
+        val query = BmobQuery<Goods>().apply {
+            this.setLimit(3)
+            this.order("-createdAt")
+        }
+        compositeDisposable.add(DataRepository.queryData(query, object : FindListener<Goods>() {
+            override fun done(p0: MutableList<Goods>?, p1: BmobException?) {
+                if (p1 == null && p0?.size != 0) {
+                    Log.d(TAG, "queryData,success")
+                    for (it in p0!!) {
+                        Log.i(TAG, "Goods item:$it")
+                    }
+                    list.addAll(p0)
+                } else {
+                    Log.d(TAG, "queryData error,BmobException:$p1")
+                }
+            }
+        }))
+        return list //还没查询完成就返回
 
     }
 
-
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.clear()
+    }
 }
 

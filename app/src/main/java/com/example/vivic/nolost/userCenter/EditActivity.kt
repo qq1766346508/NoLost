@@ -23,9 +23,7 @@ class EditActivity : BaseActivity() {
         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
     private var title: String = ""
-    private val compositeDisposable: CompositeDisposable by lazy {
-        CompositeDisposable()
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
