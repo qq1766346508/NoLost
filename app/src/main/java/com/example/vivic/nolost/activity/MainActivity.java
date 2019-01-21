@@ -25,7 +25,6 @@ import com.bumptech.glide.request.transition.Transition;
 import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.Login.LogOutEvent;
 import com.example.vivic.nolost.Login.LoginActivity;
-import com.example.vivic.nolost.userCenter.UserRepository;
 import com.example.vivic.nolost.Login.UserEvent;
 import com.example.vivic.nolost.Lost.activity.PublishActivity;
 import com.example.vivic.nolost.Lost.fragment.LostFragment;
@@ -38,6 +37,7 @@ import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil;
 import com.example.vivic.nolost.search.SearchActivity;
 import com.example.vivic.nolost.userCenter.GenderHelper;
 import com.example.vivic.nolost.userCenter.UserCenterActivity;
+import com.example.vivic.nolost.userCenter.UserRepository;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
@@ -79,7 +79,11 @@ public class MainActivity extends BaseActivity {
                     startActivity(new Intent(MainActivity.this, SearchActivity.class));
                     break;
                 case R.id.menu_add:
-                    startActivityForResult(new Intent(MainActivity.this, PublishActivity.class), REQUEST_CODE_PUBLISH);
+                    if (BmobUser.getCurrentUser(MyUser.class) != null) {
+                        startActivity(new Intent(MainActivity.this, PublishActivity.class));
+                    } else {
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class));
+                    }
                 default:
                     break;
             }
@@ -175,7 +179,7 @@ public class MainActivity extends BaseActivity {
                     ivGender.setImageResource(R.drawable.icon_gender_secret);
                 }
             }
-            GlideApp.with(this).load(userEvent.myUser.background).centerCrop().into(new SimpleTarget<Drawable>() {
+            GlideApp.with(this).asDrawable().load(userEvent.myUser.background).centerCrop().into(new SimpleTarget<Drawable>() {
                 @Override
                 public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                     clBackground.setBackground(resource);

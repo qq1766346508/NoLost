@@ -15,7 +15,7 @@ public class BaseFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getClass().isAnnotationPresent(BindEventBus.class)) {
+        if (this.getClass().isAnnotationPresent(BindEventBus.class)) {
             EventBus.getDefault().register(this);
         }
     }
@@ -23,7 +23,7 @@ public class BaseFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (getClass().isAnnotationPresent(BindEventBus.class)) {
+        if (this.getClass().isAnnotationPresent(BindEventBus.class)) {
             EventBus.getDefault().unregister(this);
         }
     }

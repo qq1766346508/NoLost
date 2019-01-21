@@ -9,6 +9,7 @@ import cn.sharesdk.framework.Platform
 import cn.sharesdk.framework.PlatformActionListener
 import cn.sharesdk.framework.ShareSDK
 import cn.sharesdk.sina.weibo.SinaWeibo
+import cn.sharesdk.tencent.qq.QQ
 import com.example.vivic.nolost.Login.IBmobCallback
 import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.commonUtil.pref.CommonPref
@@ -97,13 +98,13 @@ object UserRepository {
                 thirdUser.gender = plat.db.userGender
                 thirdUser.background = hashMap.get("cover_image_phone").toString()
                 disposable = loginByThird(bmobThirdUserAuth, thirdUser, iBmobCallback)
-//                val ite = hashMap.entries.iterator()
-//                while (ite.hasNext()) {
-//                    val entry = ite.next() as Map.Entry<*, *>
-//                    val key = entry.key
-//                    val value = entry.value
-//                    Log.d(TAG, "key : $key -value : $value")
-//                }
+                val ite = hashMap.entries.iterator()
+                while (ite.hasNext()) {
+                    val entry = ite.next() as Map.Entry<*, *>
+                    val key = entry.key
+                    val value = entry.value
+                    Log.d(TAG, "key : $key -value : $value")
+                }
             }
 
             override fun onError(platform: Platform, i: Int, throwable: Throwable) {
@@ -125,6 +126,7 @@ object UserRepository {
     fun getNameThird(platform: String): String {
         return when (platform) {
             SinaWeibo.NAME -> "weibo"
+            QQ.NAME -> "qq"
             else -> {
                 ""
             }

@@ -5,6 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,8 +91,9 @@ public class LostFragment extends BaseFragment {
 
 
     @Subscribe(threadMode = ThreadMode.MAIN)
-    private void updateGoodsList(GoodsEvent goodsEvent) {
+    public void updateGoodsList(GoodsEvent goodsEvent) {
         //数据查询
+        Log.d(TAG, "updateGoodsList: ");
     }
 
     @Override

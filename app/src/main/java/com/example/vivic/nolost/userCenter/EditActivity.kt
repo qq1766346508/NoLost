@@ -15,7 +15,9 @@ import kotlinx.android.synthetic.main.activity_edit.*
 
 class EditActivity : BaseActivity() {
 
-    private var inputMethodManager: InputMethodManager? = null
+    private val inputMethodManager: InputMethodManager by lazy {
+        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
     private var title: String = ""
     private val compositeDisposable: CompositeDisposable by lazy {
         CompositeDisposable()
@@ -24,8 +26,7 @@ class EditActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_edit)
-        inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        inputMethodManager?.showSoftInput(et_edit_content, 0)
+        inputMethodManager.showSoftInput(et_edit_content, 0)
         initView()
     }
 

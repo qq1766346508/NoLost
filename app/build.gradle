@@ -35,9 +35,13 @@ MobSDK {
         devInfo {
             SinaWeibo {
                 appKey "94899488"
-                appSecret "59bc17971c97b60502017ab7d9d93b3b"
+                appSecret "e675ec91296eda8f097c9bd383ae2223"
                 callbackUri "http://www.sharesdk.cn"
                 shareByAppClient false
+            }
+            QQ {
+                appId "101548082"
+                appKey "4657de40fbfb67295e26d44382b5e6b5"
             }
         }
     }

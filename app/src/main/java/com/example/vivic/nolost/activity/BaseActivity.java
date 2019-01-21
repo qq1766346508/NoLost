@@ -26,7 +26,6 @@ public class BaseActivity extends AppCompatActivity {
     @Override
     public void finish() {
         super.finish();
-
         overridePendingTransition(R.anim.activity_left_to_right_in, R.anim.activity_left_to_right_out);
     }
 

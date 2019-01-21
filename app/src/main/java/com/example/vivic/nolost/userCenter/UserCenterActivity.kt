@@ -23,9 +23,9 @@ class UserCenterActivity : BaseActivity() {
 
     companion object {
         val TAG = UserCenterActivity::class.java.simpleName
-        val REQUEST_CODE_CONTACT = 0
-        val REQUEST_CODE_LOCATION = 1
-        val REQUEST_CODE_USERNAME = 2
+        const val REQUEST_CODE_CONTACT = 0
+        const val REQUEST_CODE_LOCATION = 1
+        const val REQUEST_CODE_USERNAME = 2
     }
 
     private val compositeDisposable: CompositeDisposable by lazy {
@@ -62,7 +62,7 @@ class UserCenterActivity : BaseActivity() {
 
     private fun loadUserInfo() {
         Log.i(TAG, "currentUse :$currentUser")
-        GlideApp.with(this).load(currentUser.avatar).into(iv_user_center_avatar)
+        GlideApp.with(this).load(currentUser.avatar).placeholder(R.drawable.icon_default_avatar).into(iv_user_center_avatar)
         tv_user_center_username.text = currentUser.username
         currentUser.gender?.let {
             when (GenderHelper.formatGender(currentUser.gender)) {
@@ -151,7 +151,7 @@ class UserCenterActivity : BaseActivity() {
 
             override fun error(throwable: Throwable?) {
                 fl_user_center_gender.isEnabled = true
-                ToastUtil.showToast("失败" + throwable.toString())
+                ToastUtil.showToast("更新失败" + throwable.toString())
             }
 
         }))

@@ -6,6 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
+        android:id="@+id/ll_publish_root"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -86,13 +87,14 @@
                 android:textSize="14sp" />
 
             <android.support.design.widget.TextInputLayout
+                android:id="@+id/til_publish_goodsname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:theme="@style/ed_option_content"
                 app:counterEnabled="true"
                 app:counterMaxLength="15"
                 app:errorEnabled="true"
-                app:errorTextAppearance="@style/edit_error">
+                >
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/et_publish_goodsname"
