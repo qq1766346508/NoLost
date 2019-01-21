@@ -10,11 +10,9 @@ import android.view.inputmethod.InputMethodManager
 import cn.bmob.v3.exception.BmobException
 import cn.sharesdk.sina.weibo.SinaWeibo
 import cn.sharesdk.tencent.qq.QQ
-import com.example.vivic.nolost.GlideApp
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser
-import com.example.vivic.nolost.commonUtil.BindEventBus
 import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.NoDoubleClickListener
 import com.example.vivic.nolost.commonUtil.pref.CommonPref
@@ -24,10 +22,7 @@ import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_login.*
 import org.greenrobot.eventbus.EventBus
-import org.greenrobot.eventbus.Subscribe
-import org.greenrobot.eventbus.ThreadMode
 
-@BindEventBus
 class LoginActivity : BaseActivity() {
 
 
@@ -180,6 +175,7 @@ class LoginActivity : BaseActivity() {
                 loadingDialog?.loadSuccess()
                 CommonPref.instance()?.putString(UserRepository.LAST_PLATFORM, currentThirdPlatform!!)
                 EventBus.getDefault().post(UserEvent(true, result))
+                finish()
             }
 
             override fun error(throwable: Throwable?) {
@@ -188,14 +184,6 @@ class LoginActivity : BaseActivity() {
         }))
     }
 
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun LoginCallback(userEvent: UserEvent) {
-        if (userEvent.loginResult) {
-            GlideApp.with(this).load(userEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(iv_login_icon)
-            finish()
-        }
-    }
 
     override fun onBackPressed() {
         super.onBackPressed()

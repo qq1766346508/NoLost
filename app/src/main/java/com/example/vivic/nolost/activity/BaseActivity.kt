@@ -3,6 +3,7 @@ package com.example.vivic.nolost.activity
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
+import com.bumptech.glide.Glide
 
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.commonUtil.BindEventBus
@@ -31,6 +32,8 @@ open class BaseActivity : AppCompatActivity() {
         if (javaClass.isAnnotationPresent(BindEventBus::class.java)) {
             EventBus.getDefault().unregister(this)
         }
+        Glide.get(this).clearMemory()
+
     }
 
     companion object {
