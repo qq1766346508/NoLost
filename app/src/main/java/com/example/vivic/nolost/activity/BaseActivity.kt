@@ -12,7 +12,11 @@ import io.reactivex.disposables.CompositeDisposable
 import org.greenrobot.eventbus.EventBus
 
 open class BaseActivity : AppCompatActivity() {
-       protected val compositeDisposable: CompositeDisposable by lazy {
+    companion object {
+        private val TAG = BaseActivity::class.java.simpleName
+    }
+
+    protected val compositeDisposable: CompositeDisposable by lazy {
         CompositeDisposable()
     }
 
@@ -30,6 +34,13 @@ open class BaseActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.activity_left_to_right_in, R.anim.activity_left_to_right_out)
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        if (!compositeDisposable.isDisposed){
+            compositeDisposable.clear()
+        }
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy: " + javaClass.simpleName)
@@ -40,7 +51,5 @@ open class BaseActivity : AppCompatActivity() {
         compositeDisposable.clear()
     }
 
-    companion object {
-        private val TAG = BaseActivity::class.java.simpleName
-    }
+
 }

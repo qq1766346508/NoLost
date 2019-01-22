@@ -3,7 +3,6 @@ package com.example.vivic.nolost.lost;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -94,10 +93,10 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             tvCreatorName.setText(goods.getCreatorName());
             tvGoodsTime.setText(goods.getUpdatedAt());
             tvGoodsLocation.setText(goods.getLocation());
-            tvGoodsName.setText("物品名称："+goods.getName());
-            tvGoodsDetail.setText("物品详情："+goods.getDetail());
+            tvGoodsName.setText("物品名称：" + goods.getName());
+            tvGoodsDetail.setText("物品详情：" + goods.getDetail());
 
-            if (null == goods.getLocation() || TextUtils.isEmpty(goods.getLocation())) {
+            if (tvGoodsLocation.getText().toString().isEmpty()) {
                 tvGoodsLocation.setVisibility(View.INVISIBLE);
             }
 //            mpvGoodsPhoto.addItem(Uri.parse("https://avatars1.githubusercontent.com/u/7019862?s=88&v=4"));

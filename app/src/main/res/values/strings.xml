@@ -7,7 +7,7 @@
     <string name="toolbar_title">NoLost</string>
     <string name="nav_user">个人中心</string>
     <string name="nav_weather">天气</string>
-    <string name="user_center_username">昵称</string>
+    <string name="user_center_username">用户名</string>
     <string name="user_center_contact">联系方式</string>
     <string name="user_center_location">我的地址</string>
     <string name="user_center_avatar">头像</string>

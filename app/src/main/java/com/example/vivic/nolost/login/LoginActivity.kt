@@ -110,7 +110,7 @@ class LoginActivity : BaseActivity() {
         }
 
 
-        iv_login_qq.setOnClickListener {
+        iv_login_qq.setOnClickListener { it ->
             if (!NetworkUtil.isConnected()) {
                 ToastUtil.showToast("当前无网络")
                 return@setOnClickListener
@@ -186,7 +186,6 @@ class LoginActivity : BaseActivity() {
     override fun onBackPressed() {
         super.onBackPressed()
         loadingDialog?.loadFailed()
-        compositeDisposable.clear()
     }
 
     override fun onDestroy() {
