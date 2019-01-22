@@ -80,13 +80,19 @@ class LostFragment : BaseFragment() {
     }
 
 //另一种查询方法
-//    var query = BmobQuery<Goods>("Goods").apply {
-//        this.setLimit(QUERY_LIMIT)
-//        this.order("-createdAt")
-//    }
+//var query = BmobQuery<Goods>("Goods").apply {
+//    this.setLimit(QUERY_LIMIT)
+//    this.order("-createdAt")
+//}
 //    DataRepository.queryDataByTable(query, object : IBmobCallback<JSONArray> {
 //        override fun success(result: JSONArray?) {
 //            Log.d(TAG, result.toString())
+//
+//            for (i in 0..(result!!.length() - 1)) {
+//                var jsonObject = result.getJSONObject(i)
+//                var test = jsonObject.getJSONObject("createor")
+//                Log.i(TAG, test.getString("objectId"))
+//            }
 //            val goodsList = Gson().fromJson<List<Goods>>(result.toString(), object : TypeToken<List<Goods>>() {}.type)
 //            for (it in goodsList) {
 //                Log.d(TAG, "item:$it")

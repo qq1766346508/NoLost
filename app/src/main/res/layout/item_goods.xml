@@ -44,18 +44,6 @@
         app:layout_constraintStart_toStartOf="@id/gl_0.15v"
         app:layout_constraintTop_toBottomOf="@+id/tv_item_goods_createor" />
 
-    <TextView
-        android:id="@+id/tv_item_goods_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:drawableStart="@drawable/ic_location_on_blue_800_18dp"
-        android:text="足球场是大事发生范阿斯顿法德萨发的"
-        android:maxLength="15"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="11sp"
-        app:layout_constraintStart_toEndOf="@id/tv_item_goods_time"
-        app:layout_constraintTop_toBottomOf="@+id/tv_item_goods_createor" />
 
     <LinearLayout
         android:id="@+id/content"
@@ -93,6 +81,17 @@
             android:layout_height="wrap_content"
             app:editable="false"
             app:imageLayoutMode="DYNAMIC" />
+
+        <TextView
+            android:id="@+id/tv_item_goods_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:maxLength="15"
+            android:drawableStart="@drawable/ic_location_on_blue_800_18dp"
+            android:text="足球场是大事发生范阿斯顿法德萨发的"
+            android:textColor="@android:color/holo_blue_dark"
+            android:textSize="11sp" />
 
     </LinearLayout>
 

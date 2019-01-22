@@ -39,7 +39,7 @@ object DataRepository {
         bmobQuery.findObjectsByTable(object : QueryListener<JSONArray>() {
             override fun done(jsonArray: JSONArray, e: BmobException?) {
                 if (e == null) {
-                    Log.d(TAG, "queryDataByTable done: ${jsonArray.toString()}")
+                    Log.d(TAG, "queryDataByTable done: $jsonArray")
                     iBmobCallback.success(jsonArray)
                 } else {
                     Log.d(TAG, "queryDataByTable failed: $e")

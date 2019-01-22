@@ -9,6 +9,7 @@ import com.example.vivic.nolost.bmob.DataRepository;
 import java.util.List;
 
 import cn.bmob.v3.BmobQuery;
+import cn.bmob.v3.datatype.BmobPointer;
 import cn.bmob.v3.exception.BmobException;
 import cn.bmob.v3.listener.FindListener;
 import io.reactivex.disposables.Disposable;
