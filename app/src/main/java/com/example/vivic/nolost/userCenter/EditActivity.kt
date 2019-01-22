@@ -62,7 +62,7 @@ class EditActivity : BaseActivity() {
             }
         }
 
-        compositeDisposable.addAll(UserRepository.updateUserByNewUser(editUser, object : IBmobCallback<MyUser> {
+        compositeDisposable.add(UserRepository.updateUserByNewUser(editUser, object : IBmobCallback<MyUser> {
 
             override fun success(result: MyUser?) {
                 tv_edit_save.isEnabled = true
@@ -79,10 +79,5 @@ class EditActivity : BaseActivity() {
             }
 
         }))
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        compositeDisposable.clear()
     }
 }

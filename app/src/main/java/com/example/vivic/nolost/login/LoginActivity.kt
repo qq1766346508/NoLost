@@ -18,7 +18,6 @@ import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.pref.CommonPref
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_login.*
 import org.greenrobot.eventbus.EventBus
 
@@ -72,6 +71,7 @@ class LoginActivity : BaseActivity() {
                     ToastUtil.showToast("sign success,welcome:" + result?.username)
                     EventBus.getDefault().post(UserEvent(true, result))
                     btn_sign.isEnabled = true
+                    finish()
                 }
 
                 override fun error(throwable: Throwable?) {
@@ -149,6 +149,7 @@ class LoginActivity : BaseActivity() {
                 ToastUtil.showToast("login success,welcome:" + result?.username)
                 EventBus.getDefault().post(UserEvent(true, result))
                 btn_login.isEnabled = true
+                finish()
             }
 
             override fun error(throwable: Throwable?) {
@@ -191,6 +192,5 @@ class LoginActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         loadingDialog?.close()
-        compositeDisposable.clear()
     }
 }

@@ -36,6 +36,7 @@
         android:paddingStart="16dp">
 
         <FrameLayout
+            android:id="@+id/fl_user_avatar"
             android:background="@drawable/btn_selector"
             android:layout_width="match_parent"
             android:layout_height="75dp">
@@ -64,7 +65,7 @@
 
             <ImageView
                 android:layout_marginEnd="8dp"
-
+android:id="@+id/iv_user_center_avatar_aw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
@@ -139,6 +140,7 @@
                 android:layout_marginEnd="35dp" />
 
             <ImageView
+                android:id="@+id/iv_user_center_gender_aw"
                 android:layout_marginEnd="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

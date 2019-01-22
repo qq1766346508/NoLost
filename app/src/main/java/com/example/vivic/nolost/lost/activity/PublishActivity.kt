@@ -15,10 +15,7 @@ import com.example.vivic.nolost.bmob.DataRepository
 import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
-import com.example.vivic.nolost.lost.GoodsEvent
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_publish.*
-import org.greenrobot.eventbus.EventBus
 
 
 class PublishActivity : BaseActivity() {
@@ -59,7 +56,8 @@ class PublishActivity : BaseActivity() {
                 return@setOnClickListener
             }
             val goods = Goods().apply {
-                this.createor = BmobUser.getCurrentUser(MyUser::class.java)
+                this.creatorName = BmobUser.getCurrentUser(MyUser::class.java).username
+                this.creatorAvatar = BmobUser.getCurrentUser(MyUser::class.java).avatar
                 this.name = et_publish_goodsname.text.toString()
                 this.location = et_publish_goodslocation.text.toString()
                 this.detail = et_publish_goodsdetail.text.toString()
@@ -74,7 +72,6 @@ class PublishActivity : BaseActivity() {
             compositeDisposable.add(DataRepository.saveData(goods, object : IBmobCallback<String> {
                 override fun success(result: String?) {
                     ToastUtil.showToast("提交成功")
-                    EventBus.getDefault().post(GoodsEvent(goods, GoodsEvent.Operate.UPDATE))
                     finish()
                 }
 
@@ -89,6 +86,5 @@ class PublishActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        compositeDisposable.clear()
     }
 }

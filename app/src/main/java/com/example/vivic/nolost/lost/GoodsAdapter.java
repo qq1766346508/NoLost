@@ -3,6 +3,7 @@ package com.example.vivic.nolost.lost;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,16 +21,16 @@ import java.util.List;
 public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHolder> {
 
     private static final String TAG = GoodsAdapter.class.getSimpleName();
-    private List<Goods> goodsList;
+    private List<Goods> goodsList = new ArrayList<>();
     private Context context;
 
     public GoodsAdapter(List<Goods> goodsList, Context context) {
         this.context = context;
-        if (goodsList == null) {
-            this.goodsList = new ArrayList<>();
-        } else {
-            this.goodsList = goodsList;
-        }
+        this.goodsList = goodsList;
+    }
+
+    public GoodsAdapter(Context context) {
+        this.context = context;
     }
 
     @NonNull
@@ -60,8 +61,10 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
     }
 
     public void addData(List<Goods> list) {
+        int positionStart = goodsList.size();
         goodsList.addAll(list);
-        notifyDataSetChanged();
+        int itemCount = list.size();
+        notifyItemRangeChanged(positionStart, itemCount);
     }
 
     public class GoodsViewHolder extends RecyclerView.ViewHolder {
@@ -72,7 +75,6 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         TextView tvGoodsLocation;
         TextView tvGoodsName;
         TextView tvGoodsDetail;
-
         MultiPictureView mpvGoodsPhoto;
 
 
@@ -88,12 +90,16 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         }
 
         public void initItem(Goods goods) {
-            GlideApp.with(context).load(goods.getCreateor().getAvatar()).placeholder(R.drawable.icon_default_avatar).into(ivCreatorAvatar);
-            tvCreatorName.setText(goods.getName());
+            GlideApp.with(context).load(goods.getCreatorAvatar()).placeholder(R.drawable.icon_default_avatar).into(ivCreatorAvatar);
+            tvCreatorName.setText(goods.getCreatorName());
             tvGoodsTime.setText(goods.getUpdatedAt());
             tvGoodsLocation.setText(goods.getLocation());
-            tvGoodsName.setText(goods.getName());
-            tvGoodsDetail.setText(goods.getDetail());
+            tvGoodsName.setText("物品名称："+goods.getName());
+            tvGoodsDetail.setText("物品详情："+goods.getDetail());
+
+            if (null == goods.getLocation() || TextUtils.isEmpty(goods.getLocation())) {
+                tvGoodsLocation.setVisibility(View.INVISIBLE);
+            }
 //            mpvGoodsPhoto.addItem(Uri.parse("https://avatars1.githubusercontent.com/u/7019862?s=88&v=4"));
         }
     }

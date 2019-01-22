@@ -6,16 +6,15 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import cn.bmob.v3.BmobUser
-import com.example.vivic.nolost.bmob.UserRepository
 import com.example.vivic.nolost.GlideApp
-import com.example.vivic.nolost.bmob.IBmobCallback
-import com.example.vivic.nolost.login.UserEvent
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser
+import com.example.vivic.nolost.bmob.IBmobCallback
+import com.example.vivic.nolost.bmob.UserRepository
 import com.example.vivic.nolost.commonUtil.bottomDialog.CommonBottomDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
-import io.reactivex.disposables.CompositeDisposable
+import com.example.vivic.nolost.login.UserEvent
 import kotlinx.android.synthetic.main.activity_user_center.*
 import org.greenrobot.eventbus.EventBus
 
@@ -30,7 +29,6 @@ class UserCenterActivity : BaseActivity() {
         const val EDIT_CONTENT = "edit_content"
         const val EDIT_RESULT = "edit_result"
     }
-
 
 
     private val currentUser: MyUser by lazy {
@@ -78,12 +76,19 @@ class UserCenterActivity : BaseActivity() {
     }
 
     private fun initView() {
+        //第三方用户不可更改常规信息
+        if (!currentUser.platform.isNullOrEmpty()) {
+            fl_user_avatar.isEnabled = false
+            fl_user_username.isEnabled = false
+            fl_user_center_gender.isEnabled = false
+            iv_user_center_avatar_aw.visibility = View.INVISIBLE
+            iv_user_center_username_aw.visibility = View.INVISIBLE
+            iv_user_center_gender_aw.visibility = View.INVISIBLE
+        }
         fl_user_center_gender.setOnClickListener {
             fl_user_center_gender.isEnabled = false
             genderDialog.show()
         }
-        fl_user_username.isEnabled = currentUser.platform.isNullOrEmpty()
-        iv_user_center_username_aw.visibility = if (currentUser.platform.isNullOrEmpty()) View.VISIBLE else View.INVISIBLE
         fl_user_username.setOnClickListener {
             val intent = Intent(this@UserCenterActivity, EditActivity::class.java).apply {
                 this.putExtra(EDIT_TITLE, getString(R.string.user_center_username))
@@ -147,7 +152,6 @@ class UserCenterActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        EventBus.getDefault().post(UserEvent(true, BmobUser.getCurrentUser(MyUser::class.java)))
-        compositeDisposable.clear()
+        EventBus.getDefault().post(UserEvent(true, BmobUser.getCurrentUser(MyUser::class.java))) //更新抽屉
     }
 }

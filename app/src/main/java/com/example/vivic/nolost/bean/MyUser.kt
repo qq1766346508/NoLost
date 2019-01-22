@@ -13,7 +13,7 @@ class MyUser : BmobUser() {
 
     override fun toString(): String {
         return " MyUser:" +
-                ", platform:" + platform +
+                " platform:" + platform +
                 ", Username:" + username +
                 ", gender:" + gender +
                 ", location:" + location +

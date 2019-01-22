@@ -8,8 +8,10 @@ class Goods : BmobObject() {
     var location: String? = null
     var detail: String? = null
     var photoList: List<String>? = null
-    var createor: MyUser? = null
     var type: String? = null
+    var creatorName: String? = null
+    var creatorAvatar: String? = null
+
 
     companion object {
         const val TYPE_LOST = "lost"
@@ -23,6 +25,6 @@ class Goods : BmobObject() {
                 ",location:$location" +
                 ",detail:$detail" +
                 ",photoList:$photoList" +
-                "\n createor:$createor \n"
+                "\ncreatorName:$creatorName,creatorAvatar:$creatorAvatar \n"
     }
 }

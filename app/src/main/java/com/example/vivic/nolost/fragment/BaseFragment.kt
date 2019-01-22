@@ -30,6 +30,7 @@ open class BaseFragment : Fragment() {
         if (this.javaClass.isAnnotationPresent(BindEventBus::class.java)) {
             EventBus.getDefault().unregister(this)
         }
+        compositeDisposable.clear()
     }
 
 

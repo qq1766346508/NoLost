@@ -50,9 +50,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:drawableStart="@drawable/ic_location_on_blue_800_18dp"
-        android:text="足球场"
+        android:text="足球场是大事发生范阿斯顿法德萨发的"
+        android:maxLength="15"
         android:textColor="@android:color/darker_gray"
-        android:textSize="12sp"
+        android:textSize="11sp"
         app:layout_constraintStart_toEndOf="@id/tv_item_goods_time"
         app:layout_constraintTop_toBottomOf="@+id/tv_item_goods_createor" />
 
