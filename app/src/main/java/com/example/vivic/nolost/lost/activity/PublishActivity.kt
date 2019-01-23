@@ -29,9 +29,7 @@ class PublishActivity : BaseActivity() {
     private val inputMethodManager: InputMethodManager by lazy {
         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
-    private val compositeDisposable: CompositeDisposable by lazy {
-        CompositeDisposable()
-    }
+
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -75,7 +73,7 @@ class PublishActivity : BaseActivity() {
                 return@setOnClickListener
             }
 
-            compositeDisposable?.add(DataRepository.saveData(goods, object : IBmobCallback<String> {
+            addSubscribe(DataRepository.saveData(goods, object : IBmobCallback<String> {
                 override fun success(result: String?) {
                     ToastUtil.showToast("提交成功")
                     finish()
@@ -92,8 +90,5 @@ class PublishActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (!compositeDisposable?.isDisposed!!) {
-            compositeDisposable?.clear()
-        }
     }
 }

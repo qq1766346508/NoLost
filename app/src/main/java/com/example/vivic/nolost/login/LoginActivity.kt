@@ -37,9 +37,6 @@ class LoginActivity : BaseActivity() {
         val TAG = LoginActivity::class.java.simpleName
     }
 
-    private val compositeDisposable: CompositeDisposable by lazy {
-        CompositeDisposable()
-    }
 
     private var loadingDialog: LoadingDialog? = null
     private var currentThirdPlatform: String? = null
@@ -79,7 +76,7 @@ class LoginActivity : BaseActivity() {
                 this.username = et_login_account.text.toString()
                 this.setPassword(et_login_password.text.toString())
             }
-            compositeDisposable?.add(UserRepository.signByUser(myUser, object : IBmobCallback<MyUser> {
+            addSubscribe(UserRepository.signByUser(myUser, object : IBmobCallback<MyUser> {
                 override fun success(result: MyUser?) {
                     ToastUtil.showToast("sign success,welcome:" + result?.username)
                     btn_sign.isEnabled = true
@@ -157,7 +154,7 @@ class LoginActivity : BaseActivity() {
             this.username = et_login_account.text.toString()
             this.setPassword(et_login_password.text.toString())
         }
-        compositeDisposable?.add(UserRepository.loginByUser(myUser, object : IBmobCallback<MyUser> {
+        addSubscribe(UserRepository.loginByUser(myUser, object : IBmobCallback<MyUser> {
             override fun success(result: MyUser?) {
                 ToastUtil.showToast("login success,welcome:" + result?.username)
                 EventBus.getDefault().post(UserEvent(true, result))
@@ -205,8 +202,5 @@ class LoginActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         loadingDialog?.close()
-        if (!compositeDisposable?.isDisposed!!) {
-            compositeDisposable?.clear()
-        }
     }
 }

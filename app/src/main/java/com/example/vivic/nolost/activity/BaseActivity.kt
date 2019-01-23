@@ -6,12 +6,16 @@ import android.util.Log
 import com.bumptech.glide.Glide
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.commonUtil.BindEventBus
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import org.greenrobot.eventbus.EventBus
 
 open class BaseActivity : AppCompatActivity() {
     companion object {
         private val TAG = BaseActivity::class.java.simpleName
     }
+
+    private var compositeDisposable: CompositeDisposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +38,24 @@ open class BaseActivity : AppCompatActivity() {
             EventBus.getDefault().unregister(this)
         }
         Glide.get(this).clearMemory()
+        unSubscribe()
     }
 
+    fun addSubscribe(disposable: Disposable) {
+        if (compositeDisposable == null) {
+            compositeDisposable = CompositeDisposable()
+        }
+        compositeDisposable?.add(disposable)
+    }
 
+    /**
+     * 如果不进行addSubscribe操作，compositeDisposable为空
+     */
+    fun unSubscribe() {
+        compositeDisposable?.let {
+            if (!it.isDisposed) {
+                it.dispose()
+            }
+        }
+    }
 }

@@ -18,7 +18,6 @@ import com.example.vivic.nolost.bmob.UserRepository
 import com.example.vivic.nolost.commonUtil.bottomDialog.CommonBottomDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.login.UserEvent
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_user_center.*
 import org.devio.takephoto.app.TakePhoto
 import org.devio.takephoto.app.TakePhotoImpl
@@ -64,9 +63,9 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
                 }
                 .build()
     }
-    private val compositeDisposable: CompositeDisposable by lazy {
-        CompositeDisposable()
-    }
+//    private val compositeDisposable: CompositeDisposable by lazy {
+//        CompositeDisposable()
+//    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -182,7 +181,7 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
 
     private fun uploadImage(imagePath: String) {
         val bmobFile = BmobFile(File(imagePath))
-        compositeDisposable?.add(FileRepository.uploadFile(bmobFile, object : FileRepository.IFileCallback {
+        addSubscribe(FileRepository.uploadFile(bmobFile, object : FileRepository.IFileCallback {
             override fun success(result: String?) {
                 updateAvatar(result)
             }
@@ -200,7 +199,7 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
     }
 
     private fun updateAvatar(avatar: String?) {
-        compositeDisposable?.add(UserRepository.updateUserByNewUser(MyUser().apply {
+        addSubscribe((UserRepository.updateUserByNewUser(MyUser().apply {
             this.avatar = avatar
         }, object : IBmobCallback<MyUser> {
             override fun success(result: MyUser?) {
@@ -212,13 +211,13 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
                 ToastUtil.showToast("更新失败" + throwable.toString())
                 fl_user_avatar.isEnabled = true
             }
-        }))
+        })))
     }
 
     private fun updateGender(gender: String) {
         val myUser = MyUser()
         myUser.gender = gender
-        compositeDisposable?.add(UserRepository.updateUserByNewUser(myUser, object : IBmobCallback<MyUser> {
+        addSubscribe((UserRepository.updateUserByNewUser(myUser, object : IBmobCallback<MyUser> {
             override fun success(result: MyUser?) {
                 fl_user_center_gender.isEnabled = true
                 when (gender) {
@@ -233,7 +232,7 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
                 ToastUtil.showToast("更新失败" + throwable.toString())
             }
 
-        }))
+        })))
     }
 
     private fun getTakePhoto(): TakePhoto {
@@ -251,8 +250,5 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().post(UserEvent(true, BmobUser.getCurrentUser(MyUser::class.java))) //更新抽屉
-        if (!compositeDisposable?.isDisposed!!) {
-            compositeDisposable?.clear()
-        }
     }
 }

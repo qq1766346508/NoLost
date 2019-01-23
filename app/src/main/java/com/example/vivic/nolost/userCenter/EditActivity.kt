@@ -24,9 +24,6 @@ class EditActivity : BaseActivity() {
     }
     private var title: String = ""
 
-    private val compositeDisposable: CompositeDisposable by lazy {
-        CompositeDisposable()
-    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,7 +63,7 @@ class EditActivity : BaseActivity() {
             }
         }
 
-        compositeDisposable?.add(UserRepository.updateUserByNewUser(editUser, object : IBmobCallback<MyUser> {
+        addSubscribe(UserRepository.updateUserByNewUser(editUser, object : IBmobCallback<MyUser> {
 
             override fun success(result: MyUser?) {
                 tv_edit_save.isEnabled = true
@@ -86,8 +83,5 @@ class EditActivity : BaseActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        if (!compositeDisposable?.isDisposed!!) {
-            compositeDisposable?.clear()
-        }
     }
 }
