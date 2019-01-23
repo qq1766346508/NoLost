@@ -32,7 +32,7 @@ class SearchOptionFragment : DialogFragment() {
 
     private fun initview() {
         val btnCancel = rootView!!.findViewById<Button>(R.id.btn_option_cancel)
-        btnCancel.setOnClickListener { v -> dismissAllowingStateLoss() }
+        btnCancel.setOnClickListener { dismissAllowingStateLoss() }
     }
 
 

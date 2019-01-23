@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_lost.*
 class LostFragment : BaseFragment() {
     companion object {
         private val TAG = LostFragment::class.java.simpleName
-        private val QUERY_LIMIT = 10
+        private val QUERY_LIMIT = 1
         private val GOODS_UPDATE_COUNT = 1
 
         fun newInstance(): LostFragment {
@@ -54,14 +54,14 @@ class LostFragment : BaseFragment() {
             querySkip = 0
             when (activity?.javaClass?.simpleName) {
                 MainActivity::class.java.simpleName -> loadGoods()
-                SearchActivity::class.java.simpleName -> loadGoodsByKey(key)
+                SearchActivity::class.java.simpleName -> loadGoodsByKey(key, true)
             }
             refreshLayout.finishRefresh(2000)
         }
         srl_lost_refresh.setOnLoadMoreListener { refreshLayout ->
             when (activity?.javaClass?.simpleName) {
                 MainActivity::class.java.simpleName -> loadGoods()
-                SearchActivity::class.java.simpleName -> loadGoodsByKey(key)
+                SearchActivity::class.java.simpleName -> loadGoodsByKey(key, false)
             }
             refreshLayout.finishLoadMore(2000)
         }
@@ -76,7 +76,7 @@ class LostFragment : BaseFragment() {
         })
         when (activity?.javaClass?.simpleName) {
             MainActivity::class.java.simpleName -> loadGoods()
-            SearchActivity::class.java.simpleName -> loadGoodsByKey(key)
+            SearchActivity::class.java.simpleName -> loadGoodsByKey(key, true)
         }
     }
 
@@ -100,8 +100,12 @@ class LostFragment : BaseFragment() {
      * 根据关键字准确搜索
      * key:关键字
      */
-    fun loadGoodsByKey(key: String?) {
+    fun loadGoodsByKey(key: String?, isFirstLoad: Boolean) {
         key?.let {
+            if (isFirstLoad) {
+                goodsAdapter?.clearData()
+                querySkip = 0
+            }
             this.key = key //用于刷新用
             val q1 = BmobQuery<Goods>().apply {
                 this.addWhereEqualTo("name", key)

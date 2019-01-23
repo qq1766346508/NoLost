@@ -34,7 +34,6 @@ class SearchActivity : BaseActivity() {
         ed_search_content.requestFocus()
         ed_search_content.setOnEditorActionListener { _, actionId, _ ->
             if (actionId == EditorInfo.IME_ACTION_DONE) {
-                inputMethodManager.hideSoftInputFromWindow(ed_search_content!!.windowToken, 0)
                 queryByKey()
             }
             false
@@ -48,11 +47,11 @@ class SearchActivity : BaseActivity() {
 
     private fun showSearchOption() {
         Log.d(TAG, "showSearchOptionFragment: ")
-        val searchOptionFragment = supportFragmentManager.findFragmentByTag(SearchOptionFragment::class.java.simpleName)
+        val searchOptionFragment = supportFragmentManager.findFragmentByTag(SearchOptionFragment.TAG)
         if (searchOptionFragment != null && searchOptionFragment.isAdded) {
             supportFragmentManager.beginTransaction().show(searchOptionFragment).commitAllowingStateLoss()
         } else {
-            SearchOptionFragment.instance.show(supportFragmentManager, SearchOptionFragment::class.java.simpleName)
+            SearchOptionFragment.instance.show(supportFragmentManager, SearchOptionFragment.TAG)
         }
     }
 
@@ -63,8 +62,9 @@ class SearchActivity : BaseActivity() {
     private fun queryByKey() {
         val key = ed_search_content.text.toString()
         if (!key.isEmpty()) {
+            inputMethodManager.hideSoftInputFromWindow(ed_search_content!!.windowToken, 0)
             av_search_loading.hide()
-            lostFragment?.loadGoodsByKey(key)
+            lostFragment?.loadGoodsByKey(key, true)
         }
     }
 
