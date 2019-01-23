@@ -62,11 +62,10 @@ class EditActivity : BaseActivity() {
             }
         }
 
-        compositeDisposable.add(UserRepository.updateUserByNewUser(editUser, object : IBmobCallback<MyUser> {
+        compositeDisposable?.add(UserRepository.updateUserByNewUser(editUser, object : IBmobCallback<MyUser> {
 
             override fun success(result: MyUser?) {
                 tv_edit_save.isEnabled = true
-                ToastUtil.showToast("更新成功")
                 val intent = Intent()
                 intent.putExtra(EDIT_RESULT, et_edit_content.text.toString())
                 setResult(Activity.RESULT_OK, intent)

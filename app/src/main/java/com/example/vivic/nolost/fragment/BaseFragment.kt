@@ -13,15 +13,14 @@ open class BaseFragment : Fragment() {
         private val TAG = "BaseFragment"
     }
 
-    protected val compositeDisposable: CompositeDisposable by lazy {
-        CompositeDisposable()
-    }
+    protected var compositeDisposable: CompositeDisposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (this.javaClass.isAnnotationPresent(BindEventBus::class.java)) {
             EventBus.getDefault().register(this)
         }
+        compositeDisposable = CompositeDisposable()
     }
 
     override fun onDestroy() {
@@ -30,7 +29,9 @@ open class BaseFragment : Fragment() {
         if (this.javaClass.isAnnotationPresent(BindEventBus::class.java)) {
             EventBus.getDefault().unregister(this)
         }
-        compositeDisposable.clear()
+        if (!compositeDisposable?.isDisposed!!) {
+            compositeDisposable?.clear()
+        }
     }
 
 

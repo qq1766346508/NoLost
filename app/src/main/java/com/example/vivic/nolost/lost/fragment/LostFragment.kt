@@ -76,7 +76,7 @@ class LostFragment : BaseFragment() {
             this.order("-createdAt")
             this.setSkip(querySkip)
         }
-        compositeDisposable.add(lostHelper?.getGoodList(query)!!)
+        compositeDisposable?.add(lostHelper?.getGoodList(query)!!)
     }
 
 //另一种查询方法

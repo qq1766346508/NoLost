@@ -16,9 +16,7 @@ open class BaseActivity : AppCompatActivity() {
         private val TAG = BaseActivity::class.java.simpleName
     }
 
-    protected val compositeDisposable: CompositeDisposable by lazy {
-        CompositeDisposable()
-    }
+    protected var compositeDisposable: CompositeDisposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,6 +24,7 @@ open class BaseActivity : AppCompatActivity() {
         if (javaClass.isAnnotationPresent(BindEventBus::class.java)) {
             EventBus.getDefault().register(this)
         }
+        compositeDisposable = CompositeDisposable()
         overridePendingTransition(R.anim.activity_right_to_left_in, R.anim.activity_right_to_left_out)
     }
 
@@ -36,8 +35,8 @@ open class BaseActivity : AppCompatActivity() {
 
     override fun onBackPressed() {
         super.onBackPressed()
-        if (!compositeDisposable.isDisposed){
-            compositeDisposable.clear()
+        if (!compositeDisposable?.isDisposed!!) {
+            compositeDisposable?.clear()
         }
     }
 
@@ -48,7 +47,9 @@ open class BaseActivity : AppCompatActivity() {
             EventBus.getDefault().unregister(this)
         }
         Glide.get(this).clearMemory()
-        compositeDisposable.clear()
+        if (!compositeDisposable?.isDisposed!!) {
+            compositeDisposable?.clear()
+        }
     }
 
 

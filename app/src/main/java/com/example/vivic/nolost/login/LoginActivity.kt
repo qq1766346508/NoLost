@@ -66,7 +66,7 @@ class LoginActivity : BaseActivity() {
                 this.username = et_login_account.text.toString()
                 this.setPassword(et_login_password.text.toString())
             }
-            compositeDisposable.add(UserRepository.signByUser(myUser, object : IBmobCallback<MyUser> {
+            compositeDisposable?.add(UserRepository.signByUser(myUser, object : IBmobCallback<MyUser> {
                 override fun success(result: MyUser?) {
                     ToastUtil.showToast("sign success,welcome:" + result?.username)
                     EventBus.getDefault().post(UserEvent(true, result))
@@ -144,7 +144,7 @@ class LoginActivity : BaseActivity() {
             this.username = et_login_account.text.toString()
             this.setPassword(et_login_password.text.toString())
         }
-        compositeDisposable.add(UserRepository.loginByUser(myUser, object : IBmobCallback<MyUser> {
+        compositeDisposable?.add(UserRepository.loginByUser(myUser, object : IBmobCallback<MyUser> {
             override fun success(result: MyUser?) {
                 ToastUtil.showToast("login success,welcome:" + result?.username)
                 EventBus.getDefault().post(UserEvent(true, result))
@@ -168,7 +168,7 @@ class LoginActivity : BaseActivity() {
      */
     private fun updateUserInfo(myUser: MyUser) {
         Log.i(TAG, "third User: " + myUser.toString())
-        compositeDisposable.add(UserRepository.updateUserByNewUser(myUser, object : IBmobCallback<MyUser> {
+        compositeDisposable?.add(UserRepository.updateUserByNewUser(myUser, object : IBmobCallback<MyUser> {
             override fun success(result: MyUser?) {
                 loadingDialog?.loadSuccess()
                 CommonPref.instance()?.putString(UserRepository.LAST_PLATFORM, currentThirdPlatform!!)

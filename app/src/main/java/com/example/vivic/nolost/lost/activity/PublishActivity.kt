@@ -69,7 +69,7 @@ class PublishActivity : BaseActivity() {
                 return@setOnClickListener
             }
 
-            compositeDisposable.add(DataRepository.saveData(goods, object : IBmobCallback<String> {
+            compositeDisposable?.add(DataRepository.saveData(goods, object : IBmobCallback<String> {
                 override fun success(result: String?) {
                     ToastUtil.showToast("提交成功")
                     finish()
