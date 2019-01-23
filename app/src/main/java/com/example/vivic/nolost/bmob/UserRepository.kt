@@ -59,6 +59,9 @@ object UserRepository {
     fun signOrLoginByUser(myUser: MyUser, iBmobCallback: IBmobCallback<MyUser>) {
     }
 
+    /**
+     * Bmob的第三方登录接口
+     */
     fun loginByThird(bmobThirdUserAuth: BmobUser.BmobThirdUserAuth, thirdUser: MyUser, iBmobCallback: IBmobCallback<MyUser>): Disposable {
         return BmobUser.loginWithAuthData(bmobThirdUserAuth, object : LogInListener<JSONObject>() {
             override fun done(p0: JSONObject?, p1: BmobException?) {

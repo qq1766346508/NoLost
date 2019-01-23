@@ -10,6 +10,7 @@ import com.example.vivic.nolost.R
 import com.example.vivic.nolost.bean.Goods
 import com.example.vivic.nolost.fragment.BaseFragment
 import com.example.vivic.nolost.lost.GoodsAdapter
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.fragment_lost.*
 
 class LostFragment : BaseFragment() {
@@ -25,6 +26,9 @@ class LostFragment : BaseFragment() {
         }
     }
 
+    private val compositeDisposable: CompositeDisposable by lazy {
+        CompositeDisposable()
+    }
     private var rootView: View? = null
     private var goodsAdapter: GoodsAdapter? = null
     private var lostHelper: LostHelper? = null
@@ -79,7 +83,14 @@ class LostFragment : BaseFragment() {
         compositeDisposable?.add(lostHelper?.getGoodList(query)!!)
     }
 
-//另一种查询方法
+    override fun onDestroy() {
+        super.onDestroy()
+        if (!compositeDisposable?.isDisposed!!) {
+            compositeDisposable?.clear()
+        }
+    }
+
+    //另一种查询方法
 //var query = BmobQuery<Goods>("Goods").apply {
 //    this.setLimit(QUERY_LIMIT)
 //    this.order("-createdAt")

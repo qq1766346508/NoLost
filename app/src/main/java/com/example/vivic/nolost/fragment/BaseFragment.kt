@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import com.example.vivic.nolost.commonUtil.BindEventBus
 import com.example.vivic.nolost.commonUtil.LeakCanaryUtils
-import io.reactivex.disposables.CompositeDisposable
 import org.greenrobot.eventbus.EventBus
 
 open class BaseFragment : Fragment() {
@@ -13,14 +12,11 @@ open class BaseFragment : Fragment() {
         private val TAG = "BaseFragment"
     }
 
-    protected var compositeDisposable: CompositeDisposable? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (this.javaClass.isAnnotationPresent(BindEventBus::class.java)) {
             EventBus.getDefault().register(this)
         }
-        compositeDisposable = CompositeDisposable()
     }
 
     override fun onDestroy() {
@@ -28,9 +24,6 @@ open class BaseFragment : Fragment() {
         LeakCanaryUtils.watch(this)
         if (this.javaClass.isAnnotationPresent(BindEventBus::class.java)) {
             EventBus.getDefault().unregister(this)
-        }
-        if (!compositeDisposable?.isDisposed!!) {
-            compositeDisposable?.clear()
         }
     }
 

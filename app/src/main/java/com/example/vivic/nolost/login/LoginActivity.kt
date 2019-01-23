@@ -2,10 +2,11 @@ package com.example.vivic.nolost.login
 
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import cn.bmob.v3.BmobUser
 import cn.bmob.v3.exception.BmobException
 import cn.sharesdk.sina.weibo.SinaWeibo
 import cn.sharesdk.tencent.qq.QQ
@@ -17,15 +18,27 @@ import com.example.vivic.nolost.bmob.UserRepository
 import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.pref.CommonPref
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
+import com.example.vivic.nolost.userCenter.UserCenterActivity
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_login.*
 import org.greenrobot.eventbus.EventBus
 
+
+/**
+ * 注册,成功后会跳去个人中心
+ * 登录，成功之后退出登录页
+ * 第三方登录，成功之后退出登录页
+ */
 class LoginActivity : BaseActivity() {
 
 
     companion object {
         val TAG = LoginActivity::class.java.simpleName
+    }
+
+    private val compositeDisposable: CompositeDisposable by lazy {
+        CompositeDisposable()
     }
 
     private var loadingDialog: LoadingDialog? = null
@@ -69,9 +82,9 @@ class LoginActivity : BaseActivity() {
             compositeDisposable?.add(UserRepository.signByUser(myUser, object : IBmobCallback<MyUser> {
                 override fun success(result: MyUser?) {
                     ToastUtil.showToast("sign success,welcome:" + result?.username)
-                    EventBus.getDefault().post(UserEvent(true, result))
                     btn_sign.isEnabled = true
                     finish()
+                    startActivity(Intent(this@LoginActivity, UserCenterActivity::class.java))
                 }
 
                 override fun error(throwable: Throwable?) {
@@ -162,24 +175,25 @@ class LoginActivity : BaseActivity() {
 
 
     /**
-     * 第三方登录成功之后，更改用户信息为第三方平台信息，并抛出通知
+     * 第三方登录成功之后,记录是哪个第三方平台的
+     * 2019/1/23 暂时去掉第三方登录成功后，自动更新用户信息
      *
      * @param myUser 用户信息为第三方平台信息
      */
     private fun updateUserInfo(myUser: MyUser) {
-        Log.i(TAG, "third User: " + myUser.toString())
-        compositeDisposable?.add(UserRepository.updateUserByNewUser(myUser, object : IBmobCallback<MyUser> {
-            override fun success(result: MyUser?) {
-                loadingDialog?.loadSuccess()
-                CommonPref.instance()?.putString(UserRepository.LAST_PLATFORM, currentThirdPlatform!!)
-                EventBus.getDefault().post(UserEvent(true, result))
-                finish()
-            }
-
-            override fun error(throwable: Throwable?) {
-                loadingDialog?.loadFailed()
-            }
-        }))
+//        Log.i(TAG, "third User: " + myUser.toString())
+//        compositeDisposable?.add(UserRepository.updateUserByNewUser(myUser, object : IBmobCallback<MyUser> {
+//            override fun success(result: MyUser?) {
+        loadingDialog?.loadSuccess()
+        CommonPref.instance()?.putString(UserRepository.LAST_PLATFORM, currentThirdPlatform!!)
+        EventBus.getDefault().post(UserEvent(true, BmobUser.getCurrentUser(myUser::class.java)))
+        finish()
+//            }
+//
+//            override fun error(throwable: Throwable?) {
+//                loadingDialog?.loadFailed()
+//            }
+//        }))
     }
 
 
@@ -191,5 +205,8 @@ class LoginActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         loadingDialog?.close()
+        if (!compositeDisposable?.isDisposed!!) {
+            compositeDisposable?.clear()
+        }
     }
 }

@@ -18,6 +18,7 @@ import com.example.vivic.nolost.bmob.UserRepository
 import com.example.vivic.nolost.commonUtil.bottomDialog.CommonBottomDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.login.UserEvent
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_user_center.*
 import org.devio.takephoto.app.TakePhoto
 import org.devio.takephoto.app.TakePhotoImpl
@@ -62,6 +63,9 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
                     fl_user_center_gender.isEnabled = true
                 }
                 .build()
+    }
+    private val compositeDisposable: CompositeDisposable by lazy {
+        CompositeDisposable()
     }
 
 
@@ -239,8 +243,16 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
         return takePhoto as TakePhoto
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        EventBus.getDefault().post(UserEvent(true, BmobUser.getCurrentUser(MyUser::class.java))) //更新抽屉
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         EventBus.getDefault().post(UserEvent(true, BmobUser.getCurrentUser(MyUser::class.java))) //更新抽屉
+        if (!compositeDisposable?.isDisposed!!) {
+            compositeDisposable?.clear()
+        }
     }
 }

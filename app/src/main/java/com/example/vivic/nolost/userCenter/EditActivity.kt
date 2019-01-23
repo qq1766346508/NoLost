@@ -24,6 +24,10 @@ class EditActivity : BaseActivity() {
     }
     private var title: String = ""
 
+    private val compositeDisposable: CompositeDisposable by lazy {
+        CompositeDisposable()
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -78,5 +82,12 @@ class EditActivity : BaseActivity() {
             }
 
         }))
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (!compositeDisposable?.isDisposed!!) {
+            compositeDisposable?.clear()
+        }
     }
 }

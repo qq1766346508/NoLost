@@ -15,6 +15,7 @@ import com.example.vivic.nolost.bmob.DataRepository
 import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
+import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_publish.*
 
 
@@ -28,6 +29,10 @@ class PublishActivity : BaseActivity() {
     private val inputMethodManager: InputMethodManager by lazy {
         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
+    private val compositeDisposable: CompositeDisposable by lazy {
+        CompositeDisposable()
+    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,4 +90,10 @@ class PublishActivity : BaseActivity() {
         ll_publish_root.setOnClickListener { inputMethodManager.hideSoftInputFromWindow(et_publish_goodsname.windowToken, 0) }
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        if (!compositeDisposable?.isDisposed!!) {
+            compositeDisposable?.clear()
+        }
+    }
 }

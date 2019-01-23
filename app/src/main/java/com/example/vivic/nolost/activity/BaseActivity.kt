@@ -4,11 +4,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.util.Log
 import com.bumptech.glide.Glide
-
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.commonUtil.BindEventBus
-import io.reactivex.disposables.CompositeDisposable
-
 import org.greenrobot.eventbus.EventBus
 
 open class BaseActivity : AppCompatActivity() {
@@ -16,28 +13,18 @@ open class BaseActivity : AppCompatActivity() {
         private val TAG = BaseActivity::class.java.simpleName
     }
 
-    protected var compositeDisposable: CompositeDisposable? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "onCreate: " + javaClass.simpleName)
         if (javaClass.isAnnotationPresent(BindEventBus::class.java)) {
             EventBus.getDefault().register(this)
         }
-        compositeDisposable = CompositeDisposable()
         overridePendingTransition(R.anim.activity_right_to_left_in, R.anim.activity_right_to_left_out)
     }
 
     override fun finish() {
         super.finish()
         overridePendingTransition(R.anim.activity_left_to_right_in, R.anim.activity_left_to_right_out)
-    }
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        if (!compositeDisposable?.isDisposed!!) {
-            compositeDisposable?.clear()
-        }
     }
 
     override fun onDestroy() {
@@ -47,9 +34,6 @@ open class BaseActivity : AppCompatActivity() {
             EventBus.getDefault().unregister(this)
         }
         Glide.get(this).clearMemory()
-        if (!compositeDisposable?.isDisposed!!) {
-            compositeDisposable?.clear()
-        }
     }
 
 
