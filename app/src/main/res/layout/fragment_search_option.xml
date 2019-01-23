@@ -23,24 +23,28 @@
             android:text="物品状态:" />
 
         <RadioGroup
+            android:id="@+id/rg_option_goodstype"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
             android:orientation="horizontal">
 
             <RadioButton
+                android:id="@+id/rb_option_goods_all"
                 style="@style/option_button_style"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
                 android:text="全部" />
 
             <RadioButton
+                android:id="@+id/rb_option_goods_lost"
                 style="@style/option_button_style"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
                 android:text="丢失" />
 
             <RadioButton
+                android:id="@+id/rb_option_goods_found"
                 style="@style/option_button_style"
                 android:layout_width="60dp"
                 android:layout_height="30dp"
@@ -76,6 +80,7 @@
                 android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:maxLength="12"
+                android:imeOptions="actionNext"
                 android:singleLine="true"
                 android:textColor="#000"
                 android:textSize="14sp"
@@ -109,6 +114,7 @@
                 android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:maxLength="12"
+                android:imeOptions="actionDone"
                 android:singleLine="true"
                 android:textColor="#000"
                 android:textSize="14sp" />

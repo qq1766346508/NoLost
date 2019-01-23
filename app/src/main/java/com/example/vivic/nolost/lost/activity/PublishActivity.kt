@@ -88,7 +88,4 @@ class PublishActivity : BaseActivity() {
         ll_publish_root.setOnClickListener { inputMethodManager.hideSoftInputFromWindow(et_publish_goodsname.windowToken, 0) }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 }

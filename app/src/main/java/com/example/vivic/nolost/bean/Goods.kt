@@ -15,6 +15,7 @@ class Goods : BmobObject() {
 
 
     companion object {
+        const val TYPE_ALL = ""
         const val TYPE_LOST = "lost"
         const val TYPE_FOUND = "found"
     }

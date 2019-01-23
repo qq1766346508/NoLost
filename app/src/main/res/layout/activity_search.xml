@@ -66,11 +66,11 @@
 
     </FrameLayout>
 
-    <com.wang.avi.AVLoadingIndicatorView
-        android:id="@+id/av_search_loading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        app:indicatorColor="@color/standard_color"
-        app:indicatorName="PacmanIndicator" />
+    <!--<com.wang.avi.AVLoadingIndicatorView-->
+        <!--android:id="@+id/av_search_loading"-->
+        <!--android:layout_width="wrap_content"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_gravity="center"-->
+        <!--app:indicatorColor="@color/standard_color"-->
+        <!--app:indicatorName="PacmanIndicator" />-->
 </FrameLayout>

@@ -8,6 +8,7 @@ import android.view.inputmethod.InputMethodManager
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.Goods
+import com.example.vivic.nolost.lost.fragment.LoadModel
 import com.example.vivic.nolost.lost.fragment.LostFragment
 import kotlinx.android.synthetic.main.activity_search.*
 
@@ -41,7 +42,7 @@ class SearchActivity : BaseActivity() {
         inputMethodManager.showSoftInput(ed_search_content, 0)
         btn_search_option.setOnClickListener { showSearchOption() }
         iv_search_go.setOnClickListener { queryByKey() }
-        lostFragment = LostFragment.newInstance()
+        lostFragment = LostFragment.newInstance(LoadModel.LOAD_MODEL_SEARCH)
         supportFragmentManager?.beginTransaction()?.replace(R.id.search_container, lostFragment!!)?.commitAllowingStateLoss()
     }
 
@@ -63,7 +64,6 @@ class SearchActivity : BaseActivity() {
         val key = ed_search_content.text.toString()
         if (!key.isEmpty()) {
             inputMethodManager.hideSoftInputFromWindow(ed_search_content!!.windowToken, 0)
-            av_search_loading.hide()
             lostFragment?.loadGoodsByKey(key, true)
         }
     }
