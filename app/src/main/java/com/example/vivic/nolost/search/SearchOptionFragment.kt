@@ -14,7 +14,7 @@ class SearchOptionFragment : DialogFragment() {
 
     companion object {
 
-        private val TAG = SearchOptionFragment::class.java.simpleName
+        val TAG = SearchOptionFragment::class.java.simpleName
 
         val instance: SearchOptionFragment
             get() = SearchOptionFragment()

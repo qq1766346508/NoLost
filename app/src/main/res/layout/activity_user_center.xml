@@ -13,6 +13,7 @@
         android:background="@color/standard_color">
 
         <ImageView
+            android:background="@drawable/btn_selector"
             android:id="@+id/iv_user_center_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

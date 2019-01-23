@@ -17,20 +17,20 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.vivic.nolost.GlideApp
+import com.example.vivic.nolost.R
+import com.example.vivic.nolost.bean.MyUser
+import com.example.vivic.nolost.bmob.UserRepository
+import com.example.vivic.nolost.commonUtil.BindEventBus
+import com.example.vivic.nolost.commonUtil.confirmDialog.ConfirmDialog
+import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.login.LogOutEvent
 import com.example.vivic.nolost.login.LoginActivity
 import com.example.vivic.nolost.login.UserEvent
 import com.example.vivic.nolost.lost.activity.PublishActivity
 import com.example.vivic.nolost.lost.fragment.LostFragment
-import com.example.vivic.nolost.R
-import com.example.vivic.nolost.bean.MyUser
-import com.example.vivic.nolost.commonUtil.BindEventBus
-import com.example.vivic.nolost.commonUtil.confirmDialog.ConfirmDialog
-import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.search.SearchActivity
 import com.example.vivic.nolost.userCenter.GenderHelper
 import com.example.vivic.nolost.userCenter.UserCenterActivity
-import com.example.vivic.nolost.bmob.UserRepository
 import kotlinx.android.synthetic.main.activity_main.*
 import org.greenrobot.eventbus.EventBus
 import org.greenrobot.eventbus.Subscribe
@@ -76,7 +76,7 @@ class MainActivity : BaseActivity() {
 
             true
         }
-        supportFragmentManager.beginTransaction().replace(R.id.fl_main_container, LostFragment.newInstance(null)).commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().replace(R.id.fl_main_container, LostFragment.newInstance()).commitAllowingStateLoss()
         initNavigationView()
     }
 
