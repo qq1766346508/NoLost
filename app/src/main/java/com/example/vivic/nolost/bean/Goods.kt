@@ -9,6 +9,7 @@ class Goods : BmobObject() {
     var detail: String? = null
     var photoList: List<String>? = null
     var type: String? = null
+    var creatorObjectId: String? = null
     var creatorName: String? = null
     var creatorAvatar: String? = null
 
@@ -25,6 +26,6 @@ class Goods : BmobObject() {
                 ",location:$location" +
                 ",detail:$detail" +
                 ",photoList:$photoList" +
-                "\ncreatorName:$creatorName,creatorAvatar:$creatorAvatar \n"
+                "\ncreatorObjectId:${creatorObjectId}creatorName:$creatorName,creatorAvatar:$creatorAvatar \n"
     }
 }

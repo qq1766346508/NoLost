@@ -147,10 +147,12 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
 
     override fun takeCancel() {
         Log.d(TAG, "TakePhoto,Cancel: ")
+        fl_user_avatar.isEnabled = true
     }
 
     override fun takeFail(result: TResult?, msg: String?) {
         Log.d(TAG, "TakePhoto,Fail: $msg")
+        fl_user_avatar.isEnabled = true
     }
 
     override fun invoke(invokeParam: InvokeParam): PermissionManager.TPermissionType {

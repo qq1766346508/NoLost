@@ -56,6 +56,7 @@ class PublishActivity : BaseActivity() {
                 return@setOnClickListener
             }
             val goods = Goods().apply {
+                this.creatorObjectId = BmobUser.getCurrentUser(MyUser::class.java).objectId
                 this.creatorName = BmobUser.getCurrentUser(MyUser::class.java).username
                 this.creatorAvatar = BmobUser.getCurrentUser(MyUser::class.java).avatar
                 this.name = et_publish_goodsname.text.toString()
@@ -84,7 +85,4 @@ class PublishActivity : BaseActivity() {
         ll_publish_root.setOnClickListener { inputMethodManager.hideSoftInputFromWindow(et_publish_goodsname.windowToken, 0) }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 }

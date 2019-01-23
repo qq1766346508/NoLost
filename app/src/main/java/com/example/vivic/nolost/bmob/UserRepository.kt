@@ -209,6 +209,21 @@ object UserRepository {
         })
     }
 
+    fun queryUserByObject(objectId: String, iBmobCallback: IBmobCallback<MyUser>) {
+        val query = BmobQuery<MyUser>()
+        query.getObject(objectId, object : QueryListener<MyUser>() {
+            override fun done(p0: MyUser?, p1: BmobException?) {
+                if (p1 == null) {
+                    Log.d(TAG, "queryByUser success,user:$p0")
+                    iBmobCallback.success(p0)
+                } else {
+                    Log.d(TAG, "queryByUser failed,exception:$p1")
+                    iBmobCallback.error(p1)
+                }
+            }
+        })
+    }
+
     fun logOut() {
         val currentUser = BmobUser.getCurrentUser(MyUser::class.java)
         if (currentUser == null) {
