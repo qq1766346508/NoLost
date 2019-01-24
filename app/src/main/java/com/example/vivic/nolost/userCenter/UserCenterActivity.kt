@@ -178,7 +178,6 @@ class UserCenterActivity : BaseActivity() {
         }, object : IBmobCallback<MyUser> {
             override fun success(result: MyUser?) {
                 GlideApp.with(this@UserCenterActivity).load(avatar).into(iv_user_center_avatar)
-
             }
 
             override fun error(throwable: Throwable?) {
@@ -207,12 +206,6 @@ class UserCenterActivity : BaseActivity() {
             }
 
         })))
-    }
-
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        EventBus.getDefault().post(UserEvent(true, BmobUser.getCurrentUser(MyUser::class.java))) //更新抽屉
     }
 
     override fun onDestroy() {

@@ -31,6 +31,11 @@ open class BaseActivity : AppCompatActivity() {
         overridePendingTransition(R.anim.activity_left_to_right_in, R.anim.activity_left_to_right_out)
     }
 
+    override fun onBackPressed() {
+        super.onBackPressed()
+        unSubscribe()
+    }
+
     override fun onDestroy() {
         super.onDestroy()
         Log.d(TAG, "onDestroy: " + javaClass.simpleName)

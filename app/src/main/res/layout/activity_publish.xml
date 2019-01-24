@@ -200,6 +200,7 @@
                 android:textSize="14sp" />
 
             <android.support.v7.widget.RecyclerView
+                android:layout_gravity="center_horizontal"
                 android:id="@+id/rv_publish_photo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
