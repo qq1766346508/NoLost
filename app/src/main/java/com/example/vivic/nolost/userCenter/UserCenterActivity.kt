@@ -13,9 +13,9 @@ import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.bmob.FileRepository
 import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.bmob.UserRepository
-import com.example.vivic.nolost.commonUtil.TakePhotoActivity
-import com.example.vivic.nolost.commonUtil.TakePhotoActivity.TakeMode.PickFromGalleryWithCrop
-import com.example.vivic.nolost.commonUtil.TakePhotoActivity.TakeMode.TAKE_MODE
+import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity
+import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.PickFromGalleryWithCrop
+import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE_MODE
 import com.example.vivic.nolost.commonUtil.bottomDialog.CommonBottomDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.login.UserEvent
@@ -98,7 +98,7 @@ class UserCenterActivity : BaseActivity() {
         iv_user_center_back.setOnClickListener { finish() }
 
         fl_user_avatar.setOnClickListener {
-            val intent = Intent(this@UserCenterActivity, TakePhotoActivity::class.java).apply {
+            val intent = Intent(this@UserCenterActivity, CommonTakePhotoActivity::class.java).apply {
                 this.putExtra(TAKE_MODE, PickFromGalleryWithCrop)
             }
             startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO)
@@ -141,7 +141,7 @@ class UserCenterActivity : BaseActivity() {
                 REQUEST_CODE_USERNAME -> tv_user_center_username.text = data?.getStringExtra(EDIT_RESULT)
                 REQUEST_CODE_CONTACT -> tv_user_contact.text = data?.getStringExtra(EDIT_RESULT)
                 REQUEST_CODE_LOCATION -> tv_user_location.text = data?.getStringExtra(EDIT_RESULT)
-                REQUEST_CODE_TAKE_PHOTO -> getPhotoPath(data?.getStringArrayListExtra(TakePhotoActivity.TakeMode.TAKE_RESULT))
+                REQUEST_CODE_TAKE_PHOTO -> getPhotoPath(data?.getStringArrayListExtra(CommonTakePhotoActivity.TakeMode.TAKE_RESULT))
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
@@ -157,15 +157,15 @@ class UserCenterActivity : BaseActivity() {
     private fun uploadImage(imagePath: String) {
         val bmobFile = BmobFile(File(imagePath))
         addSubscribe(FileRepository.uploadFile(bmobFile, object : FileRepository.IFileCallback {
-            override fun success(result: String?) {
-                updateAvatar(result)
+            override fun success(url: String?) {
+                updateAvatar(url)
             }
 
             override fun error(throwable: Throwable?) {
                 ToastUtil.showToast("上传图片错误，$throwable")
             }
 
-            override fun progress(int: Int?) {
+            override fun progress(progress: Int?) {
 
             }
 

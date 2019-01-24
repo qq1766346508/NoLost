@@ -15,6 +15,10 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ *
+ * 多图展示recyclerview
+ */
 public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.PhotoViewHolder> {
 
 
@@ -58,20 +62,23 @@ public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.Ph
         notifyItemRangeChanged(beforeAddCount, addCount);
     }
 
+    public List<String> getPhotoPathList() {
+        return photoPathList;
+    }
 
     public class PhotoViewHolder extends RecyclerView.ViewHolder {
 
-        public ImageView ivPhoto;
-        public ImageView ivDelete;
+        private ImageView ivPhoto;
+        ImageView ivDelete;
 
 
-        public PhotoViewHolder(@NonNull View itemView) {
+        PhotoViewHolder(@NonNull View itemView) {
             super(itemView);
             ivPhoto = itemView.findViewById(R.id.iv_item_photo);
             ivDelete = itemView.findViewById(R.id.iv_item_delete);
         }
 
-        public void initItem(String imagePath, int position) {
+        void initItem(String imagePath, int position) {
             GlideApp.with(context).asDrawable().load(new File(imagePath)).centerCrop().into(ivPhoto);
             ivDelete.setOnClickListener(v -> {
                 photoPathList.remove(position);

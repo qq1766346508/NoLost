@@ -16,11 +16,11 @@ import com.example.vivic.nolost.bean.Goods
 import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.bmob.DataRepository
 import com.example.vivic.nolost.bmob.IBmobCallback
+import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity
+import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.PickMultiple
+import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE_MODE
 import com.example.vivic.nolost.commonUtil.MultiPhotoAdapter
 import com.example.vivic.nolost.commonUtil.NetworkUtil
-import com.example.vivic.nolost.commonUtil.TakePhotoActivity
-import com.example.vivic.nolost.commonUtil.TakePhotoActivity.TakeMode.PickMultiple
-import com.example.vivic.nolost.commonUtil.TakePhotoActivity.TakeMode.TAKE_MODE
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import kotlinx.android.synthetic.main.activity_publish.*
 
@@ -65,44 +65,55 @@ class PublishActivity : BaseActivity() {
                 ToastUtil.showToast("当前无网络")
                 return@setOnClickListener
             }
-            val goods = Goods().apply {
-                this.creatorObjectId = BmobUser.getCurrentUser(MyUser::class.java).objectId
-                this.creatorName = BmobUser.getCurrentUser(MyUser::class.java).username
-                this.creatorAvatar = BmobUser.getCurrentUser(MyUser::class.java).avatar
-                this.name = et_publish_goodsname.text.toString()
-                this.location = et_publish_goodslocation.text.toString()
-                this.detail = et_publish_goodsdetail.text.toString()
-                this.type = if (rg_publish_goodstype.checkedRadioButtonId == rb_publish_goods_lost.id) Goods.TYPE_LOST else Goods.TYPE_FOUND
-            }
-            Log.i(TAG, goods.toString())
-            if (goods.name.isNullOrEmpty() || goods.type.isNullOrEmpty()) {
+            if (et_publish_goodsname.text.toString().isEmpty()) {
                 til_publish_goodsname.error = "物品名称不能为空"
                 return@setOnClickListener
             }
-
-            addSubscribe(DataRepository.saveData(goods, object : IBmobCallback<String> {
-                override fun success(result: String?) {
-                    ToastUtil.showToast("提交成功")
-                    finish()
-                }
-
-                override fun error(throwable: Throwable?) {
-                    ToastUtil.showToast("提交失败,${throwable.toString()}")
-                }
-
-            }))
+            upLoadMultiPhoto(photoAdapter?.photoPathList!!)
         }
         ll_publish_root.setOnClickListener { inputMethodManager.hideSoftInputFromWindow(et_publish_goodsname.windowToken, 0) }
+
         val gridLayoutManager = GridLayoutManager(this, 3)
         rv_publish_photo.layoutManager = gridLayoutManager
         photoAdapter = MultiPhotoAdapter(this)
         rv_publish_photo.adapter = photoAdapter
         ll_add_photo.setOnClickListener {
-            val intent = Intent(this@PublishActivity, TakePhotoActivity::class.java).apply {
+            val intent = Intent(this@PublishActivity, CommonTakePhotoActivity::class.java).apply {
                 this.putExtra(TAKE_MODE, PickMultiple)
             }
             startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO)
         }
+    }
+
+    /**
+     * 先上传完图片再提交物品
+     */
+    private fun upLoadMultiPhoto(photoList: MutableList<String>?) {
+        SaveGoodsInfo()
+    }
+
+    private fun SaveGoodsInfo() {
+        val goods = Goods().apply {
+            this.creatorObjectId = BmobUser.getCurrentUser(MyUser::class.java).objectId
+            this.creatorName = BmobUser.getCurrentUser(MyUser::class.java).username
+            this.creatorAvatar = BmobUser.getCurrentUser(MyUser::class.java).avatar
+            this.name = et_publish_goodsname.text.toString()
+            this.location = et_publish_goodslocation.text.toString()
+            this.detail = et_publish_goodsdetail.text.toString()
+            this.type = if (rg_publish_goodstype.checkedRadioButtonId == rb_publish_goods_lost.id) Goods.TYPE_LOST else Goods.TYPE_FOUND
+        }
+        Log.i(TAG, goods.toString())
+        addSubscribe(DataRepository.saveData(goods, object : IBmobCallback<String> {
+            override fun success(result: String?) {
+                ToastUtil.showToast("提交成功")
+                finish()
+            }
+
+            override fun error(throwable: Throwable?) {
+                ToastUtil.showToast("提交失败,${throwable.toString()}")
+            }
+
+        }))
     }
 
     private fun getPhotoPath(photoList: ArrayList<String>?) {
@@ -117,7 +128,7 @@ class PublishActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
-                REQUEST_CODE_TAKE_PHOTO -> getPhotoPath(data?.getStringArrayListExtra(TakePhotoActivity.TakeMode.TAKE_RESULT))
+                REQUEST_CODE_TAKE_PHOTO -> getPhotoPath(data?.getStringArrayListExtra(CommonTakePhotoActivity.TakeMode.TAKE_RESULT))
             }
         }
         super.onActivityResult(requestCode, resultCode, data)

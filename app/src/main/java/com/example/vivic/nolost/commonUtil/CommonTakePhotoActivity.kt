@@ -5,11 +5,11 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import com.example.vivic.nolost.commonUtil.TakePhotoActivity.TakeMode.PickFromGalleryWithCrop
-import com.example.vivic.nolost.commonUtil.TakePhotoActivity.TakeMode.PickMultiple
-import com.example.vivic.nolost.commonUtil.TakePhotoActivity.TakeMode.TAKE_MODE
-import com.example.vivic.nolost.commonUtil.TakePhotoActivity.TakeMode.TAKE_RESULT
-import com.example.vivic.nolost.commonUtil.TakePhotoActivity.TakeMode.multipleLimit
+import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.PickFromGalleryWithCrop
+import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.PickMultiple
+import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE_MODE
+import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE_RESULT
+import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.multipleLimit
 import org.devio.takephoto.app.TakePhoto
 import org.devio.takephoto.app.TakePhotoImpl
 import org.devio.takephoto.model.CropOptions
@@ -21,7 +21,7 @@ import org.devio.takephoto.permission.PermissionManager
 import org.devio.takephoto.permission.TakePhotoInvocationHandler
 import java.io.File
 
-class TakePhotoActivity : Activity(), TakePhoto.TakeResultListener, InvokeListener {
+class CommonTakePhotoActivity : Activity(), TakePhoto.TakeResultListener, InvokeListener {
     private var invokeParam: InvokeParam? = null
     private val myTakePhoto: TakePhoto by lazy {
         TakePhotoInvocationHandler.of(this).bind(TakePhotoImpl(this, this)) as TakePhoto
@@ -33,7 +33,7 @@ class TakePhotoActivity : Activity(), TakePhoto.TakeResultListener, InvokeListen
 
     companion object {
 
-        private val TAG = TakePhotoActivity::class.java.simpleName
+        private val TAG = CommonTakePhotoActivity::class.java.simpleName
 
     }
 
