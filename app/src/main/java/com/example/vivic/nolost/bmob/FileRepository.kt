@@ -55,17 +55,17 @@ object FileRepository {
     fun uploadBatchFile(photoList: MutableList<String>, iFileBatchCallback: IFileBatchCallback) {
         BmobFile.uploadBatch(photoList.toTypedArray(), object : UploadBatchListener {
             override fun onSuccess(files: MutableList<BmobFile>, urls: MutableList<String>) {
-                Log.i(TAG, "uploadBatchFile success")
+                Log.i(TAG, "uploadBatchFile success,files:$files,urls:$urls")
                 iFileBatchCallback.success(files, urls)
             }
 
             override fun onProgress(curIndex: Int, curPercent: Int, total: Int, totalPercent: Int) {
-                Log.i(TAG, "uploadBatchFile onProgress")
+                Log.i(TAG, "uploadBatchFile onProgress curIndex:$curIndex,curPercent:$curPercent,total:$total,totalPercent:$totalPercent,")
                 iFileBatchCallback.progress(curIndex, curPercent, total, totalPercent)
             }
 
             override fun onError(statuscode: Int, errormsg: String) {
-                Log.i(TAG, "uploadBatchFile onError")
+                Log.i(TAG, "uploadBatchFile onError statuscode:$statuscode,errormsg:$errormsg")
                 iFileBatchCallback.error(statuscode, errormsg)
             }
 

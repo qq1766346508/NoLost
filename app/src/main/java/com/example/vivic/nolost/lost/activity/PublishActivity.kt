@@ -10,11 +10,13 @@ import android.text.TextWatcher
 import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import cn.bmob.v3.BmobUser
+import cn.bmob.v3.datatype.BmobFile
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.Goods
 import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.bmob.DataRepository
+import com.example.vivic.nolost.bmob.FileRepository
 import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.PickMultiple
@@ -69,7 +71,13 @@ class PublishActivity : BaseActivity() {
                 til_publish_goodsname.error = "物品名称不能为空"
                 return@setOnClickListener
             }
-            upLoadMultiPhoto(photoAdapter?.photoPathList!!)
+            photoAdapter?.photoPathList?.let { //如果没有图片则可以直接上传信息
+                if (it.size == 0) {
+                    SaveGoodsInfo(null)
+                } else {
+                    upLoadMultiPhoto(photoAdapter?.photoPathList!!)
+                }
+            }
         }
         ll_publish_root.setOnClickListener { inputMethodManager.hideSoftInputFromWindow(et_publish_goodsname.windowToken, 0) }
 
@@ -88,11 +96,27 @@ class PublishActivity : BaseActivity() {
     /**
      * 先上传完图片再提交物品
      */
-    private fun upLoadMultiPhoto(photoList: MutableList<String>?) {
-        SaveGoodsInfo()
+    private fun upLoadMultiPhoto(photoList: MutableList<String>) {
+        FileRepository.uploadBatchFile(photoList, object : FileRepository.IFileBatchCallback {
+            override fun success(files: MutableList<BmobFile>, urls: MutableList<String>?) {
+                if (files.size == urls?.size) {
+                    SaveGoodsInfo(urls)
+                }
+            }
+
+            override fun error(statuscode: Int, errormsg: String) {
+                ToastUtil.showToast("upLoadMultiPhoto fail,statuscode:$statuscode,errormsg$errormsg")
+            }
+
+            override fun progress(curIndex: Int?, curPercent: Int, total: Int, totalPercent: Int) {
+
+            }
+
+        })
+
     }
 
-    private fun SaveGoodsInfo() {
+    private fun SaveGoodsInfo(photoList: MutableList<String>?) {
         val goods = Goods().apply {
             this.creatorObjectId = BmobUser.getCurrentUser(MyUser::class.java).objectId
             this.creatorName = BmobUser.getCurrentUser(MyUser::class.java).username
@@ -101,6 +125,7 @@ class PublishActivity : BaseActivity() {
             this.location = et_publish_goodslocation.text.toString()
             this.detail = et_publish_goodsdetail.text.toString()
             this.type = if (rg_publish_goodstype.checkedRadioButtonId == rb_publish_goods_lost.id) Goods.TYPE_LOST else Goods.TYPE_FOUND
+            this.photoList = photoList
         }
         Log.i(TAG, goods.toString())
         addSubscribe(DataRepository.saveData(goods, object : IBmobCallback<String> {
