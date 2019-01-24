@@ -24,7 +24,7 @@ class LostFragment : BaseFragment() {
         fun newInstance(loadModel: Int): LostFragment {
             val fragment = LostFragment()
             fragment.arguments = Bundle().apply {
-                this.putInt(com.example.vivic.nolost.lost.fragment.LoadModel.LOAD_MODEL, loadModel)
+                this.putInt(LoadMode.LOAD_MODE, loadModel)
             }
             return fragment
         }
@@ -41,7 +41,7 @@ class LostFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            loadModel = it.getInt(LoadModel.LOAD_MODEL)
+            loadModel = it.getInt(LoadMode.LOAD_MODE)
             Log.d(TAG, "loadModel = $loadModel")
         }
     }
@@ -64,20 +64,20 @@ class LostFragment : BaseFragment() {
         goodsAdapter = GoodsAdapter(context)
         rv_lost_content.adapter = goodsAdapter
         srl_lost_refresh.setOnRefreshListener { refreshLayout ->
-            goodsAdapter?.clearData()
-            querySkip = 0
+            //每次下拉刷新都要清空列表，重新请求
+            resetList()
             when (loadModel) {
-                LoadModel.LOAD_MODEL_NORMAL -> loadGoods()
-                LoadModel.LOAD_MODEL_SEARCH -> loadGoodsByKey(key, true)
-                LoadModel.LOAD_MODEL_OPTION -> loadGoodsByOption(optionGoods!!, true)
+                LoadMode.LOAD_MODE_NORMAL -> loadGoods()
+                LoadMode.LOAD_MODE_SEARCH -> loadGoodsByKey(key)
+                LoadMode.LOAD_MODE_OPTION -> loadGoodsByOption(optionGoods!!)
             }
             refreshLayout.finishRefresh(2000)
         }
         srl_lost_refresh.setOnLoadMoreListener { refreshLayout ->
             when (loadModel) {
-                LoadModel.LOAD_MODEL_NORMAL -> loadGoods()
-                LoadModel.LOAD_MODEL_SEARCH -> loadGoodsByKey(key, false)
-                LoadModel.LOAD_MODEL_OPTION -> loadGoodsByOption(optionGoods!!, false)
+                LoadMode.LOAD_MODE_NORMAL -> loadGoods()
+                LoadMode.LOAD_MODE_SEARCH -> loadGoodsByKey(key)
+                LoadMode.LOAD_MODE_OPTION -> loadGoodsByOption(optionGoods!!)
             }
             refreshLayout.finishLoadMore(2000)
         }
@@ -91,22 +91,36 @@ class LostFragment : BaseFragment() {
             }
         })
         when (loadModel) { //首次进入调用
-            LoadModel.LOAD_MODEL_NORMAL -> loadGoods()
-//            LoadModel.LOAD_MODEL_SEARCH -> loadGoodsByKey(key, true)
-//            LoadModel.LOAD_MODEL_OPTION -> loadGoodsByOption(optionGoods!!,true)
+            LoadMode.LOAD_MODE_NORMAL -> loadGoods()
         }
         lostViewModel?.optionGoods?.observe(this, Observer<Goods> { it ->
             //如果optionGoods,发生了改变则要清空列表
             it?.let {
-                loadGoodsByOption(it, true)
+                resetList()
+                loadGoodsByOption(it)
+            }
+        })
+        lostViewModel?.key?.observe(this, Observer { it ->
+            it?.let {
+                resetList()
+                loadGoodsByKey(it)
             }
         })
     }
 
     /**
+     * 清空列表，步长归零
+     */
+    private fun resetList() {
+        goodsAdapter?.clearData()
+        querySkip = 0
+    }
+
+    /**
      * 无条件搜索，一般用在首页加载
      */
-    fun loadGoods() {
+    private fun loadGoods() {
+        loadModel = LoadMode.LOAD_MODE_NORMAL
         val query = BmobQuery<Goods>().apply {
             this.setLimit(QUERY_LIMIT)
             this.order("-createdAt")
@@ -116,14 +130,10 @@ class LostFragment : BaseFragment() {
     }
 
     /**
-     * 通过精准筛选过滤，每次筛选或者下拉刷新都要清空列表，步长归零
+     * 通过精准筛选过滤
      */
-    fun loadGoodsByOption(goods: Goods, cleanList: Boolean) {
-        loadModel = LoadModel.LOAD_MODEL_OPTION
-        if (cleanList) {
-            goodsAdapter?.clearData()
-            querySkip = 0
-        }
+    private fun loadGoodsByOption(goods: Goods) {
+        loadModel = LoadMode.LOAD_MODE_OPTION
         this.optionGoods = goods
         val q1 = BmobQuery<Goods>().apply {
             if (!goods.type?.isEmpty()!!) {
@@ -153,13 +163,9 @@ class LostFragment : BaseFragment() {
      * 根据关键字准确搜索，每次筛选或者下拉刷新都要清空列表，步长归零
      * key:关键字
      */
-    fun loadGoodsByKey(key: String?, cleanList: Boolean) {
+    private fun loadGoodsByKey(key: String?) {
         key?.let {
-            loadModel = LoadModel.LOAD_MODEL_SEARCH
-            if (cleanList) { //再次搜索需要清空列表
-                goodsAdapter?.clearData()
-                querySkip = 0
-            }
+            loadModel = LoadMode.LOAD_MODE_SEARCH
             this.key = key //用于刷新用
             val q1 = BmobQuery<Goods>().apply {
                 this.addWhereEqualTo("name", key)

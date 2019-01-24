@@ -18,7 +18,13 @@ import io.reactivex.disposables.Disposable;
 public class LostViewModel extends ViewModel {
     private static final String TAG = LostViewModel.class.getSimpleName();
     public MutableLiveData<List<Goods>> totalGoodList = new MutableLiveData<>();
+    public MutableLiveData<String> key = new MutableLiveData<>();
     public MutableLiveData<Goods> optionGoods = new MutableLiveData<>();
+
+    public int lastCheck;
+    public String lastName;
+    public String lastLocation;
+
 
     public Disposable getGoodList(BmobQuery<Goods> bmobQuery) {
         return DataRepository.INSTANCE.queryData(bmobQuery, new FindListener<Goods>() {
@@ -31,7 +37,6 @@ public class LostViewModel extends ViewModel {
                     totalGoodList.setValue(list);
                 } else {
                     Log.i(TAG, "getGoodList failed: BmobException:" + e.toString());
-                    totalGoodList.setValue(null);
                 }
             }
         });

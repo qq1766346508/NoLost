@@ -85,7 +85,7 @@ dependencies {
 
     implementation 'com.github.ForgetAll:LoadingDialog:v1.0.4'
     implementation 'org.devio.takephoto:takephoto_library:4.1.0'
-    compile "org.jetbrains.kotlin:kotlin-reflect:1.2.71"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:1.2.71"
 
 
 }

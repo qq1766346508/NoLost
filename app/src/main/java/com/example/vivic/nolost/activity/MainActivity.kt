@@ -27,7 +27,7 @@ import com.example.vivic.nolost.login.LogOutEvent
 import com.example.vivic.nolost.login.LoginActivity
 import com.example.vivic.nolost.login.UserEvent
 import com.example.vivic.nolost.lost.activity.PublishActivity
-import com.example.vivic.nolost.lost.fragment.LoadModel
+import com.example.vivic.nolost.lost.fragment.LoadMode
 import com.example.vivic.nolost.lost.fragment.LostFragment
 import com.example.vivic.nolost.search.SearchActivity
 import com.example.vivic.nolost.userCenter.GenderHelper
@@ -77,7 +77,7 @@ class MainActivity : BaseActivity() {
 
             true
         }
-        supportFragmentManager.beginTransaction().replace(R.id.fl_main_container, LostFragment.newInstance(LoadModel.LOAD_MODEL_NORMAL)).commitAllowingStateLoss()
+        supportFragmentManager.beginTransaction().replace(R.id.fl_main_container, LostFragment.newInstance(LoadMode.LOAD_MODE_NORMAL)).commitAllowingStateLoss()
         initNavigationView()
     }
 

@@ -20,12 +20,13 @@ import kotlinx.android.synthetic.main.fragment_search_option.*
 class SearchOptionFragment : DialogFragment() {
     private var rootView: View? = null
     private var lostViewModel: LostViewModel? = null
-
+//    private var lastCheck: Int? = null
+//    private var lastName: String? = null
+//    private var lastLocation: String? = null
 
     companion object {
 
         val TAG = SearchOptionFragment::class.java.simpleName
-
         val instance: SearchOptionFragment
             get() = SearchOptionFragment()
     }
@@ -43,6 +44,7 @@ class SearchOptionFragment : DialogFragment() {
         super.onViewCreated(view, savedInstanceState)
         lostViewModel = ViewModelProviders.of(activity!!).get(LostViewModel::class.java)
         initview()
+        loadData()
     }
 
     private fun initview() {
@@ -56,6 +58,20 @@ class SearchOptionFragment : DialogFragment() {
         }
         btn_option_confirm.setOnClickListener {
             queryByOption()
+        }
+    }
+
+    private fun loadData() {
+        lostViewModel?.lastCheck?.let {
+            if (it != 0) {
+                rg_option_goodstype.check(it)
+            }
+        }
+        lostViewModel?.lastName?.let {
+            et_option_goodsname.setText(it)
+        }
+        lostViewModel?.lastLocation?.let {
+            et_option_goodslocation.setText(it)
         }
     }
 
@@ -74,8 +90,10 @@ class SearchOptionFragment : DialogFragment() {
         }
         lostViewModel?.optionGoods?.value = goods
         inputMethodManager.hideSoftInputFromWindow(et_option_goodslocation!!.windowToken, 0)
+        lostViewModel?.lastCheck = rg_option_goodstype.checkedRadioButtonId
+        lostViewModel?.lastName = et_option_goodsname.text.toString()
+        lostViewModel?.lastLocation = et_option_goodslocation.text.toString()
         dismissAllowingStateLoss()
     }
-
 
 }
