@@ -18,11 +18,11 @@
             android:background="@color/standard_color">
 
             <ImageView
-                android:background="@drawable/btn_selector"
                 android:id="@+id/iv_publish_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
+                android:background="@drawable/btn_selector"
                 android:padding="16dp"
                 android:src="@drawable/ic_arrow_back_white_24dp" />
 
@@ -75,8 +75,8 @@
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:gravity="center_vertical"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp">
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -94,8 +94,7 @@
                 android:theme="@style/ed_option_content"
                 app:counterEnabled="true"
                 app:counterMaxLength="15"
-                app:errorEnabled="true"
-                >
+                app:errorEnabled="true">
 
                 <android.support.design.widget.TextInputEditText
                     android:id="@+id/et_publish_goodsname"
@@ -113,8 +112,8 @@
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:gravity="center_vertical"
-            android:paddingStart="10dp"
-            android:paddingEnd="10dp">
+            android:paddingEnd="10dp"
+            android:paddingStart="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -185,6 +184,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/ll_add_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -199,6 +199,13 @@
                 android:textColor="#000"
                 android:textSize="14sp" />
 
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rv_publish_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            </android.support.v7.widget.RecyclerView>
+
+
         </LinearLayout>
 
         <Button
@@ -212,6 +219,7 @@
             android:textColor="#fff"
             android:textSize="18sp"
             android:textStyle="bold" />
+
 
     </LinearLayout>
 </android.support.v4.widget.NestedScrollView>

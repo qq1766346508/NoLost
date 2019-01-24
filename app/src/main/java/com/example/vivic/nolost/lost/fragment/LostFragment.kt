@@ -15,6 +15,9 @@ import com.example.vivic.nolost.fragment.BaseFragment
 import com.example.vivic.nolost.lost.GoodsAdapter
 import kotlinx.android.synthetic.main.fragment_lost.*
 
+/*
+*丢失物品模块，在首页，搜索页，个人页重用
+ */
 class LostFragment : BaseFragment() {
     companion object {
         private val TAG = LostFragment::class.java.simpleName
@@ -130,6 +133,7 @@ class LostFragment : BaseFragment() {
     }
 
     /**
+     * and查询
      * 通过精准筛选过滤
      */
     private fun loadGoodsByOption(goods: Goods) {
@@ -160,6 +164,7 @@ class LostFragment : BaseFragment() {
     }
 
     /**
+     * or查询
      * 根据关键字准确搜索，每次筛选或者下拉刷新都要清空列表，步长归零
      * key:关键字
      */

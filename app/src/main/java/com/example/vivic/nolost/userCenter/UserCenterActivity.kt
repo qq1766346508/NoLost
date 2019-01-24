@@ -2,10 +2,8 @@ package com.example.vivic.nolost.userCenter
 
 import android.app.Activity
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
-import android.view.View
 import cn.bmob.v3.BmobUser
 import cn.bmob.v3.datatype.BmobFile
 import com.example.vivic.nolost.GlideApp
@@ -15,35 +13,31 @@ import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.bmob.FileRepository
 import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.bmob.UserRepository
+import com.example.vivic.nolost.commonUtil.TakePhotoActivity
+import com.example.vivic.nolost.commonUtil.TakePhotoActivity.TakeMode.PickFromGalleryWithCrop
+import com.example.vivic.nolost.commonUtil.TakePhotoActivity.TakeMode.TAKE_MODE
 import com.example.vivic.nolost.commonUtil.bottomDialog.CommonBottomDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.login.UserEvent
 import kotlinx.android.synthetic.main.activity_user_center.*
-import org.devio.takephoto.app.TakePhoto
-import org.devio.takephoto.app.TakePhotoImpl
-import org.devio.takephoto.model.*
-import org.devio.takephoto.permission.InvokeListener
-import org.devio.takephoto.permission.PermissionManager
-import org.devio.takephoto.permission.TakePhotoInvocationHandler
 import org.greenrobot.eventbus.EventBus
 import java.io.File
 import java.util.*
 
-class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeListener {
+class UserCenterActivity : BaseActivity() {
 
     companion object {
         val TAG = UserCenterActivity::class.java.simpleName
         const val REQUEST_CODE_CONTACT = 0
         const val REQUEST_CODE_LOCATION = 1
         const val REQUEST_CODE_USERNAME = 2
+        const val REQUEST_CODE_TAKE_PHOTO = 3
         const val EDIT_TITLE = "edit_title"
         const val EDIT_CONTENT = "edit_content"
         const val EDIT_RESULT = "edit_result"
     }
 
-    private var invokeParam: InvokeParam? = null
-    private var takePhoto: TakePhoto? = null
-    private var photoList: ArrayList<TImage>? = null
+
     private val currentUser: MyUser by lazy {
         BmobUser.getCurrentUser(MyUser::class.java)
     }
@@ -93,21 +87,21 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
 
     private fun initView() {
         //第三方用户不可更改常规信息
-        if (!currentUser.platform.isNullOrEmpty()) {
-            fl_user_avatar.isEnabled = false
-            fl_user_username.isEnabled = false
-            fl_user_center_gender.isEnabled = false
-            iv_user_center_avatar_aw.visibility = View.INVISIBLE
-            iv_user_center_username_aw.visibility = View.INVISIBLE
-            iv_user_center_gender_aw.visibility = View.INVISIBLE
-        }
+//        if (!currentUser.platform.isNullOrEmpty()) {
+//            fl_user_avatar.isEnabled = false
+//            fl_user_username.isEnabled = false
+//            fl_user_center_gender.isEnabled = false
+//            iv_user_center_avatar_aw.visibility = View.INVISIBLE
+//            iv_user_center_username_aw.visibility = View.INVISIBLE
+//            iv_user_center_gender_aw.visibility = View.INVISIBLE
+//        }
         iv_user_center_back.setOnClickListener { finish() }
-        takePhoto = getTakePhoto()
+
         fl_user_avatar.setOnClickListener {
-            fl_user_avatar.isEnabled = false
-            val file = File(externalCacheDir, System.currentTimeMillis().toString() + ".jpg")
-            val outputUri = Uri.fromFile(file)
-            takePhoto?.onPickFromGalleryWithCrop(outputUri, CropOptions.Builder().setWithOwnCrop(true).create())
+            val intent = Intent(this@UserCenterActivity, TakePhotoActivity::class.java).apply {
+                this.putExtra(TAKE_MODE, PickFromGalleryWithCrop)
+            }
+            startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO)
         }
         fl_user_center_gender.setOnClickListener {
             fl_user_center_gender.isEnabled = false
@@ -140,32 +134,6 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
 
     }
 
-    override fun takeSuccess(result: TResult?) {
-        photoList = result?.getImages()
-        for (item in photoList!!) {
-            Log.d(TAG, "TakePhoto,Success: " + item.originalPath)
-        }
-        uploadImage(photoList?.get(0)?.originalPath!!)
-    }
-
-    override fun takeCancel() {
-        Log.d(TAG, "TakePhoto,Cancel: ")
-        fl_user_avatar.isEnabled = true
-    }
-
-    override fun takeFail(result: TResult?, msg: String?) {
-        Log.d(TAG, "TakePhoto,Fail: $msg")
-        fl_user_avatar.isEnabled = true
-    }
-
-    override fun invoke(invokeParam: InvokeParam): PermissionManager.TPermissionType {
-        val type = PermissionManager.checkPermission(TContextWrap.of(this), invokeParam.getMethod())
-        if (PermissionManager.TPermissionType.WAIT == type) {
-            this.invokeParam = invokeParam
-        }
-        return type
-    }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         if (resultCode == Activity.RESULT_OK) {
@@ -173,10 +141,17 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
                 REQUEST_CODE_USERNAME -> tv_user_center_username.text = data?.getStringExtra(EDIT_RESULT)
                 REQUEST_CODE_CONTACT -> tv_user_contact.text = data?.getStringExtra(EDIT_RESULT)
                 REQUEST_CODE_LOCATION -> tv_user_location.text = data?.getStringExtra(EDIT_RESULT)
+                REQUEST_CODE_TAKE_PHOTO -> getPhotoPath(data?.getStringArrayListExtra(TakePhotoActivity.TakeMode.TAKE_RESULT))
             }
         }
-        getTakePhoto().onActivityResult(requestCode, resultCode, data)
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    private fun getPhotoPath(photoList: ArrayList<String>?) {
+        photoList?.let {
+            Log.i(TAG, "take photo :success = ${it[0]}")
+            uploadImage(it[0])
+        }
     }
 
     private fun uploadImage(imagePath: String) {
@@ -188,7 +163,6 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
 
             override fun error(throwable: Throwable?) {
                 ToastUtil.showToast("上传图片错误，$throwable")
-                fl_user_avatar.isEnabled = true
             }
 
             override fun progress(int: Int?) {
@@ -204,12 +178,12 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
         }, object : IBmobCallback<MyUser> {
             override fun success(result: MyUser?) {
                 GlideApp.with(this@UserCenterActivity).load(avatar).into(iv_user_center_avatar)
-                fl_user_avatar.isEnabled = true
+
             }
 
             override fun error(throwable: Throwable?) {
                 ToastUtil.showToast("更新失败" + throwable.toString())
-                fl_user_avatar.isEnabled = true
+
             }
         })))
     }
@@ -235,12 +209,6 @@ class UserCenterActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeL
         })))
     }
 
-    private fun getTakePhoto(): TakePhoto {
-        if (takePhoto == null) {
-            takePhoto = TakePhotoInvocationHandler.of(this).bind(TakePhotoImpl(this, this)) as TakePhoto
-        }
-        return takePhoto as TakePhoto
-    }
 
     override fun onBackPressed() {
         super.onBackPressed()

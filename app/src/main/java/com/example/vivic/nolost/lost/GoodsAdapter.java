@@ -1,7 +1,6 @@
 package com.example.vivic.nolost.lost;
 
 import android.content.Context;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
@@ -14,7 +13,6 @@ import android.widget.TextView;
 import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.bean.Goods;
-import com.goyourfly.multi_picture.MultiPictureView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,7 +74,6 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         TextView tvGoodsLocation;
         TextView tvGoodsName;
         TextView tvGoodsDetail;
-        MultiPictureView mpvGoodsPhoto;
 
 
         public GoodsViewHolder(View itemView) {
@@ -87,7 +84,6 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             tvGoodsLocation = itemView.findViewById(R.id.tv_item_goods_location);
             tvGoodsName = itemView.findViewById(R.id.tv_item_goods_name);
             tvGoodsDetail = itemView.findViewById(R.id.tv_item_goods_details);
-            mpvGoodsPhoto = itemView.findViewById(R.id.mpv_item_goods_photo);
         }
 
         public void initItem(Goods goods) {
@@ -103,7 +99,6 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             } else {
                 tvGoodsLocation.setVisibility(View.VISIBLE);
             }
-//            mpvGoodsPhoto.addItem(Uri.parse("https://avatars1.githubusercontent.com/u/7019862?s=88&v=4"));
         }
     }
 }

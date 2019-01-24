@@ -75,12 +75,7 @@
             android:textColor="@android:color/black"
             android:textSize="14sp" />
 
-        <com.goyourfly.multi_picture.MultiPictureView
-            android:id="@+id/mpv_item_goods_photo"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:editable="false"
-            app:imageLayoutMode="DYNAMIC" />
+
 
         <TextView
             android:id="@+id/tv_item_goods_location"

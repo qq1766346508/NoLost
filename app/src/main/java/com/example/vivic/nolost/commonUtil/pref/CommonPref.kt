@@ -44,7 +44,7 @@ class CommonPref private constructor(preferences: SharedPreferences) : YSharedPr
                 synchronized(CommonPref::class.java) {
                     if (sInst == null) {
                         sInst = CommonPref(
-                                NoLostApplication.getContext()!!.getSharedPreferences(COMMONREF_NAME, Context.MODE_PRIVATE))
+                                NoLostApplication.getContext().getSharedPreferences(COMMONREF_NAME, Context.MODE_PRIVATE))
                     }
                 }
             }

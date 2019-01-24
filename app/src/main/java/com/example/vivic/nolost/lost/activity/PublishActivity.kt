@@ -2,6 +2,7 @@ package com.example.vivic.nolost.lost.activity
 
 import android.content.Context
 import android.os.Bundle
+import android.support.v7.widget.GridLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.Log
@@ -13,13 +14,26 @@ import com.example.vivic.nolost.bean.Goods
 import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.bmob.DataRepository
 import com.example.vivic.nolost.bmob.IBmobCallback
+import com.example.vivic.nolost.commonUtil.MultiPhotoAdapter
 import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
-import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_publish.*
+import org.devio.takephoto.app.TakePhoto
+import org.devio.takephoto.app.TakePhotoImpl
+import org.devio.takephoto.model.InvokeParam
+import org.devio.takephoto.model.TContextWrap
+import org.devio.takephoto.model.TImage
+import org.devio.takephoto.model.TResult
+import org.devio.takephoto.permission.InvokeListener
+import org.devio.takephoto.permission.PermissionManager
+import org.devio.takephoto.permission.TakePhotoInvocationHandler
+import java.util.*
 
 
-class PublishActivity : BaseActivity() {
+class PublishActivity : BaseActivity(), TakePhoto.TakeResultListener, InvokeListener {
+    private var invokeParam: InvokeParam? = null
+    private var takePhoto: TakePhoto? = null
+    private var photoList: ArrayList<TImage>? = null
 
 
     companion object {
@@ -30,7 +44,7 @@ class PublishActivity : BaseActivity() {
         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
 
-
+    private var photoAdapter: MultiPhotoAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -86,6 +100,41 @@ class PublishActivity : BaseActivity() {
             }))
         }
         ll_publish_root.setOnClickListener { inputMethodManager.hideSoftInputFromWindow(et_publish_goodsname.windowToken, 0) }
+        val gridLayoutManager = GridLayoutManager(this, 3)
+        rv_publish_photo.layoutManager = gridLayoutManager
+        photoAdapter = MultiPhotoAdapter(this)
+        rv_publish_photo.adapter = photoAdapter
+        takePhoto = getTakePhoto()
     }
 
+
+    override fun takeSuccess(result: TResult?) {
+        photoList = result?.getImages()
+        for (item in photoList!!) {
+            Log.d(TAG, "TakePhoto,Success: " + item.originalPath)
+        }
+    }
+
+    override fun takeCancel() {
+        Log.d(TAG, "TakePhoto,Cancel: ")
+    }
+
+    override fun takeFail(result: TResult?, msg: String?) {
+        Log.d(TAG, "TakePhoto,Fail: $msg")
+    }
+
+    override fun invoke(invokeParam: InvokeParam): PermissionManager.TPermissionType {
+        val type = PermissionManager.checkPermission(TContextWrap.of(this), invokeParam.getMethod())
+        if (PermissionManager.TPermissionType.WAIT == type) {
+            this.invokeParam = invokeParam
+        }
+        return type
+    }
+
+    private fun getTakePhoto(): TakePhoto {
+        if (takePhoto == null) {
+            takePhoto = TakePhotoInvocationHandler.of(this).bind(TakePhotoImpl(this, this)) as TakePhoto
+        }
+        return takePhoto as TakePhoto
+    }
 }
