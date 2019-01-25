@@ -11,7 +11,7 @@ import com.bumptech.glide.Glide;
 
 /**
  * 停止滑动状态下，甩出， 才会加载图片的recyclerview
- * 拖拽时，不加载
+ * 拖拽时，不加载dd
  */
 public class MultiPhotoRecyclerView extends RecyclerView {
 
