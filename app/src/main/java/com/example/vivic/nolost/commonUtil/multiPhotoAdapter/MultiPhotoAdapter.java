@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.example.vivic.nolost.GlideApp;
@@ -98,9 +99,9 @@ public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.Ph
 
         void initItem(String imagePath, int position) {
             if (loadMode == LOAD_FILE) {
-                GlideApp.with(context).asDrawable().load(new File(imagePath)).placeholder(R.drawable.icon_default_avatar).thumbnail(0.25f).centerCrop().into(ivPhoto);
+                GlideApp.with(context).asDrawable().load(new File(imagePath)).placeholder(R.drawable.icon_default_avatar).thumbnail(0.25f).override(ivPhoto.getWidth()).centerCrop().into(ivPhoto);
             } else if (loadMode == LOAD_INTERNET) {
-                GlideApp.with(context).asDrawable().load(Uri.parse(imagePath)).placeholder(R.drawable.icon_default_avatar).thumbnail(0.25f).centerCrop().into(ivPhoto);
+                GlideApp.with(context).asDrawable().load(Uri.parse(imagePath)).placeholder(R.drawable.icon_default_avatar).thumbnail(0.25f).override(ivPhoto.getWidth()).centerCrop().into(ivPhoto);
             }
             if (!editable) {
                 ivDelete.setVisibility(View.GONE);

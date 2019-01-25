@@ -40,6 +40,7 @@ class LostFragment : BaseFragment() {
     private var key: String? = null
     private var optionGoods: Goods? = null
     private var loadModel: Int = -1
+    private var firstLoad: Boolean = false //是否首次加载
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -128,6 +129,12 @@ class LostFragment : BaseFragment() {
             this.setLimit(QUERY_LIMIT)
             this.order("-createdAt")
             this.setSkip(querySkip)
+            if (!firstLoad) {
+                firstLoad = true //首次加载读缓存
+                this.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK)
+            } else {
+                this.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE)
+            }
         }
         addSubscribe(lostViewModel?.getGoodList(query)!!)
     }

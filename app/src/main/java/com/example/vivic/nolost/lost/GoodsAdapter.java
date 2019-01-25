@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.bean.Goods;
@@ -109,6 +110,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             multiPhotoAdapter.setLoadMode(LOAD_INTERNET);
             rvGoodsPhoto.setAdapter(multiPhotoAdapter);
             multiPhotoAdapter.addPhotoPath(goods.getPhotoList());
+
         }
     }
 

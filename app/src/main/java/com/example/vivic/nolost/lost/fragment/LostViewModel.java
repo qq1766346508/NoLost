@@ -27,6 +27,8 @@ public class LostViewModel extends ViewModel {
 
 
     public Disposable getGoodList(BmobQuery<Goods> bmobQuery) {
+        boolean isCache = bmobQuery.hasCachedResult(Goods.class);
+
         return DataRepository.INSTANCE.queryData(bmobQuery, new FindListener<Goods>() {
             @Override
             public void done(List<Goods> list, BmobException e) {

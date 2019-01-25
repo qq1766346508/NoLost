@@ -76,24 +76,23 @@
             android:textSize="14sp" />
 
 
-
         <TextView
             android:id="@+id/tv_item_goods_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:maxLength="15"
             android:drawableStart="@drawable/ic_location_on_blue_800_18dp"
+            android:maxLength="15"
             android:text="足球场是大事发生范阿斯顿法德萨发的"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="11sp" />
 
-        <android.support.v7.widget.RecyclerView
+        <com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoRecyclerView
             android:id="@+id/rv_item_goods_photo"
-            app:layoutManager="android.support.v7.widget.GridLayoutManager"
-            app:spanCount="3"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:spanCount="3"></com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoRecyclerView>
     </LinearLayout>
 
 

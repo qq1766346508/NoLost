@@ -7,6 +7,8 @@ import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.QueryListener
 import cn.bmob.v3.listener.SaveListener
+import com.example.vivic.nolost.bean.Goods
+import com.example.vivic.nolost.bean.MyUser
 import io.reactivex.disposables.Disposable
 import org.json.JSONArray
 
