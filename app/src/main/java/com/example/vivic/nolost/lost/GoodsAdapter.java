@@ -13,13 +13,13 @@ import android.widget.TextView;
 import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.bean.Goods;
-import com.example.vivic.nolost.commonUtil.PhotoAdapter.GridSpacingItemDecoration;
-import com.example.vivic.nolost.commonUtil.PhotoAdapter.MultiPhotoAdapter;
+import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.GridSpacingItemDecoration;
+import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.example.vivic.nolost.commonUtil.PhotoAdapter.MultiPhotoAdapter.LOAD_INTERNET;
+import static com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter.LOAD_INTERNET;
 
 public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHolder> {
 

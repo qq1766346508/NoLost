@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.example.vivic.nolost.commonUtil.PhotoAdapter.MFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MFrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -17,4 +17,4 @@
         android:src="@drawable/icon_delete" />
 
 
-</com.example.vivic.nolost.commonUtil.PhotoAdapter.MFrameLayout>
+</com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MFrameLayout>

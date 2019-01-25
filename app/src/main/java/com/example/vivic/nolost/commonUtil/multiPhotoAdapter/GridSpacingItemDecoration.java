@@ -1,4 +1,4 @@
-package com.example.vivic.nolost.commonUtil.PhotoAdapter;
+package com.example.vivic.nolost.commonUtil.multiPhotoAdapter;
 
 import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;

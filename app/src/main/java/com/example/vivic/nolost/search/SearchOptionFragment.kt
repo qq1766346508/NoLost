@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import com.example.vivic.nolost.R
+import com.example.vivic.nolost.R.id.*
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.Goods
 import com.example.vivic.nolost.bean.Goods.Companion.TYPE_ALL

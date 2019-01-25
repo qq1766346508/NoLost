@@ -1,9 +1,10 @@
-package com.example.vivic.nolost.commonUtil.PhotoAdapter;
+package com.example.vivic.nolost.commonUtil.multiPhotoAdapter;
 
 import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import java.util.List;
  * 多图展示recyclerview
  */
 public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.PhotoViewHolder> {
+    private static final String TAG = MultiPhotoAdapter.class.getSimpleName();
 
 
     private List<String> photoPathList = new ArrayList<>();
@@ -98,7 +100,7 @@ public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.Ph
             if (loadMode == LOAD_FILE) {
                 GlideApp.with(context).asDrawable().load(new File(imagePath)).placeholder(R.drawable.icon_default_avatar).thumbnail(0.25f).centerCrop().into(ivPhoto);
             } else if (loadMode == LOAD_INTERNET) {
-                GlideApp.with(context).asDrawable().placeholder(R.drawable.icon_default_avatar).thumbnail(0.25f).centerCrop().into(ivPhoto);
+                GlideApp.with(context).asDrawable().load(Uri.parse(imagePath)).placeholder(R.drawable.icon_default_avatar).thumbnail(0.25f).centerCrop().into(ivPhoto);
             }
             if (!editable) {
                 ivDelete.setVisibility(View.GONE);
@@ -107,6 +109,10 @@ public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.Ph
                 photoPathList.remove(position);
                 notifyItemRemoved(position);
                 notifyItemRangeChanged(position, photoPathList.size());
+            });
+            ivPhoto.setOnClickListener(v -> {
+                Log.d(TAG, "initItem: position = " + position + ",url = " + photoPathList.get(position));
+                LargePhotoDialog.Companion.getInstance((ArrayList<String>) photoPathList, position).show(context);
             });
         }
     }

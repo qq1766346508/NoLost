@@ -85,7 +85,7 @@ dependencies {
     implementation 'org.devio.takephoto:takephoto_library:4.1.0'
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.2.71"
 
-
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
 }
 repositories {
     mavenCentral()

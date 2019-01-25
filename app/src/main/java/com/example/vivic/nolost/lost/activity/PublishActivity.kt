@@ -21,9 +21,9 @@ import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.PickMultiple
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE_MODE
-import com.example.vivic.nolost.commonUtil.PhotoAdapter.GridSpacingItemDecoration
-import com.example.vivic.nolost.commonUtil.PhotoAdapter.MultiPhotoAdapter
-import com.example.vivic.nolost.commonUtil.PhotoAdapter.MultiPhotoAdapter.LOAD_FILE
+import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.GridSpacingItemDecoration
+import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter
+import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter.LOAD_FILE
 import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.progressBarDialog.ProgressBarDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
