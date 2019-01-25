@@ -19,13 +19,13 @@ object DataRepository {
      */
     fun saveData(bmobObject: BmobObject, iBmobCallback: IBmobCallback<String>): Disposable {
         return bmobObject.save(object : SaveListener<String>() {
-            override fun done(p0: String?, p1: BmobException?) {
-                if (p1 == null) {
-                    iBmobCallback.success(p0)
-                    Log.i(TAG, "saveData success,objectId = $p0")
+            override fun done(objectId: String?, bmobException: BmobException?) {
+                if (bmobException == null) {
+                    iBmobCallback.success(objectId)
+                    Log.i(TAG, "saveData success,objectId = $objectId")
                 } else {
-                    iBmobCallback.error(p1)
-                    Log.i(TAG, "saveData failed,BmobException = $p1")
+                    iBmobCallback.error(bmobException)
+                    Log.i(TAG, "saveData failed,BmobException = $bmobException")
                 }
             }
         })
@@ -37,13 +37,13 @@ object DataRepository {
 
     fun queryDataByTable(bmobQuery: BmobQuery<*>, iBmobCallback: IBmobCallback<JSONArray>) {
         bmobQuery.findObjectsByTable(object : QueryListener<JSONArray>() {
-            override fun done(jsonArray: JSONArray, e: BmobException?) {
-                if (e == null) {
+            override fun done(jsonArray: JSONArray, bmobException: BmobException?) {
+                if (bmobException == null) {
                     Log.d(TAG, "queryDataByTable done: $jsonArray")
                     iBmobCallback.success(jsonArray)
                 } else {
-                    Log.d(TAG, "queryDataByTable failed: $e")
-                    iBmobCallback.error(e)
+                    Log.d(TAG, "queryDataByTable failed: $bmobException")
+                    iBmobCallback.error(bmobException)
                 }
             }
         })

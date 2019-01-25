@@ -200,11 +200,10 @@
                 android:textSize="14sp" />
 
             <android.support.v7.widget.RecyclerView
-                android:layout_gravity="center_horizontal"
                 android:id="@+id/rv_publish_photo"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-            </android.support.v7.widget.RecyclerView>
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"></android.support.v7.widget.RecyclerView>
 
 
         </LinearLayout>
@@ -214,6 +213,7 @@
             android:layout_width="200dp"
             android:layout_height="50dp"
             android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
             android:layout_marginTop="10dp"
             android:background="@drawable/selector_bg_btn"
             android:text="提交"

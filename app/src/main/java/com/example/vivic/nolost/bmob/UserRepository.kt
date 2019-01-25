@@ -26,13 +26,13 @@ object UserRepository {
     fun signByUser(myUser: MyUser, iBmobCallback: IBmobCallback<MyUser>): Disposable {
         var disposable: Disposable? = null
         return myUser.signUp(object : SaveListener<MyUser>() {
-            override fun done(p0: MyUser?, p1: BmobException?) {
-                if (p1 == null) {
-                    Log.d(TAG, "signByNamePassword success,Myuser:$p0")
+            override fun done(user: MyUser?, bmobException: BmobException?) {
+                if (bmobException == null) {
+                    Log.d(TAG, "signByNamePassword success,Myuser:$user")
                     disposable = loginByUser(myUser, iBmobCallback)
                 } else {
-                    Log.d(TAG, "signByNamePassword fail :$p1")
-                    iBmobCallback.error(p1)
+                    Log.d(TAG, "signByNamePassword fail :$bmobException")
+                    iBmobCallback.error(bmobException)
                     disposable?.dispose()
                 }
             }
@@ -44,13 +44,13 @@ object UserRepository {
      */
     fun loginByUser(myUser: MyUser, iBmobCallback: IBmobCallback<MyUser>): Disposable {
         return myUser.login(object : SaveListener<MyUser>() {
-            override fun done(p0: MyUser?, p1: BmobException?) {
-                if (p1 == null) {
-                    Log.d(TAG, "loginbyUser success,Myuser:$p0")
-                    iBmobCallback.success(p0)
+            override fun done(user: MyUser?, bmobException: BmobException?) {
+                if (bmobException == null) {
+                    Log.d(TAG, "loginbyUser success,Myuser:$user")
+                    iBmobCallback.success(user)
                 } else {
-                    Log.d(TAG, "loginbyUser failed,BmobException:$p1")
-                    iBmobCallback.error(p1)
+                    Log.d(TAG, "loginbyUser failed,BmobException:$bmobException")
+                    iBmobCallback.error(bmobException)
                 }
             }
         })
@@ -64,13 +64,13 @@ object UserRepository {
      */
     fun loginByThird(bmobThirdUserAuth: BmobUser.BmobThirdUserAuth, thirdUser: MyUser, iBmobCallback: IBmobCallback<MyUser>): Disposable {
         return BmobUser.loginWithAuthData(bmobThirdUserAuth, object : LogInListener<JSONObject>() {
-            override fun done(p0: JSONObject?, p1: BmobException?) {
-                if (p1 == null) {
-                    Log.d(TAG, "loginByThird success,${bmobThirdUserAuth.snsType},JSONObject:$p0")
+            override fun done(jsonObject: JSONObject?, bmobException: BmobException?) {
+                if (bmobException == null) {
+                    Log.d(TAG, "loginByThird success,${bmobThirdUserAuth.snsType},JSONObject:$jsonObject")
                     iBmobCallback.success(thirdUser)
                 } else {
-                    Log.d(TAG, "loginByThird failed,BmobException:$p1")
-                    iBmobCallback.error(p1)
+                    Log.d(TAG, "loginByThird failed,BmobException:$bmobException")
+                    iBmobCallback.error(bmobException)
                 }
             }
         })
@@ -114,13 +114,13 @@ object UserRepository {
             override fun onError(platform: Platform, i: Int, throwable: Throwable) {
                 Log.d(TAG, "onError: code = $throwable")
                 iBmobCallback.error(throwable)
-                disposable?.isDisposed
+                disposable?.dispose()
             }
 
             override fun onCancel(platform: Platform, i: Int) {
                 Log.d(TAG, "onCancel: ")
                 iBmobCallback.error(null)
-                disposable?.isDisposed
+                disposable?.dispose()
             }
         }
         plat.SSOSetting(false)
@@ -140,13 +140,13 @@ object UserRepository {
 
     fun changePassword(oldPassword: String, newPassword: String, iBmobCallback: IBmobCallback<MyUser>) {
         BmobUser.updateCurrentUserPassword(oldPassword, newPassword, object : UpdateListener() {
-            override fun done(p0: BmobException?) {
-                if (p0 == null) {
+            override fun done(bmobException: BmobException?) {
+                if (bmobException == null) {
                     Log.d(TAG, "changePassword success")
                     iBmobCallback.success(null)
                 } else {
-                    Log.d(TAG, "changePassword fail,BmobException:$p0")
-                    iBmobCallback.error(p0)
+                    Log.d(TAG, "changePassword fail,BmobException:$bmobException")
+                    iBmobCallback.error(bmobException)
                 }
             }
         })
@@ -160,23 +160,24 @@ object UserRepository {
         var disposable: Disposable? = null
         val currentUser = BmobUser.getCurrentUser(MyUser::class.java)
         disposable = newUser.update(currentUser.objectId, object : UpdateListener() {
-            override fun done(p0: BmobException?) {
-                if (p0 == null) {
+            override fun done(bmobException: BmobException?) {
+                if (bmobException == null) {
                     Log.d(TAG, "updateUserByObjectId success")
                     val query = BmobQuery<MyUser>()
                     disposable = query.getObject(currentUser.objectId, object : QueryListener<MyUser>() {
-                        override fun done(p0: MyUser?, p1: BmobException?) {
-                            if (p1 == null) {
-                                Log.d(TAG, "BmobQuery success,user:$p0")
-                                iBmobCallback?.success(p0)
+                        override fun done(myUser: MyUser?, bmobException: BmobException?) {
+                            if (bmobException == null) {
+                                Log.d(TAG, "BmobQuery success,user:$myUser")
+                                iBmobCallback?.success(myUser)
                             } else {
-                                Log.d(TAG, "BmobQuery failed,exception:$p1")
+                                Log.d(TAG, "BmobQuery failed,exception:$bmobException")
                             }
                         }
                     })
                 } else {
-                    Log.d(TAG, "updateUserByObjectId failed,exception:$p0")
-                    iBmobCallback?.error(p0)
+                    Log.d(TAG, "updateUserByObjectId failed,exception:$bmobException")
+                    iBmobCallback?.error(bmobException)
+                    disposable?.dispose()
                 }
             }
         })
@@ -188,9 +189,9 @@ object UserRepository {
      */
     fun fetchUserInfo() {
         BmobUser.fetchUserInfo(object : FetchUserInfoListener<BmobUser>() {
-            override fun done(p0: BmobUser?, p1: BmobException?) {
-                if (p1 == null) {
-                    Log.d(TAG, "fetchUserInfo fail ;BmobException :$p1")
+            override fun done(p0: BmobUser?, bmobException: BmobException?) {
+                if (bmobException == null) {
+                    Log.d(TAG, "fetchUserInfo fail ;BmobException :$bmobException")
                 } else {
                     Log.i(TAG, "fetchUserInfo success,user:$p0")
                 }
@@ -200,13 +201,13 @@ object UserRepository {
 
     fun queryByUser(query: BmobQuery<MyUser>, iBmobCallback: IBmobCallback<MutableList<MyUser>>) {
         query.findObjects(object : FindListener<MyUser>() {
-            override fun done(p0: MutableList<MyUser>?, p1: BmobException?) {
-                if (p1 == null) {
-                    Log.d(TAG, "queryByUser success,user:$p0")
-                    iBmobCallback.success(p0)
+            override fun done(list: MutableList<MyUser>?, bmobException: BmobException?) {
+                if (bmobException == null) {
+                    Log.d(TAG, "queryByUser success,user:$list")
+                    iBmobCallback.success(list)
                 } else {
-                    Log.d(TAG, "queryByUser failed,exception:$p1")
-                    iBmobCallback.error(p1)
+                    Log.d(TAG, "queryByUser failed,exception:$bmobException")
+                    iBmobCallback.error(bmobException)
                 }
             }
         })
@@ -215,13 +216,13 @@ object UserRepository {
     fun queryUserByObject(objectId: String, iBmobCallback: IBmobCallback<MyUser>) {
         val query = BmobQuery<MyUser>()
         query.getObject(objectId, object : QueryListener<MyUser>() {
-            override fun done(p0: MyUser?, p1: BmobException?) {
-                if (p1 == null) {
-                    Log.d(TAG, "queryByUser success,user:$p0")
-                    iBmobCallback.success(p0)
+            override fun done(myUser: MyUser?, bmobException: BmobException?) {
+                if (bmobException == null) {
+                    Log.d(TAG, "queryByUser success,user:$myUser")
+                    iBmobCallback.success(myUser)
                 } else {
-                    Log.d(TAG, "queryByUser failed,exception:$p1")
-                    iBmobCallback.error(p1)
+                    Log.d(TAG, "queryByUser failed,exception:$bmobException")
+                    iBmobCallback.error(bmobException)
                 }
             }
         })

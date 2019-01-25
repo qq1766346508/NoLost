@@ -23,6 +23,7 @@ import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.Pick
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE_MODE
 import com.example.vivic.nolost.commonUtil.MultiPhotoAdapter
 import com.example.vivic.nolost.commonUtil.NetworkUtil
+import com.example.vivic.nolost.commonUtil.progressBarDialog.ProgressBarDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import kotlinx.android.synthetic.main.activity_publish.*
 
@@ -37,6 +38,9 @@ class PublishActivity : BaseActivity() {
 
     private val inputMethodManager: InputMethodManager by lazy {
         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    }
+    private val progressBarDialog: ProgressBarDialog by lazy {
+        ProgressBarDialog()
     }
 
     private var photoAdapter: MultiPhotoAdapter? = null
@@ -71,11 +75,12 @@ class PublishActivity : BaseActivity() {
                 til_publish_goodsname.error = "物品名称不能为空"
                 return@setOnClickListener
             }
-            photoAdapter?.photoPathList?.let { //如果没有图片则可以直接上传信息
+            photoAdapter?.photoPathList?.let {
+                //如果没有图片则可以直接上传信息
                 if (it.size == 0) {
                     SaveGoodsInfo(null)
                 } else {
-                    upLoadMultiPhoto(photoAdapter?.photoPathList!!)
+                    upLoadMultiPhoto(photoAdapter?.photoPathList)
                 }
             }
         }
@@ -96,10 +101,12 @@ class PublishActivity : BaseActivity() {
     /**
      * 先上传完图片再提交物品
      */
-    private fun upLoadMultiPhoto(photoList: MutableList<String>) {
-        FileRepository.uploadBatchFile(photoList, object : FileRepository.IFileBatchCallback {
+    private fun upLoadMultiPhoto(photoList: MutableList<String>?) {
+        progressBarDialog.isCancelable = false
+        progressBarDialog.show(supportFragmentManager, ProgressBarDialog.TAG)
+        FileRepository.uploadBatchFile(photoList!!, object : FileRepository.IFileBatchCallback {
             override fun success(files: MutableList<BmobFile>, urls: MutableList<String>?) {
-                if (files.size == urls?.size) {
+                if (photoList.size == urls?.size) {
                     SaveGoodsInfo(urls)
                 }
             }
@@ -109,7 +116,7 @@ class PublishActivity : BaseActivity() {
             }
 
             override fun progress(curIndex: Int?, curPercent: Int, total: Int, totalPercent: Int) {
-
+                progressBarDialog.setValue(curIndex!!, curPercent, total, totalPercent)
             }
 
         })
@@ -131,13 +138,18 @@ class PublishActivity : BaseActivity() {
         addSubscribe(DataRepository.saveData(goods, object : IBmobCallback<String> {
             override fun success(result: String?) {
                 ToastUtil.showToast("提交成功")
+                if (photoList != null && photoList.size != 0) {
+                    progressBarDialog.dismissAllowingStateLoss()
+                }
                 finish()
             }
 
             override fun error(throwable: Throwable?) {
                 ToastUtil.showToast("提交失败,${throwable.toString()}")
+                if (photoList != null && photoList.size != 0) {
+                    progressBarDialog.dismissAllowingStateLoss()
+                }
             }
-
         }))
     }
 

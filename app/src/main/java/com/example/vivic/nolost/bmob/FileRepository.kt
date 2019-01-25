@@ -22,13 +22,13 @@ object FileRepository {
      */
     fun uploadFile(bmobFile: BmobFile, iFileCallback: IFileCallback): Disposable {
         return bmobFile.upload(object : UploadFileListener() {
-            override fun done(p0: BmobException?) {
-                if (p0 == null) {
+            override fun done(bmobException: BmobException?) {
+                if (bmobException == null) {
                     Log.i(TAG, "uploadFile success,url:${bmobFile.fileUrl}")
                     iFileCallback.success(bmobFile.fileUrl)
                 } else {
-                    Log.i(TAG, "uploadFile error,$p0")
-                    iFileCallback.error(p0)
+                    Log.i(TAG, "uploadFile error,$bmobException")
+                    iFileCallback.error(bmobException)
                 }
             }
 
@@ -54,7 +54,7 @@ object FileRepository {
      */
     fun uploadBatchFile(photoList: MutableList<String>, iFileBatchCallback: IFileBatchCallback) {
         BmobFile.uploadBatch(photoList.toTypedArray(), object : UploadBatchListener {
-            override fun onSuccess(files: MutableList<BmobFile>, urls: MutableList<String>) {
+            override fun onSuccess(files: MutableList<BmobFile>, urls: MutableList<String>) { //成功上传一个就执行一遍,files和urls为当前已成功上传的对象集合
                 Log.i(TAG, "uploadBatchFile success,files:$files,urls:$urls")
                 iFileBatchCallback.success(files, urls)
             }
@@ -68,7 +68,6 @@ object FileRepository {
                 Log.i(TAG, "uploadBatchFile onError statuscode:$statuscode,errormsg:$errormsg")
                 iFileBatchCallback.error(statuscode, errormsg)
             }
-
         })
     }
 
