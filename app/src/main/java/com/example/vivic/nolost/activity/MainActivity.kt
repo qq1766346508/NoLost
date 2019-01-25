@@ -143,7 +143,7 @@ class MainActivity : BaseActivity() {
                     else -> ivGender?.setImageResource(R.drawable.icon_gender_secret)
                 }
             }
-            GlideApp.with(this).asDrawable().load(userEvent.myUser.background).into(object : SimpleTarget<Drawable>() {
+            GlideApp.with(this).asDrawable().centerCrop().load(userEvent.myUser.background).into(object : SimpleTarget<Drawable>() {
                 override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                     clBackground?.background = resource
                 }

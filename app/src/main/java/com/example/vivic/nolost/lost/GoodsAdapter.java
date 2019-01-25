@@ -13,9 +13,13 @@ import android.widget.TextView;
 import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.bean.Goods;
+import com.example.vivic.nolost.commonUtil.PhotoAdapter.GridSpacingItemDecoration;
+import com.example.vivic.nolost.commonUtil.PhotoAdapter.MultiPhotoAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.example.vivic.nolost.commonUtil.PhotoAdapter.MultiPhotoAdapter.LOAD_INTERNET;
 
 public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHolder> {
 
@@ -74,7 +78,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         TextView tvGoodsLocation;
         TextView tvGoodsName;
         TextView tvGoodsDetail;
-
+        RecyclerView rvGoodsPhoto;
 
         public GoodsViewHolder(View itemView) {
             super(itemView);
@@ -84,6 +88,8 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             tvGoodsLocation = itemView.findViewById(R.id.tv_item_goods_location);
             tvGoodsName = itemView.findViewById(R.id.tv_item_goods_name);
             tvGoodsDetail = itemView.findViewById(R.id.tv_item_goods_details);
+            rvGoodsPhoto = itemView.findViewById(R.id.rv_item_goods_photo);
+            rvGoodsPhoto.addItemDecoration(new GridSpacingItemDecoration(3, 5, true));
         }
 
         public void initItem(Goods goods) {
@@ -93,12 +99,18 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             tvGoodsLocation.setText(goods.getLocation());
             tvGoodsName.setText("物品名称：" + goods.getName());
             tvGoodsDetail.setText("物品详情：" + goods.getDetail());
-
             if (goods.getLocation() == null || TextUtils.isEmpty(goods.getLocation())) {
                 tvGoodsLocation.setVisibility(View.GONE);
             } else {
                 tvGoodsLocation.setVisibility(View.VISIBLE);
             }
+            MultiPhotoAdapter multiPhotoAdapter = new MultiPhotoAdapter(context);
+            multiPhotoAdapter.setEditable(false);
+            multiPhotoAdapter.setLoadMode(LOAD_INTERNET);
+            rvGoodsPhoto.setAdapter(multiPhotoAdapter);
+            multiPhotoAdapter.addPhotoPath(goods.getPhotoList());
         }
     }
+
+    private boolean hasAddItemDecoration;//边距不应该重复
 }

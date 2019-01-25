@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import com.example.vivic.nolost.R
+import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.Goods
 import com.example.vivic.nolost.bean.Goods.Companion.TYPE_ALL
 import com.example.vivic.nolost.bean.Goods.Companion.TYPE_FOUND
@@ -94,6 +95,25 @@ class SearchOptionFragment : DialogFragment() {
         lostViewModel?.lastName = et_option_goodsname.text.toString()
         lostViewModel?.lastLocation = et_option_goodslocation.text.toString()
         dismissAllowingStateLoss()
+    }
+
+
+    fun show(context: Context) {
+        try {
+            val fm = (context as BaseActivity).supportFragmentManager
+            val ft = fm.beginTransaction()
+            val fragment = fm.findFragmentByTag(TAG)
+            if (fragment != null) {
+                ft.remove(fragment)
+            }
+            if (this.isAdded) {
+                return
+            }
+            ft.add(this, TAG)
+            ft.commitAllowingStateLoss()
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
     }
 
 }

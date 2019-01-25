@@ -201,6 +201,8 @@
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_publish_photo"
+                app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                app:spanCount="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"></android.support.v7.widget.RecyclerView>

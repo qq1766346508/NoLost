@@ -51,17 +51,9 @@ class SearchActivity : BaseActivity() {
 
     private fun showSearchOption() {
         Log.d(TAG, "showSearchOptionFragment: ")
-        val searchOptionFragment = supportFragmentManager.findFragmentByTag(SearchOptionFragment.TAG)
-        if (searchOptionFragment != null && searchOptionFragment.isAdded) {
-            supportFragmentManager.beginTransaction().show(searchOptionFragment).commitAllowingStateLoss()
-        } else {
-            SearchOptionFragment.instance.show(supportFragmentManager, SearchOptionFragment.TAG)
-        }
+        SearchOptionFragment.instance.show(this)
     }
 
-    private fun queryByOption(goods: Goods) {
-
-    }
 
     private fun queryByKey() {
         val key = ed_search_content.text.toString()

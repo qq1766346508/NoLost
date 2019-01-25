@@ -21,7 +21,9 @@ import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.PickMultiple
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE_MODE
-import com.example.vivic.nolost.commonUtil.MultiPhotoAdapter
+import com.example.vivic.nolost.commonUtil.PhotoAdapter.GridSpacingItemDecoration
+import com.example.vivic.nolost.commonUtil.PhotoAdapter.MultiPhotoAdapter
+import com.example.vivic.nolost.commonUtil.PhotoAdapter.MultiPhotoAdapter.LOAD_FILE
 import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.progressBarDialog.ProgressBarDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
@@ -73,6 +75,7 @@ class PublishActivity : BaseActivity() {
             }
             if (et_publish_goodsname.text.toString().isEmpty()) {
                 til_publish_goodsname.error = "物品名称不能为空"
+                et_publish_goodsname.requestFocus()
                 return@setOnClickListener
             }
             photoAdapter?.photoPathList?.let {
@@ -89,7 +92,10 @@ class PublishActivity : BaseActivity() {
         val gridLayoutManager = GridLayoutManager(this, 3)
         rv_publish_photo.layoutManager = gridLayoutManager
         photoAdapter = MultiPhotoAdapter(this)
+        photoAdapter?.setEditable(true)
+        photoAdapter?.setLoadMode(LOAD_FILE)
         rv_publish_photo.adapter = photoAdapter
+        rv_publish_photo.addItemDecoration(GridSpacingItemDecoration(3, 5, true))
         ll_add_photo.setOnClickListener {
             val intent = Intent(this@PublishActivity, CommonTakePhotoActivity::class.java).apply {
                 this.putExtra(TAKE_MODE, PickMultiple)

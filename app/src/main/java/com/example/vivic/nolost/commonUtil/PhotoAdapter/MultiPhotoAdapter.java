@@ -1,6 +1,7 @@
-package com.example.vivic.nolost.commonUtil;
+package com.example.vivic.nolost.commonUtil.PhotoAdapter;
 
 import android.content.Context;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- *
  * 多图展示recyclerview
  */
 public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.PhotoViewHolder> {
@@ -25,6 +25,10 @@ public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.Ph
     private List<String> photoPathList = new ArrayList<>();
     private Context context;
 
+    private boolean editable;
+    private int loadMode;
+    public static int LOAD_FILE = 1;
+    public static int LOAD_INTERNET = 2;
 
     public MultiPhotoAdapter(List<String> photoPathList, Context context) {
         this.photoPathList = photoPathList;
@@ -56,14 +60,26 @@ public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.Ph
     }
 
     public void addPhotoPath(List<String> photoPathList) {
-        int beforeAddCount = this.photoPathList.size();
-        int addCount = photoPathList.size();
-        this.photoPathList.addAll(photoPathList);
-        notifyItemRangeChanged(beforeAddCount, addCount);
+        if (photoPathList != null) {
+            int beforeAddCount = this.photoPathList.size();
+            int addCount = photoPathList.size();
+            this.photoPathList.addAll(photoPathList);
+            notifyItemRangeChanged(beforeAddCount, addCount);
+        }
     }
 
     public List<String> getPhotoPathList() {
         return photoPathList;
+    }
+
+    public void setEditable(boolean editable) {
+        this.editable = editable;
+        notifyDataSetChanged();
+    }
+
+    public void setLoadMode(int loadMode) {
+        this.loadMode = loadMode;
+        notifyDataSetChanged();
     }
 
     public class PhotoViewHolder extends RecyclerView.ViewHolder {
@@ -79,7 +95,14 @@ public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.Ph
         }
 
         void initItem(String imagePath, int position) {
-            GlideApp.with(context).asDrawable().load(new File(imagePath)).centerCrop().into(ivPhoto);
+            if (loadMode == LOAD_FILE) {
+                GlideApp.with(context).asDrawable().load(new File(imagePath)).placeholder(R.drawable.icon_default_avatar).thumbnail(0.25f).centerCrop().into(ivPhoto);
+            } else if (loadMode == LOAD_INTERNET) {
+                GlideApp.with(context).asDrawable().placeholder(R.drawable.icon_default_avatar).thumbnail(0.25f).centerCrop().into(ivPhoto);
+            }
+            if (!editable) {
+                ivDelete.setVisibility(View.GONE);
+            }
             ivDelete.setOnClickListener(v -> {
                 photoPathList.remove(position);
                 notifyItemRemoved(position);

@@ -2,6 +2,7 @@ package com.example.vivic.nolost.fragment
 
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import com.example.vivic.nolost.GlideApp
 import com.example.vivic.nolost.commonUtil.BindEventBus
 import com.example.vivic.nolost.commonUtil.LeakCanaryUtils
 import io.reactivex.disposables.CompositeDisposable

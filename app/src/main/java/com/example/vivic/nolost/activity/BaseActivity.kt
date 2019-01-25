@@ -42,7 +42,6 @@ open class BaseActivity : AppCompatActivity() {
         if (javaClass.isAnnotationPresent(BindEventBus::class.java)) {
             EventBus.getDefault().unregister(this)
         }
-        Glide.get(this).clearMemory()
         unSubscribe()
     }
 

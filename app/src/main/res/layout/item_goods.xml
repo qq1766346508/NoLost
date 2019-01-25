@@ -88,6 +88,12 @@
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="11sp" />
 
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_item_goods_photo"
+            app:layoutManager="android.support.v7.widget.GridLayoutManager"
+            app:spanCount="3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"></android.support.v7.widget.RecyclerView>
     </LinearLayout>
 
 
