@@ -10,7 +10,8 @@ import com.bumptech.glide.Glide;
 
 
 /**
- * 停止滑动状态下， 才会加载图片的recyclerview
+ * 停止滑动状态下，甩出， 才会加载图片的recyclerview
+ * 拖拽时，不加载
  */
 public class MultiPhotoRecyclerView extends RecyclerView {
 
@@ -40,7 +41,8 @@ public class MultiPhotoRecyclerView extends RecyclerView {
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
                 super.onScrollStateChanged(recyclerView, newState);
                 switch (newState) {
-                    case RecyclerView.SCROLL_STATE_IDLE:
+                    case SCROLL_STATE_IDLE:
+                    case SCROLL_STATE_SETTLING:
                         Glide.with(context).resumeRequests();
                         break;
                     default:

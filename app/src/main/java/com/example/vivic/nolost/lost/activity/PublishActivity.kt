@@ -21,10 +21,10 @@ import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.PickMultiple
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE_MODE
+import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.GridSpacingItemDecoration
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter.LOAD_FILE
-import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.progressBarDialog.ProgressBarDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import kotlinx.android.synthetic.main.activity_publish.*
@@ -96,7 +96,7 @@ class PublishActivity : BaseActivity() {
         photoAdapter?.setLoadMode(LOAD_FILE)
         rv_publish_photo.adapter = photoAdapter
         rv_publish_photo.addItemDecoration(GridSpacingItemDecoration(3, 5, true))
-        ll_add_photo.setOnClickListener {
+        btn_add_photo.setOnClickListener {
             val intent = Intent(this@PublishActivity, CommonTakePhotoActivity::class.java).apply {
                 this.putExtra(TAKE_MODE, PickMultiple)
             }

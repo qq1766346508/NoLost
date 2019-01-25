@@ -8,7 +8,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.example.vivic.nolost.GlideApp;
@@ -66,8 +65,11 @@ public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.Ph
         if (photoPathList != null) {
             int beforeAddCount = this.photoPathList.size();
             int addCount = photoPathList.size();
-            this.photoPathList.addAll(photoPathList);
-            notifyItemRangeChanged(beforeAddCount, addCount);
+            for (int i = beforeAddCount, j = 0; i < 9 && addCount > 0; i++, j++) {
+                this.photoPathList.add(photoPathList.get(j));
+                addCount--;
+            }
+            notifyItemRangeChanged(beforeAddCount, photoPathList.size());
         }
     }
 

@@ -190,22 +190,36 @@
             android:orientation="vertical"
             android:padding="10dp">
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginBottom="10dp"
-                android:text="添加图片:"
-                android:textColor="#000"
-                android:textSize="14sp" />
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginBottom="10dp"
+                    android:text="添加图片:"
+                    android:textColor="#000"
+                    android:textSize="14sp" />
+                <Button
+                    android:text="添加图片"
+                    android:textSize="12sp"
+                    android:textColor="#fff"
+                    android:id="@+id/btn_add_photo"
+                    android:background="@color/standard_color"
+                    android:layout_gravity="end"
+                    android:layout_width="55dp"
+                    android:layout_height="20dp" />
+            </FrameLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_publish_photo"
-                app:layoutManager="android.support.v7.widget.GridLayoutManager"
-                app:spanCount="3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"></android.support.v7.widget.RecyclerView>
+                android:layout_gravity="center_horizontal"
+                app:layoutManager="android.support.v7.widget.GridLayoutManager"
+                app:spanCount="3"></android.support.v7.widget.RecyclerView>
 
 
         </LinearLayout>
