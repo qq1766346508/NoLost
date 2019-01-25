@@ -2,28 +2,34 @@ package com.example.vivic.nolost.login
 
 
 import android.content.Context
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
+import cn.bmob.v3.BmobUser
 import cn.bmob.v3.exception.BmobException
 import cn.sharesdk.sina.weibo.SinaWeibo
 import cn.sharesdk.tencent.qq.QQ
-import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser
+import com.example.vivic.nolost.bmob.IBmobCallback
+import com.example.vivic.nolost.bmob.UserRepository
 import com.example.vivic.nolost.commonUtil.NetworkUtil
-import com.example.vivic.nolost.commonUtil.NoDoubleClickListener
 import com.example.vivic.nolost.commonUtil.pref.CommonPref
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
-import com.example.vivic.nolost.bmob.UserRepository
+import com.example.vivic.nolost.userCenter.UserCenterActivity
 import com.xiasuhuei321.loadingdialog.view.LoadingDialog
 import io.reactivex.disposables.CompositeDisposable
 import kotlinx.android.synthetic.main.activity_login.*
 import org.greenrobot.eventbus.EventBus
 
+
+/**
+ * 注册,成功后会跳去个人中心
+ * 登录，成功之后退出登录页
+ * 第三方登录，成功之后退出登录页
+ */
 class LoginActivity : BaseActivity() {
 
 
@@ -31,11 +37,10 @@ class LoginActivity : BaseActivity() {
         val TAG = LoginActivity::class.java.simpleName
     }
 
+
     private var loadingDialog: LoadingDialog? = null
     private var currentThirdPlatform: String? = null
-    private val compositeDisposable: CompositeDisposable by lazy {
-        CompositeDisposable()
-    }
+
     private val inputMethodManager: InputMethodManager by lazy {
         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
     }
@@ -66,20 +71,23 @@ class LoginActivity : BaseActivity() {
                 ToastUtil.showToast("请输入完整信息")
                 return@setOnClickListener
             }
-
+            btn_sign.isEnabled = false
             val myUser = MyUser().apply {
                 this.username = et_login_account.text.toString()
                 this.setPassword(et_login_password.text.toString())
             }
-            compositeDisposable.add(UserRepository.signByUser(myUser, object : IBmobCallback<MyUser> {
+            addSubscribe(UserRepository.signByUser(myUser, object : IBmobCallback<MyUser> {
                 override fun success(result: MyUser?) {
                     ToastUtil.showToast("sign success,welcome:" + result?.username)
-                    EventBus.getDefault().post(UserEvent(true, result))
+                    btn_sign.isEnabled = true
+                    finish()
+                    startActivity(Intent(this@LoginActivity, UserCenterActivity::class.java))
                 }
 
                 override fun error(throwable: Throwable?) {
                     val exception = throwable as BmobException
                     ToastUtil.showToast("sign fail," + exception.toString())
+                    btn_sign.isEnabled = true
                 }
             }))
         }
@@ -112,29 +120,24 @@ class LoginActivity : BaseActivity() {
         }
 
 
-        iv_login_qq.setOnClickListener(object : NoDoubleClickListener() {
-            override fun onNoDoubleClick(v: View) {
-                if (!NetworkUtil.isConnected()) {
-                    ToastUtil.showToast("当前无网络")
-                    return
+        iv_login_qq.setOnClickListener { it ->
+            if (!NetworkUtil.isConnected()) {
+                ToastUtil.showToast("当前无网络")
+                return@setOnClickListener
+            }
+            currentThirdPlatform = QQ.NAME
+            UserRepository.loginByShareSdk(QQ.NAME, object : IBmobCallback<MyUser> {
+                override fun success(result: MyUser?) {
+                    updateUserInfo(result!!)
                 }
-                currentThirdPlatform = QQ.NAME
-                UserRepository.loginByShareSdk(QQ.NAME, object : IBmobCallback<MyUser> {
-                    override fun success(result: MyUser?) {
-                        updateUserInfo(result!!)
-                    }
 
-                    override fun error(throwable: Throwable?) {
-                        loadingDialog?.loadFailed()
-                    }
-                })
-                loadingDialog?.show()
-            }
+                override fun error(throwable: Throwable?) {
+                    loadingDialog?.loadFailed()
+                }
+            })
+            loadingDialog?.show()
+        }
 
-            override fun onDoubleClick() {
-
-            }
-        })
     }
 
     private fun normalLogin() {
@@ -146,55 +149,58 @@ class LoginActivity : BaseActivity() {
             ToastUtil.showToast("请输入完整信息")
             return
         }
+        btn_login.isEnabled = false
         val myUser = MyUser().apply {
             this.username = et_login_account.text.toString()
             this.setPassword(et_login_password.text.toString())
         }
-        compositeDisposable.add(UserRepository.loginByUser(myUser, object : IBmobCallback<MyUser> {
+        addSubscribe(UserRepository.loginByUser(myUser, object : IBmobCallback<MyUser> {
             override fun success(result: MyUser?) {
                 ToastUtil.showToast("login success,welcome:" + result?.username)
                 EventBus.getDefault().post(UserEvent(true, result))
+                btn_login.isEnabled = true
+                finish()
             }
 
             override fun error(throwable: Throwable?) {
                 val exception = throwable as BmobException
                 ToastUtil.showToast("login fail," + exception.toString())
+                btn_login.isEnabled = true
             }
         }))
     }
 
 
     /**
-     * 第三方登录成功之后，更改用户信息为第三方平台信息，并抛出通知
+     * 第三方登录成功之后,记录是哪个第三方平台的
+     * 2019/1/23 暂时去掉第三方登录成功后，自动更新用户信息
      *
      * @param myUser 用户信息为第三方平台信息
      */
     private fun updateUserInfo(myUser: MyUser) {
-        Log.i(TAG, "third User: " + myUser.toString())
-        compositeDisposable.add(UserRepository.updateUserByNewUser(myUser, object : IBmobCallback<MyUser> {
-            override fun success(result: MyUser?) {
-                loadingDialog?.loadSuccess()
-                CommonPref.instance()?.putString(UserRepository.LAST_PLATFORM, currentThirdPlatform!!)
-                EventBus.getDefault().post(UserEvent(true, result))
-                finish()
-            }
-
-            override fun error(throwable: Throwable?) {
-                loadingDialog?.loadFailed()
-            }
-        }))
+//        Log.i(TAG, "third User: " + myUser.toString())
+//        compositeDisposable?.add(UserRepository.updateUserByNewUser(myUser, object : IBmobCallback<MyUser> {
+//            override fun success(result: MyUser?) {
+        loadingDialog?.loadSuccess()
+        CommonPref.instance()?.putString(UserRepository.LAST_PLATFORM, currentThirdPlatform!!)
+        EventBus.getDefault().post(UserEvent(true, BmobUser.getCurrentUser(myUser::class.java)))
+        finish()
+//            }
+//
+//            override fun error(throwable: Throwable?) {
+//                loadingDialog?.loadFailed()
+//            }
+//        }))
     }
 
 
     override fun onBackPressed() {
         super.onBackPressed()
         loadingDialog?.loadFailed()
-        compositeDisposable.clear()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         loadingDialog?.close()
-        compositeDisposable.clear()
     }
 }
