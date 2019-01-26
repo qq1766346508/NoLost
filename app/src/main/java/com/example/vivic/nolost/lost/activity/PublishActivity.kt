@@ -20,6 +20,7 @@ import com.example.vivic.nolost.bmob.FileRepository
 import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.PickMultiple
+import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE_LIMIT
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE_MODE
 import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.GridSpacingItemDecoration
@@ -99,6 +100,11 @@ class PublishActivity : BaseActivity() {
         btn_add_photo.setOnClickListener {
             val intent = Intent(this@PublishActivity, CommonTakePhotoActivity::class.java).apply {
                 this.putExtra(TAKE_MODE, PickMultiple)
+                this.putExtra(TAKE_LIMIT, 9 - photoAdapter?.photoPathList?.size!!)
+            }
+            if (photoAdapter?.photoPathList?.size==9){
+                ToastUtil.showToast("最多选择9张")
+                return@setOnClickListener
             }
             startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO)
         }

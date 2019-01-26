@@ -1,12 +1,15 @@
 package com.example.vivic.nolost.commonUtil
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
+import cn.bmob.v3.b.s
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.PickFromGalleryWithCrop
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.PickMultiple
+import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE_LIMIT
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE_MODE
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE_RESULT
 import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.multipleLimit
@@ -21,6 +24,10 @@ import org.devio.takephoto.permission.PermissionManager
 import org.devio.takephoto.permission.TakePhotoInvocationHandler
 import java.io.File
 
+
+/**
+ * 拍照activity，跳转这个activity进行拍照
+ */
 class CommonTakePhotoActivity : Activity(), TakePhoto.TakeResultListener, InvokeListener {
     private var invokeParam: InvokeParam? = null
     private val myTakePhoto: TakePhoto by lazy {
@@ -30,6 +37,7 @@ class CommonTakePhotoActivity : Activity(), TakePhoto.TakeResultListener, Invoke
         CropOptions.Builder().setWithOwnCrop(true).create();
     }
     private var outputUri: Uri? = null
+    private var multipleLimit =TakeMode.multipleLimit
 
     companion object {
 
@@ -39,6 +47,7 @@ class CommonTakePhotoActivity : Activity(), TakePhoto.TakeResultListener, Invoke
 
     object TakeMode {
         val TAKE_MODE = "take_mode"
+        val TAKE_LIMIT = "take_limit"
         val TAKE_RESULT = "take_result"
         val PickFromGalleryWithCrop = 0
         val PickFromGallery = 1
@@ -49,10 +58,11 @@ class CommonTakePhotoActivity : Activity(), TakePhoto.TakeResultListener, Invoke
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        outputUri = Uri.fromFile(File(externalCacheDir, System.currentTimeMillis().toString() + ".jpg"))
+        this.multipleLimit = intent.getIntExtra(TAKE_LIMIT,9)
+        outputUri = Uri.fromFile(File(externalCacheDir, System.currentTimeMillis().toString() + ".png"))
         when (intent.getIntExtra(TAKE_MODE, 0)) {
             PickFromGalleryWithCrop -> myTakePhoto.onPickFromGalleryWithCrop(outputUri, cropOptions)
-            PickMultiple -> myTakePhoto.onPickMultiple(multipleLimit)
+            PickMultiple -> myTakePhoto.onPickMultiple(this.multipleLimit)
         }
     }
 

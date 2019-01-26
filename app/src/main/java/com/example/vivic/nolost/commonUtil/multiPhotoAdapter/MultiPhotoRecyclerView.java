@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 /**
  * 停止滑动状态下，甩出， 才会加载图片的recyclerview
  * 拖拽时，不加载dd
+ * 2019/1/26 由于图片加载进行了压缩，不对recyclerview停止加载
  */
 public class MultiPhotoRecyclerView extends RecyclerView {
 
@@ -36,25 +37,25 @@ public class MultiPhotoRecyclerView extends RecyclerView {
     }
 
     private void init() {
-        addOnScrollListener(new OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-                switch (newState) {
-                    case SCROLL_STATE_IDLE:
-                    case SCROLL_STATE_SETTLING:
-                        Glide.with(context).resumeRequests();
-                        break;
-                    default:
-                        Glide.with(context).pauseRequests();
-                        break;
-                }
-            }
-
-            @Override
-            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-            }
-        });
+//        addOnScrollListener(new OnScrollListener() {
+//            @Override
+//            public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
+//                super.onScrollStateChanged(recyclerView, newState);
+//                switch (newState) {
+//                    case SCROLL_STATE_IDLE:
+//                    case SCROLL_STATE_SETTLING:
+//                        Glide.with(context).resumeRequests();
+//                        break;
+//                    default:
+//                        Glide.with(context).pauseRequests();
+//                        break;
+//                }
+//            }
+//
+//            @Override
+//            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+//                super.onScrolled(recyclerView, dx, dy);
+//            }
+//        });
     }
 }

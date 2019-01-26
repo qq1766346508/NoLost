@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.ImageView
 import android.widget.LinearLayout
+import com.bumptech.glide.Glide
 import com.example.vivic.nolost.GlideApp
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
@@ -97,6 +98,11 @@ class LargePhotoDialog() : DialogFragment() {
         photoList?.let {
 
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Glide.get(activity as Context).clearMemory()
     }
 
     fun show(context: Context) {

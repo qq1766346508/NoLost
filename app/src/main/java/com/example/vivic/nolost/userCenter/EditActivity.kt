@@ -81,7 +81,4 @@ class EditActivity : BaseActivity() {
         }))
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-    }
 }
