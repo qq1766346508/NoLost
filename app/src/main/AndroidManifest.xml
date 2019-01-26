@@ -14,7 +14,6 @@
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
-
     <application
         android:name=".NoLostApplication"
         android:allowBackup="true"
@@ -42,11 +41,14 @@
             android:name=".search.SearchActivity"
             android:windowSoftInputMode="adjustResize" />
         <activity android:name=".lost.activity.PublishActivity" />
-        <activity android:name=".userCenter.UserCenterActivity"></activity>
+        <activity android:name=".userCenter.UserCenterActivity" />
         <activity
             android:name=".userCenter.EditActivity"
-            android:windowSoftInputMode="adjustResize"></activity>
-        <activity android:name=".commonUtil.CommonTakePhotoActivity" />
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name=".commonUtil.CommonTakePhotoActivity"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
+        <activity android:name=".lost.activity.HistoryActivity"></activity>
     </application>
 
 </manifest>

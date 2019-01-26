@@ -4,8 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import cn.bmob.v3.BmobQuery
 import cn.bmob.v3.BmobUser
 import cn.bmob.v3.datatype.BmobFile
+import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.QueryListener
 import com.example.vivic.nolost.GlideApp
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
@@ -19,6 +23,7 @@ import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE
 import com.example.vivic.nolost.commonUtil.bottomDialog.CommonBottomDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.login.UserEvent
+import com.example.vivic.nolost.lost.activity.HistoryActivity
 import kotlinx.android.synthetic.main.activity_user_center.*
 import org.greenrobot.eventbus.EventBus
 import java.io.File
@@ -35,12 +40,18 @@ class UserCenterActivity : BaseActivity() {
         const val EDIT_TITLE = "edit_title"
         const val EDIT_CONTENT = "edit_content"
         const val EDIT_RESULT = "edit_result"
+
+        fun getActivity(activity: Activity, creatorObjectId: String?) {
+            val intent = Intent(activity, UserCenterActivity::class.java).apply {
+                this.putExtra("creatorObjectId", creatorObjectId)
+
+            }
+            activity.startActivity(intent)
+        }
     }
 
 
-    private val currentUser: MyUser by lazy {
-        BmobUser.getCurrentUser(MyUser::class.java)
-    }
+    private var currentUser: MyUser? = null
     private val genderDialog: CommonBottomDialog by lazy {
         CommonBottomDialog.Builder(this)
                 .item("男") {
@@ -57,44 +68,58 @@ class UserCenterActivity : BaseActivity() {
                 }
                 .build()
     }
-//    private val compositeDisposable: CompositeDisposable by lazy {
-//        CompositeDisposable()
-//    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_center)
+        checkIsVistor()
         loadUserInfo()
         initView()
     }
 
+    private fun checkIsVistor() {
+        if (intent.getStringExtra("creatorObjectId") == BmobUser.getCurrentUser(MyUser::class.java).objectId) {
+            currentUser = BmobUser.getCurrentUser(MyUser::class.java)
+        } else { //访客状态
+            fl_user_avatar.isEnabled = false
+            fl_user_username.isEnabled = false
+            fl_user_center_gender.isEnabled = false
+            fl_user_contact.isEnabled = false
+            fl_user_location.isEnabled = false
+            iv_user_center_avatar_aw.visibility = View.GONE
+            iv_user_center_username_aw.visibility = View.GONE
+            iv_user_center_gender_aw.visibility = View.GONE
+            iv_user_center_contact_aw.visibility = View.GONE
+            iv_user_center_location_aw.visibility = View.GONE
+            val query = BmobQuery<MyUser>()
+            query.getObject(intent.getStringExtra("creatorObjectId"), object : QueryListener<MyUser>() {
+                override fun done(p0: MyUser?, p1: BmobException?) {
+                    if (p1 == null) {
+                        currentUser = p0
+                        loadUserInfo()
+                        initView()
+                    }
+                }
+            })
+        }
+    }
 
     private fun loadUserInfo() {
         Log.i(TAG, "currentUse :$currentUser")
-        GlideApp.with(this).load(currentUser.avatar).placeholder(R.drawable.icon_default_avatar).into(iv_user_center_avatar)
-        tv_user_center_username.text = currentUser.username
-        currentUser.gender?.let {
+        GlideApp.with(this).load(currentUser?.avatar).placeholder(R.drawable.icon_default_avatar).into(iv_user_center_avatar)
+        tv_user_center_username.text = currentUser?.username
+        currentUser?.gender?.let {
             when (GenderHelper.formatGender(it)) {
                 GenderHelper.MAN -> iv_user_center_gender.setImageResource(R.drawable.icon_boy)
                 GenderHelper.FEMALE -> iv_user_center_gender.setImageResource(R.drawable.icon_girl)
                 GenderHelper.SECRET -> iv_user_center_gender.setImageResource(R.drawable.icon_gender_secret)
             }
         }
-        currentUser.contact?.let { tv_user_contact.text = it }
-        currentUser.location?.let { tv_user_location.text = it }
+        currentUser?.contact?.let { tv_user_contact.text = it }
+        currentUser?.location?.let { tv_user_location.text = it }
     }
 
     private fun initView() {
-        //第三方用户不可更改常规信息
-//        if (!currentUser.platform.isNullOrEmpty()) {
-//            fl_user_avatar.isEnabled = false
-//            fl_user_username.isEnabled = false
-//            fl_user_center_gender.isEnabled = false
-//            iv_user_center_avatar_aw.visibility = View.INVISIBLE
-//            iv_user_center_username_aw.visibility = View.INVISIBLE
-//            iv_user_center_gender_aw.visibility = View.INVISIBLE
-//        }
         iv_user_center_back.setOnClickListener { finish() }
 
         fl_user_avatar.setOnClickListener {

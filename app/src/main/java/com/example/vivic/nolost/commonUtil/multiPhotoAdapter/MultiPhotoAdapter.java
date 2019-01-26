@@ -62,7 +62,7 @@ public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.Ph
     }
 
     public void addPhotoPath(List<String> photoPathList) {
-        if (photoPathList != null) {
+        if (photoPathList != null && photoPathList.size() != 0) {
             int beforeAddCount = this.photoPathList.size();
             int addCount = photoPathList.size();
             for (int i = beforeAddCount, j = 0; i < 9 && addCount > 0; i++, j++) {
@@ -102,9 +102,9 @@ public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.Ph
         //图片压缩参数https://help.upyun.com/knowledge-base/image/#e8a381e589aa
         void initItem(String imagePath, int position) {
             if (loadMode == LOAD_FILE) {
-                GlideApp.with(context).asDrawable().load(new File(imagePath)).thumbnail(0.1f).override(ivPhoto.getWidth()).centerCrop().into(ivPhoto);
+                GlideApp.with(context).asDrawable().load(new File(imagePath)).error(R.drawable.photo_error).thumbnail(0.1f).override(ivPhoto.getWidth()).centerCrop().into(ivPhoto);
             } else if (loadMode == LOAD_INTERNET) {
-                GlideApp.with(context).asDrawable().load(Uri.parse(imagePath+"!/quality/30")).thumbnail(0.1f).override(ivPhoto.getWidth()).centerCrop().into(ivPhoto);
+                GlideApp.with(context).asDrawable().load(Uri.parse(imagePath + "!/quality/30")).error(R.drawable.photo_error).thumbnail(0.1f).override(ivPhoto.getWidth()).centerCrop().into(ivPhoto);
             }
             if (!editable) {
                 ivDelete.setVisibility(View.GONE);

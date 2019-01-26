@@ -1,5 +1,6 @@
 package com.example.vivic.nolost.lost;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
@@ -10,12 +11,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.bean.Goods;
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.GridSpacingItemDecoration;
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter;
+import com.example.vivic.nolost.lost.activity.HistoryActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -110,7 +111,9 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             multiPhotoAdapter.setLoadMode(LOAD_INTERNET);
             rvGoodsPhoto.setAdapter(multiPhotoAdapter);
             multiPhotoAdapter.addPhotoPath(goods.getPhotoList());
-
+            ivCreatorAvatar.setOnClickListener(view -> {
+                HistoryActivity.Companion.getActivity((Activity) context, goods.getCreatorObjectId());
+            });
         }
     }
 

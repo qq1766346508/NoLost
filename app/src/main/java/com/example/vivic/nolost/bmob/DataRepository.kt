@@ -37,6 +37,9 @@ object DataRepository {
         return bmobQuery.findObjects(findListener)
     }
 
+    /**
+     * 根据表明查询
+     */
     fun queryDataByTable(bmobQuery: BmobQuery<*>, iBmobCallback: IBmobCallback<JSONArray>) {
         bmobQuery.findObjectsByTable(object : QueryListener<JSONArray>() {
             override fun done(jsonArray: JSONArray, bmobException: BmobException?) {
@@ -48,6 +51,18 @@ object DataRepository {
                     iBmobCallback.error(bmobException)
                 }
             }
+        })
+    }
+
+    /**
+     * 根据objectId查询
+     */
+    fun <T> queryByObjdectId(bmobQuery: BmobQuery<T>){
+        bmobQuery.findObjects(object :FindListener<T>(){
+            override fun done(p0: MutableList<T>?, p1: BmobException?) {
+
+            }
+
         })
     }
 }

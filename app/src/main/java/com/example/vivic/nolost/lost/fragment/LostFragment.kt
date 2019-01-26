@@ -8,7 +8,6 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import cn.bmob.v3.BmobQuery
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.bean.Goods
 import com.example.vivic.nolost.fragment.BaseFragment
@@ -21,7 +20,7 @@ import kotlinx.android.synthetic.main.fragment_lost.*
 class LostFragment : BaseFragment() {
     companion object {
         private val TAG = LostFragment::class.java.simpleName
-        private val QUERY_LIMIT = 10
+        public val QUERY_LIMIT = 10
         private val GOODS_UPDATE_COUNT = 1
 
         fun newInstance(loadModel: Int): LostFragment {
@@ -31,22 +30,34 @@ class LostFragment : BaseFragment() {
             }
             return fragment
         }
+
+        /**
+         * 携带objectID查询某个用户的全部历史
+         */
+        fun newInstance(loadModel: Int, creatorObjectId: String?): LostFragment {
+            val fragment = LostFragment()
+            fragment.arguments = Bundle().apply {
+                this.putInt(LoadMode.LOAD_MODE, loadModel)
+                this.putString("creatorObjectId", creatorObjectId)
+            }
+            return fragment
+        }
     }
 
     private var rootView: View? = null
     private var goodsAdapter: GoodsAdapter? = null
     private var lostViewModel: LostViewModel? = null
-    private var querySkip = 0 //步长，忽略前querySkip条数据
-    private var key: String? = null
-    private var optionGoods: Goods? = null
     private var loadModel: Int = -1
-    private var firstLoad: Boolean = false //是否首次加载
+    private var creatorObjectId: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
             loadModel = it.getInt(LoadMode.LOAD_MODE)
             Log.d(TAG, "loadModel = $loadModel")
+            creatorObjectId = it.getString("creatorObjectId")
+            Log.d(TAG, "creatorObjectId = $creatorObjectId")
+
         }
     }
 
@@ -70,44 +81,57 @@ class LostFragment : BaseFragment() {
         srl_lost_refresh.setOnRefreshListener { refreshLayout ->
             //每次下拉刷新都要清空列表，重新请求
             resetList()
-            when (loadModel) {
-                LoadMode.LOAD_MODE_NORMAL -> loadGoods()
-                LoadMode.LOAD_MODE_SEARCH -> loadGoodsByKey(key)
-                LoadMode.LOAD_MODE_OPTION -> loadGoodsByOption(optionGoods!!)
-            }
+            addSubscribe(when (loadModel) {
+                LoadMode.LOAD_MODE_NORMAL -> lostViewModel?.loadGoods()
+                LoadMode.LOAD_MODE_SEARCH -> lostViewModel?.loadGoodsByKey()
+                LoadMode.LOAD_MODE_OPTION -> lostViewModel?.loadGoodsByOption()
+                LoadMode.LOAD_MODE_HISTORY -> lostViewModel?.loadGoodsByUser(creatorObjectId)
+                else -> {
+                    null
+                }
+            })
             refreshLayout.finishRefresh(2000)
         }
         srl_lost_refresh.setOnLoadMoreListener { refreshLayout ->
-            when (loadModel) {
-                LoadMode.LOAD_MODE_NORMAL -> loadGoods()
-                LoadMode.LOAD_MODE_SEARCH -> loadGoodsByKey(key)
-                LoadMode.LOAD_MODE_OPTION -> loadGoodsByOption(optionGoods!!)
-            }
+            addSubscribe(when (loadModel) {
+                LoadMode.LOAD_MODE_NORMAL -> lostViewModel?.loadGoods()
+                LoadMode.LOAD_MODE_SEARCH -> lostViewModel?.loadGoodsByKey()
+                LoadMode.LOAD_MODE_OPTION -> lostViewModel?.loadGoodsByOption()
+                LoadMode.LOAD_MODE_HISTORY -> lostViewModel?.loadGoodsByUser(creatorObjectId)
+                else -> {
+                    null
+                }
+            })
             refreshLayout.finishLoadMore(2000)
         }
+        addSubscribe(when (loadModel) {//首次进入调用
+            LoadMode.LOAD_MODE_NORMAL -> lostViewModel?.loadGoods()
+            LoadMode.LOAD_MODE_HISTORY -> lostViewModel?.loadGoodsByUser(creatorObjectId)
+            else -> {
+                null
+            }
+        })
     }
 
     private fun initObserver() {
         lostViewModel?.totalGoodList?.observe(this, android.arch.lifecycle.Observer {
             if (it?.size != 0) {
                 goodsAdapter?.addData(it)
-                querySkip += QUERY_LIMIT
+                lostViewModel!!.querySkip += QUERY_LIMIT
             }
         })
-        when (loadModel) { //首次进入调用
-            LoadMode.LOAD_MODE_NORMAL -> loadGoods()
-        }
+
         lostViewModel?.optionGoods?.observe(this, Observer<Goods> { it ->
             //如果optionGoods,发生了改变则要清空列表
             it?.let {
                 resetList()
-                loadGoodsByOption(it)
+                lostViewModel?.loadGoodsByOption()
             }
         })
         lostViewModel?.key?.observe(this, Observer { it ->
             it?.let {
                 resetList()
-                loadGoodsByKey(it)
+                lostViewModel?.loadGoodsByKey()
             }
         })
     }
@@ -117,87 +141,8 @@ class LostFragment : BaseFragment() {
      */
     private fun resetList() {
         goodsAdapter?.clearData()
-        querySkip = 0
+        lostViewModel!!.querySkip = 0
     }
-
-    /**
-     * 无条件搜索，一般用在首页加载
-     */
-    private fun loadGoods() {
-        loadModel = LoadMode.LOAD_MODE_NORMAL
-        val query = BmobQuery<Goods>().apply {
-            this.setLimit(QUERY_LIMIT)
-            this.order("-createdAt")
-            this.setSkip(querySkip)
-            if (!firstLoad) {
-                firstLoad = true //首次加载读缓存
-                this.setCachePolicy(BmobQuery.CachePolicy.CACHE_ELSE_NETWORK)
-            } else {
-                this.setCachePolicy(BmobQuery.CachePolicy.NETWORK_ELSE_CACHE)
-            }
-        }
-        addSubscribe(lostViewModel?.getGoodList(query)!!)
-    }
-
-    /**
-     * and查询
-     * 通过精准筛选过滤
-     */
-    private fun loadGoodsByOption(goods: Goods) {
-        loadModel = LoadMode.LOAD_MODE_OPTION
-        this.optionGoods = goods
-        val q1 = BmobQuery<Goods>().apply {
-            if (!goods.type?.isEmpty()!!) {
-                this.addWhereEqualTo("type", goods.type)
-            }
-        }
-        val q2 = BmobQuery<Goods>().apply {
-            if (!goods.name?.isEmpty()!!) {
-                this.addWhereEqualTo("name", goods.name)
-            }
-        }
-        val q3 = BmobQuery<Goods>().apply {
-            if (!goods.location?.isEmpty()!!) {
-                this.addWhereEqualTo("location", goods.location)
-            }
-        }
-        val mainQuery = BmobQuery<Goods>().apply {
-            this.and(mutableListOf(q1, q2, q3))
-            this.setLimit(QUERY_LIMIT)
-            this.order("-createdAt")
-            this.setSkip(querySkip)
-        }
-        addSubscribe(lostViewModel?.getGoodList(mainQuery)!!)
-    }
-
-    /**
-     * or查询
-     * 根据关键字准确搜索，每次筛选或者下拉刷新都要清空列表，步长归零
-     * key:关键字
-     */
-    private fun loadGoodsByKey(key: String?) {
-        key?.let {
-            loadModel = LoadMode.LOAD_MODE_SEARCH
-            this.key = key //用于刷新用
-            val q1 = BmobQuery<Goods>().apply {
-                this.addWhereEqualTo("name", key)
-            }
-            val q2 = BmobQuery<Goods>().apply {
-                this.addWhereEqualTo("location", key)
-            }
-            val q3 = BmobQuery<Goods>().apply {
-                this.addWhereEqualTo("detail", key)
-            }
-            val mainQuery = BmobQuery<Goods>().apply {
-                this.or(mutableListOf(q1, q2, q3))
-                this.setLimit(QUERY_LIMIT)
-                this.order("-createdAt")
-                this.setSkip(querySkip)
-            }
-            addSubscribe(lostViewModel?.getGoodList(mainQuery)!!)
-        }
-    }
-
 
     //另一种查询方法
 //var query = BmobQuery<Goods>("Goods").apply {

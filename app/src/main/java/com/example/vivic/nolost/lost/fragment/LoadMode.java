@@ -5,4 +5,5 @@ public class LoadMode {
     public static final int LOAD_MODE_NORMAL = 0;
     public static final int LOAD_MODE_SEARCH = 1;
     public static final int LOAD_MODE_OPTION = 2;
+    public static final int LOAD_MODE_HISTORY = 3;
 }

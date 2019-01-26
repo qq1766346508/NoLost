@@ -5,8 +5,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
-
-import com.bumptech.glide.Glide;
+import android.view.MotionEvent;
 
 
 /**
@@ -57,5 +56,6 @@ public class MultiPhotoRecyclerView extends RecyclerView {
 //                super.onScrolled(recyclerView, dx, dy);
 //            }
 //        });
+
     }
 }

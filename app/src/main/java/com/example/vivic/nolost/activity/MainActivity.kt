@@ -26,6 +26,7 @@ import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.login.LogOutEvent
 import com.example.vivic.nolost.login.LoginActivity
 import com.example.vivic.nolost.login.UserEvent
+import com.example.vivic.nolost.lost.activity.HistoryActivity
 import com.example.vivic.nolost.lost.activity.PublishActivity
 import com.example.vivic.nolost.lost.fragment.LoadMode
 import com.example.vivic.nolost.lost.fragment.LostFragment
@@ -87,7 +88,7 @@ class MainActivity : BaseActivity() {
                 R.id.nav_user -> if (BmobUser.getCurrentUser(MyUser::class.java) == null) {
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                 } else {
-                    startActivity(Intent(this@MainActivity, UserCenterActivity::class.java))
+                    UserCenterActivity.getActivity(this@MainActivity, BmobUser.getCurrentUser(MyUser::class.java).objectId)
                 }
                 R.id.nav_weather -> ToastUtil.showToast("天气")
                 R.id.nav_setting -> ToastUtil.showToast("设置")
@@ -112,7 +113,7 @@ class MainActivity : BaseActivity() {
             if (BmobUser.getCurrentUser(MyUser::class.java) == null) {
                 startActivity(Intent(this@MainActivity, LoginActivity::class.java))
             } else {
-                startActivity(Intent(this@MainActivity, UserCenterActivity::class.java))
+                HistoryActivity.getActivity(this@MainActivity, BmobUser.getCurrentUser(MyUser::class.java).objectId)
             }
         }
         tvNickname = headerView?.findViewById(R.id.tv_nav_nickname)
@@ -143,7 +144,7 @@ class MainActivity : BaseActivity() {
                     else -> ivGender?.setImageResource(R.drawable.icon_gender_secret)
                 }
             }
-            GlideApp.with(this).asDrawable().centerCrop().load(userEvent.myUser.background).into(object : SimpleTarget<Drawable>() {
+            GlideApp.with(this).asDrawable().override(clBackground?.width!!, clBackground?.height!!).centerCrop().load(userEvent.myUser.background).into(object : SimpleTarget<Drawable>() {
                 override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                     clBackground?.background = resource
                 }

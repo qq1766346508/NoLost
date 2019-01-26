@@ -33,11 +33,13 @@ open class BaseFragment : Fragment() {
         unSubscribe()
     }
 
-    fun addSubscribe(disposable: Disposable) {
+    fun addSubscribe(disposable: Disposable?) {
         if (compositeDisposable == null) {
             compositeDisposable = CompositeDisposable()
         }
-        compositeDisposable?.add(disposable)
+        disposable?.let {
+            compositeDisposable?.add(it)
+        }
     }
 
     /**
