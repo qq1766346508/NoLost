@@ -86,6 +86,7 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-reflect:1.2.71"
 
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+    implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
 }
 repositories {
     mavenCentral()

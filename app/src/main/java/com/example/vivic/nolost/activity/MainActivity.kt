@@ -59,6 +59,7 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initView()
+        setSwipeBackEnable(false) //禁止左滑退出
     }
 
     private fun initView() {

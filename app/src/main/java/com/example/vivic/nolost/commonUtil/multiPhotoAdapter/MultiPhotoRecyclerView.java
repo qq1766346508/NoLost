@@ -35,6 +35,25 @@ public class MultiPhotoRecyclerView extends RecyclerView {
         init();
     }
 
+//    @Override
+//    public boolean dispatchTouchEvent(MotionEvent ev) {
+//        switch (ev.getAction()) {
+//            case MotionEvent.ACTION_MOVE:
+//                return true;
+//        }
+//        return super.dispatchTouchEvent(ev);
+//    }
+//
+//
+//    @Override
+//    public boolean onInterceptTouchEvent(MotionEvent e) {
+//        switch (e.getAction()) {
+//            case MotionEvent.ACTION_MOVE:
+//                return true;
+//        }
+//        return super.onInterceptTouchEvent(e);
+//    }
+
     private void init() {
 //        addOnScrollListener(new OnScrollListener() {
 //            @Override

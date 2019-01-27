@@ -1,16 +1,16 @@
 package com.example.vivic.nolost.activity
 
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
 import android.util.Log
-import com.bumptech.glide.Glide
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.commonUtil.BindEventBus
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import me.imid.swipebacklayout.lib.SwipeBackLayout
+import me.imid.swipebacklayout.lib.app.SwipeBackActivity
 import org.greenrobot.eventbus.EventBus
 
-open class BaseActivity : AppCompatActivity() {
+open class BaseActivity : SwipeBackActivity() {
     companion object {
         private val TAG = BaseActivity::class.java.simpleName
     }
@@ -23,6 +23,7 @@ open class BaseActivity : AppCompatActivity() {
         if (javaClass.isAnnotationPresent(BindEventBus::class.java)) {
             EventBus.getDefault().register(this)
         }
+        swipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT)
         overridePendingTransition(R.anim.activity_right_to_left_in, R.anim.activity_right_to_left_out)
     }
 
