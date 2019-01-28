@@ -69,15 +69,16 @@ class LargePhotoDialog() : DialogFragment() {
     private fun initView() {
         photoList?.let {
             viewList = mutableListOf()
-            for (i in 0 until it.size) {
+            for (i in 0 until LargePhotoAdapter.viewCount) {
                 val view = inflater?.inflate(R.layout.item_large_photo, null, false) ?: return
                 view.setOnClickListener { dismissAllowingStateLoss() }
                 viewList?.add(view)
             }
-            largePhotoAdapter = LargePhotoAdapter(viewList)
+            largePhotoAdapter = LargePhotoAdapter(viewList, it)
             vp_large_photo.adapter = largePhotoAdapter
             vp_large_photo.currentItem = currentIndex!!
-            GlideApp.with(this@LargePhotoDialog).asDrawable().load(photoList?.get(currentIndex!!)).thumbnail(0.25f).into((viewList?.get(currentIndex!!) as ImageView))
+//            vp_large_photo.offscreenPageLimit = 3
+            GlideApp.with(this@LargePhotoDialog).asDrawable().load(photoList?.get(currentIndex!!)).thumbnail(0.25f).into((viewList?.get(currentIndex!! % LargePhotoAdapter.viewCount) as ImageView))
             vp_large_photo.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
                 override fun onPageScrollStateChanged(p0: Int) {
 
@@ -88,7 +89,7 @@ class LargePhotoDialog() : DialogFragment() {
 
                 override fun onPageSelected(index: Int) {
                     Log.d(TAG, "current page = $index")
-                    GlideApp.with(this@LargePhotoDialog).asDrawable().load(photoList?.get(index)).thumbnail(0.25f).into((viewList?.get(index) as ImageView))
+
                 }
             })
         }
