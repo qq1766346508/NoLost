@@ -11,7 +11,7 @@ import android.view.MotionEvent;
 /**
  * 停止滑动状态下，甩出， 才会加载图片的recyclerview
  * 拖拽时，不加载dd
- * 2019/1/26 由于图片加载进行了压缩，不对recyclerview停止加载
+ * 2019/1/26 由于图片加载进行了压缩，不对recyclerview停止加载11
  */
 public class MultiPhotoRecyclerView extends RecyclerView {
 
