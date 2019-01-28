@@ -11,4 +11,5 @@
 
     <color name="grey">#bbbbbb</color>
     <color name="grey_btn">#50bbbbbb</color>
+    <color name="bg_splash">#3B3B3B</color>
 </resources>
