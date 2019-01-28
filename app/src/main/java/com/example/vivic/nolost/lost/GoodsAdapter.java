@@ -3,11 +3,11 @@ package com.example.vivic.nolost.lost;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -21,7 +21,6 @@ import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter;
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoRecyclerView;
 import com.example.vivic.nolost.lost.activity.HistoryActivity;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -101,7 +100,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         }
 
         public void initItem(Goods goods) {
-            GlideApp.with(context).load(goods.getCreatorAvatar()).placeholder(R.drawable.icon_default_avatar).into(ivCreatorAvatar);
+            GlideApp.with(context).load(goods.getCreatorAvatar()).circleCrop().placeholder(R.drawable.icon_default_avatar).into(ivCreatorAvatar);
             tvCreatorName.setText(goods.getCreatorName());
             tvGoodsTime.setText(goods.getUpdatedAt());
             tvGoodsLocation.setText(goods.getLocation());

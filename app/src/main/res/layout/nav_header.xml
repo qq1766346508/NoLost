@@ -7,7 +7,7 @@
     android:layout_height="180dp"
     android:background="@color/standard_color">
 
-    <de.hdodenhof.circleimageview.CircleImageView
+    <ImageView
         android:id="@+id/iv_nav_avatar"
         android:layout_width="80dp"
         android:layout_height="80dp"

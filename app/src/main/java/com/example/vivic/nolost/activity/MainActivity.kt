@@ -134,7 +134,7 @@ class MainActivity : BaseActivity() {
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun loginCallback(userEvent: UserEvent) {
         if (userEvent.loginResult) {
-            GlideApp.with(this).load(userEvent.myUser.avatar).placeholder(R.drawable.icon_default_avatar).into(ivAvatar!!)
+            GlideApp.with(this).load(userEvent.myUser.avatar).circleCrop().placeholder(R.drawable.icon_default_avatar).into(ivAvatar!!)
             tvNickname?.text = userEvent.myUser.username
             itemLogout?.isVisible = true
             ivGender?.visibility = View.VISIBLE
