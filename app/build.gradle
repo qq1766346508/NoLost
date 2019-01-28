@@ -37,11 +37,19 @@ MobSDK {
                 appKey "94899488"
                 appSecret "e675ec91296eda8f097c9bd383ae2223"
                 callbackUri "http://www.sharesdk.cn"
-                shareByAppClient false
+                shareByAppClient true
             }
             QQ {
                 appId "101548082"
                 appKey "4657de40fbfb67295e26d44382b5e6b5"
+                shareByAppClient true
+
+            }
+            Wechat {
+                appId "wxe5a1ea3a308c7116"
+                appSecret "6a02ae8b219314167c8e06e79e88e6b0"
+                shareByAppClient true
+
             }
         }
     }

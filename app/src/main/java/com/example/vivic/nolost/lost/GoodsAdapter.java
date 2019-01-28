@@ -2,11 +2,12 @@ package com.example.vivic.nolost.lost;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter;
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoRecyclerView;
 import com.example.vivic.nolost.lost.activity.HistoryActivity;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -83,6 +85,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         TextView tvGoodsName;
         TextView tvGoodsDetail;
         MultiPhotoRecyclerView rvGoodsPhoto;
+        ImageView tvShare;
 
         public GoodsViewHolder(View itemView) {
             super(itemView);
@@ -94,6 +97,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             tvGoodsDetail = itemView.findViewById(R.id.tv_item_goods_details);
             rvGoodsPhoto = itemView.findViewById(R.id.rv_item_goods_photo);
             rvGoodsPhoto.addItemDecoration(new GridSpacingItemDecoration(3, 5, true));
+            tvShare = itemView.findViewById(R.id.iv_item_share);
         }
 
         public void initItem(Goods goods) {
@@ -115,6 +119,14 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             multiPhotoAdapter.addPhotoPath(goods.getPhotoList());
             ivCreatorAvatar.setOnClickListener(view -> {
                 HistoryActivity.Companion.getActivity((Activity) context, goods.getCreatorObjectId());
+            });
+            tvShare.setOnClickListener(v -> {
+                Intent shareIntent = new Intent(Intent.ACTION_SEND);
+//                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(goods.getPhotoList().get(0)));
+                shareIntent.putExtra(Intent.EXTRA_TEXT, goods.getDetail());
+                shareIntent.putExtra(Intent.EXTRA_SUBJECT, goods.getName());
+                shareIntent.setType("image/*");
+                context.startActivity(Intent.createChooser(shareIntent, "test"));
             });
         }
     }

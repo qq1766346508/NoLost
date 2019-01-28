@@ -44,7 +44,7 @@
         <activity
             android:name=".commonUtil.CommonTakePhotoActivity"
             android:theme="@android:style/Theme.Translucent.NoTitleBar.Fullscreen" />
-        <activity android:name=".lost.activity.HistoryActivity" />
+        <activity android:name=".lost.activity.HistoryActivity" android:launchMode="singleTop"/>
         <activity
             android:name=".activity.SplashActivity"
             android:theme="@style/SplashTheme">
