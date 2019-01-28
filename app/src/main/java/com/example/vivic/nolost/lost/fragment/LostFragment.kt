@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.example.vivic.nolost.R
@@ -77,7 +78,7 @@ class LostFragment : BaseFragment() {
     private fun initview() {
         rv_lost_content.layoutManager = LinearLayoutManager(context)
         goodsAdapter = GoodsAdapter(context)
-        rv_lost_content.adapter = goodsAdapter
+        rv_lost_content.adapter = goodsAdapter 
         srl_lost_refresh.setOnRefreshListener { refreshLayout ->
             //每次下拉刷新都要清空列表，重新请求
             resetList()

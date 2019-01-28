@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -16,6 +17,7 @@ import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.bean.Goods;
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.GridSpacingItemDecoration;
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter;
+import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoRecyclerView;
 import com.example.vivic.nolost.lost.activity.HistoryActivity;
 
 import java.util.ArrayList;
@@ -80,7 +82,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         TextView tvGoodsLocation;
         TextView tvGoodsName;
         TextView tvGoodsDetail;
-        RecyclerView rvGoodsPhoto;
+        MultiPhotoRecyclerView rvGoodsPhoto;
 
         public GoodsViewHolder(View itemView) {
             super(itemView);

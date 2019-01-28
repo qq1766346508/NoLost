@@ -182,4 +182,8 @@ class MainActivity : BaseActivity() {
             super.onBackPressed()
         }
     }
+
+    override fun finish() {
+        super.finish()
+    }
 }

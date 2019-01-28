@@ -34,12 +34,18 @@ public class MultiPhotoRecyclerView extends RecyclerView {
         this.context = context;
         init();
     }
-
+//
 //    @Override
 //    public boolean dispatchTouchEvent(MotionEvent ev) {
 //        switch (ev.getAction()) {
+//            case MotionEvent.ACTION_DOWN:
+//                getParent().requestDisallowInterceptTouchEvent(true);
+//                break;
 //            case MotionEvent.ACTION_MOVE:
-//                return true;
+//                getParent().requestDisallowInterceptTouchEvent(false);
+//                break;
+//            case MotionEvent.ACTION_UP:
+//                break;
 //        }
 //        return super.dispatchTouchEvent(ev);
 //    }
