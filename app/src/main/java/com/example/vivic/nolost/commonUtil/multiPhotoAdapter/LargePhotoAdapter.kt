@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import com.example.vivic.nolost.GlideApp
+import com.example.vivic.nolost.commonUtil.dimensUtil.DimensUtils
 
 class LargePhotoAdapter(viewList: MutableList<View>?, photoList: MutableList<String>?) : PagerAdapter() {
 

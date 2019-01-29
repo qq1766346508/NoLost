@@ -7,7 +7,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -100,7 +99,8 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         }
 
         public void initItem(Goods goods) {
-            GlideApp.with(context).load(goods.getCreatorAvatar()).circleCrop().placeholder(R.drawable.icon_default_avatar).into(ivCreatorAvatar);
+            GlideApp.with(context).load(goods.getCreatorAvatar() == null ? R.drawable.icon_default_avatar : goods.getCreatorAvatar())
+                    .circleCrop().placeholder(R.drawable.icon_default_avatar).into(ivCreatorAvatar);
             tvCreatorName.setText(goods.getCreatorName());
             tvGoodsTime.setText(goods.getUpdatedAt());
             tvGoodsLocation.setText(goods.getLocation());
@@ -117,7 +117,8 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             rvGoodsPhoto.setAdapter(multiPhotoAdapter);
             multiPhotoAdapter.addPhotoPath(goods.getPhotoList());
             ivCreatorAvatar.setOnClickListener(view -> {
-                HistoryActivity.Companion.getActivity((Activity) context, goods.getCreatorObjectId());
+                if (!TextUtils.isEmpty(goods.getCreatorObjectId()))
+                    HistoryActivity.Companion.getActivity((Activity) context, goods.getCreatorObjectId());
             });
             tvShare.setOnClickListener(v -> {
                 Intent shareIntent = new Intent(Intent.ACTION_SEND);
@@ -130,5 +131,4 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         }
     }
 
-    private boolean hasAddItemDecoration;//边距不应该重复
 }

@@ -1,8 +1,10 @@
 package com.example.vivic.nolost.commonUtil.multiPhotoAdapter
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.support.v4.app.DialogFragment
+import android.support.v4.app.Fragment
 import android.support.v4.view.ViewPager
 import android.util.Log
 import android.view.LayoutInflater
@@ -45,17 +47,18 @@ class LargePhotoDialog() : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(DialogFragment.STYLE_NO_TITLE, R.style.Dialog_Fullscreen)
+        setStyle(DialogFragment.STYLE_NORMAL, R.style.Dialog_Fullscreen)
         this.photoList = arguments?.getStringArrayList(PHOTO_LIST)
-        currentIndex = arguments?.getInt(CURRENT_INDEX)
+        this.currentIndex = arguments?.getInt(CURRENT_INDEX)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         if (dialog != null && dialog.window != null) {
-            val flags = WindowManager.LayoutParams.FLAG_FULLSCREEN
+            val flags = WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS
             dialog.window!!.setFlags(flags, flags)
-            dialog.window!!.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
-                    or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+            dialog.window!!.statusBarColor = Color.BLACK
+//            dialog.window!!.decorView.systemUiVisibility = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+//                    or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
         }
         this.inflater = inflater
         return inflater.inflate(R.layout.layout_large_photo_dialog, container, false)
