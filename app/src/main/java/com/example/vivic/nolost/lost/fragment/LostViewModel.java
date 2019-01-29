@@ -19,7 +19,7 @@ import io.reactivex.disposables.Disposable;
 
 public class LostViewModel extends ViewModel {
 
-    public static final int QUERY_LIMIT = 10;
+    public static final int QUERY_LIMIT = 5; //每次请求的数据条数
 
     private static final String TAG = LostViewModel.class.getSimpleName();
     public MutableLiveData<List<Goods>> totalGoodList = new MutableLiveData<>();

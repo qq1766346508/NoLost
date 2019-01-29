@@ -1,5 +1,6 @@
 package com.example.vivic.nolost.commonUtil.multiPhotoAdapter
 
+import android.content.Context
 import android.support.v4.view.PagerAdapter
 import android.util.Log
 import android.view.View

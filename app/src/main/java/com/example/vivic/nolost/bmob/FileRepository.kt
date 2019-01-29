@@ -3,9 +3,11 @@ package com.example.vivic.nolost.bmob
 import android.util.Log
 import cn.bmob.v3.datatype.BmobFile
 import cn.bmob.v3.exception.BmobException
+import cn.bmob.v3.listener.DownloadFileListener
 import cn.bmob.v3.listener.UploadBatchListener
 import cn.bmob.v3.listener.UploadFileListener
 import io.reactivex.disposables.Disposable
+import java.io.File
 
 object FileRepository {
     val TAG = FileRepository::class.java.simpleName
@@ -71,4 +73,21 @@ object FileRepository {
         })
     }
 
+
+    fun downloadFile(bmobFile: BmobFile, savePath: File) {
+        bmobFile.download(savePath, object : DownloadFileListener() {
+            override fun onProgress(value: Int?, newworkSpeed: Long) {
+                Log.d(TAG, "downloadFile-onProgress-value:$value,newworkSpeed:$newworkSpeed")
+            }
+
+            override fun done(savePath: String?, e: BmobException?) {
+                if (e == null) {
+                    Log.d(TAG, "downloadFile-done-savePath:$savePath,")
+                } else {
+                    Log.d(TAG, "BmobException:$e")
+                }
+            }
+
+        })
+    }
 }

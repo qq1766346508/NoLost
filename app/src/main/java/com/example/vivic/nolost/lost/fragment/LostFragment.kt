@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import com.example.vivic.nolost.R
@@ -78,7 +77,8 @@ class LostFragment : BaseFragment() {
     private fun initview() {
         rv_lost_content.layoutManager = LinearLayoutManager(context)
         goodsAdapter = GoodsAdapter(context)
-        rv_lost_content.adapter = goodsAdapter 
+        rv_lost_content.adapter = goodsAdapter
+        srl_lost_refresh.setEnableAutoLoadMore(true)
         srl_lost_refresh.setOnRefreshListener { refreshLayout ->
             //每次下拉刷新都要清空列表，重新请求
             resetList()
@@ -91,7 +91,7 @@ class LostFragment : BaseFragment() {
                     null
                 }
             })
-            refreshLayout.finishRefresh(2000)
+            refreshLayout.finishRefresh(1000)
         }
         srl_lost_refresh.setOnLoadMoreListener { refreshLayout ->
             addSubscribe(when (loadModel) {
@@ -103,7 +103,7 @@ class LostFragment : BaseFragment() {
                     null
                 }
             })
-            refreshLayout.finishLoadMore(2000)
+            refreshLayout.finishLoadMore()
         }
         addSubscribe(when (loadModel) {//首次进入调用
             LoadMode.LOAD_MODE_NORMAL -> lostViewModel?.loadGoods()
@@ -117,8 +117,11 @@ class LostFragment : BaseFragment() {
     private fun initObserver() {
         lostViewModel?.totalGoodList?.observe(this, android.arch.lifecycle.Observer {
             if (it?.size != 0) {
+                srl_lost_refresh.resetNoMoreData()
                 goodsAdapter?.addData(it)
                 lostViewModel!!.querySkip += QUERY_LIMIT
+            } else if (it?.size == 0) {
+                srl_lost_refresh.finishLoadMoreWithNoMoreData()
             }
         })
 
