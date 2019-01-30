@@ -13,7 +13,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import cn.bmob.v3.BmobUser
-import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.vivic.nolost.GlideApp
@@ -125,16 +124,22 @@ class MainActivity : BaseActivity() {
         val currentUser = BmobUser.getCurrentUser(MyUser::class.java)
         if (currentUser != null) {
             Log.i(TAG, "currentUser: " + currentUser.toString())
-            loginCallback(UserEvent(true, currentUser))
+            updateNavigation(UserEvent(true, currentUser))
         } else {
             Log.i(TAG, "currentUser == null ")
+            updateNavigation(UserEvent(false, null))
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun loginCallback(userEvent: UserEvent) {
+        updateNavigation(userEvent)
+    }
+
+    private fun updateNavigation(userEvent: UserEvent) {
         if (userEvent.loginResult) {
-            GlideApp.with(this).load(userEvent.myUser.avatar).circleCrop().placeholder(R.drawable.icon_default_avatar).into(ivAvatar!!)
+            GlideApp.with(this).load(if (userEvent.myUser.avatar == null) R.drawable.icon_default_avatar else userEvent.myUser.avatar)
+                    .circleCrop().placeholder(R.drawable.icon_default_avatar).into(ivAvatar!!)
             tvNickname?.text = userEvent.myUser.username
             itemLogout?.isVisible = true
             ivGender?.visibility = View.VISIBLE
@@ -150,16 +155,18 @@ class MainActivity : BaseActivity() {
                     clBackground?.background = resource
                 }
             })
+        } else {
+            GlideApp.with(this).load(R.drawable.icon_default_avatar).circleCrop().into(ivAvatar!!)
+            tvNickname?.text = ""
+            itemLogout?.isVisible = false
+            ivGender?.visibility = View.INVISIBLE
+            clBackground?.setBackgroundColor(resources.getColor(R.color.standard_color))
         }
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
     fun logout(logOutEvent: LogOutEvent) {
-        Glide.with(this).load(R.drawable.icon_default_avatar).into(ivAvatar!!)
-        tvNickname?.text = ""
-        itemLogout?.isVisible = false
-        ivGender?.visibility = View.INVISIBLE
-        clBackground?.setBackgroundColor(resources.getColor(R.color.standard_color))
+        updateNavigation(UserEvent(false, null))
     }
 
 
@@ -183,7 +190,4 @@ class MainActivity : BaseActivity() {
         }
     }
 
-    override fun finish() {
-        super.finish()
-    }
 }

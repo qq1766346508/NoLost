@@ -79,6 +79,7 @@ class LostFragment : BaseFragment() {
         goodsAdapter = GoodsAdapter(context)
         rv_lost_content.adapter = goodsAdapter
         srl_lost_refresh.setEnableAutoLoadMore(true)
+        srl_lost_refresh.setHeaderTriggerRate(0.5f)
         srl_lost_refresh.setOnRefreshListener { refreshLayout ->
             //每次下拉刷新都要清空列表，重新请求
             resetList()

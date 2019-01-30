@@ -114,8 +114,7 @@ class PublishActivity : BaseActivity() {
      * 先上传完图片再提交物品
      */
     private fun upLoadMultiPhoto(photoList: MutableList<String>?) {
-        progressBarDialog.isCancelable = false
-        progressBarDialog.show(supportFragmentManager, ProgressBarDialog.TAG)
+        progressBarDialog.show(this)
         FileRepository.uploadBatchFile(photoList!!, object : FileRepository.IFileBatchCallback {
             override fun success(files: MutableList<BmobFile>, urls: MutableList<String>?) {
                 if (photoList.size == urls?.size) {

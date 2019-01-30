@@ -12,7 +12,7 @@
         android:orientation="vertical"
         tools:context=".lost.activity.PublishActivity">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="@color/standard_color">
@@ -21,7 +21,8 @@
                 android:id="@+id/iv_publish_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="start"
+                android:layout_alignParentStart="true"
+                android:layout_centerVertical="true"
                 android:background="@drawable/btn_selector"
                 android:padding="16dp"
                 android:src="@drawable/ic_arrow_back_white_24dp" />
@@ -29,11 +30,25 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
                 android:layout_gravity="center"
+                android:layout_toEndOf="@+id/iv_publish_back"
                 android:text="@string/publish_title"
                 android:textColor="#fff"
                 android:textSize="18sp" />
-        </LinearLayout>
+
+            <ImageView
+                android:id="@+id/btn_publish_save"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_gravity="end"
+                android:background="@drawable/btn_selector"
+                android:padding="16dp"
+                android:src="@drawable/ic_send_white_24dp" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -202,15 +217,16 @@
                     android:text="@string/publish_goodsphoto_title"
                     android:textColor="#000"
                     android:textSize="14sp" />
+
                 <Button
-                    android:text="@string/publish_goodsphoto_add"
-                    android:textSize="12sp"
-                    android:textColor="#fff"
                     android:id="@+id/btn_add_photo"
-                    android:background="@color/standard_color"
-                    android:layout_gravity="end"
                     android:layout_width="55dp"
-                    android:layout_height="20dp" />
+                    android:layout_height="20dp"
+                    android:layout_gravity="end"
+                    android:background="@color/standard_color"
+                    android:text="@string/publish_goodsphoto_add"
+                    android:textColor="#fff"
+                    android:textSize="12sp" />
             </FrameLayout>
 
             <android.support.v7.widget.RecyclerView
@@ -223,19 +239,6 @@
 
 
         </LinearLayout>
-
-        <Button
-            android:id="@+id/btn_publish_save"
-            android:layout_width="200dp"
-            android:layout_height="50dp"
-            android:layout_gravity="center"
-            android:layout_marginBottom="20dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/selector_bg_btn"
-            android:text="@string/publish_goods_save"
-            android:textColor="#fff"
-            android:textSize="18sp"
-            android:textStyle="bold" />
 
 
     </LinearLayout>

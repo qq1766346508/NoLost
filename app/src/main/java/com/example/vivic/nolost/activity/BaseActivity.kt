@@ -25,6 +25,8 @@ open class BaseActivity : SwipeBackActivity() {
         }
         swipeBackLayout.setEdgeTrackingEnabled(SwipeBackLayout.EDGE_LEFT)
         overridePendingTransition(R.anim.activity_right_to_left_in, R.anim.activity_right_to_left_out)
+        val maxMemory = (Runtime.getRuntime().maxMemory() / (1024 * 1024)).toInt()
+        Log.d(TAG, "Max memory is " + maxMemory + "MB")
     }
 
     override fun finish() {
