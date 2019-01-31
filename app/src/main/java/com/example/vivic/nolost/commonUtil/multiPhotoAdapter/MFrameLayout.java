@@ -33,4 +33,18 @@ public class MFrameLayout extends FrameLayout {
 //        layoutParams.height = width;
 //        setLayoutParams(layoutParams);
     }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                break;
+            case MotionEvent.ACTION_MOVE:
+                break;
+            default:
+                break;
+        }
+        return super.dispatchTouchEvent(ev);
+
+    }
 }

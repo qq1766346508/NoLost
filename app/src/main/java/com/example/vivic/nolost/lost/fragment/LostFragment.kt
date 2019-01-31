@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -76,6 +77,13 @@ class LostFragment : BaseFragment() {
         rv_lost_content.layoutManager = LinearLayoutManager(context)
         goodsAdapter = GoodsAdapter(context)
         rv_lost_content.adapter = goodsAdapter
+        rv_lost_content.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                if (Math.abs(dy) > 0) {
+                    goodsAdapter?.hideItemMenu()
+                }
+            }
+        })
         srl_lost_refresh.setEnableAutoLoadMore(true)
         srl_lost_refresh.setHeaderTriggerRate(0.5f)
         srl_lost_refresh.setOnRefreshListener { refreshLayout ->

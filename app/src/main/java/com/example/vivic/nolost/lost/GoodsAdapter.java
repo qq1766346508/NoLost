@@ -2,31 +2,22 @@ package com.example.vivic.nolost.lost;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import com.example.vivic.nolost.GlideApp;
 import com.example.vivic.nolost.R;
 import com.example.vivic.nolost.bean.Goods;
-import com.example.vivic.nolost.bmob.DataRepository;
-import com.example.vivic.nolost.bmob.IBmobCallback;
-import com.example.vivic.nolost.commonUtil.dimensUtil.DimensUtils;
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.GridSpacingItemDecoration;
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter;
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoRecyclerView;
-import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil;
 import com.example.vivic.nolost.lost.activity.HistoryActivity;
-
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,7 +29,8 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
     private static final String TAG = GoodsAdapter.class.getSimpleName();
     private List<Goods> goodsList = new ArrayList<>();
     private Context context;
-    private List<PopupWindow> popupWindowList = new ArrayList<>();
+    private List<MenuView> menuViewList = new ArrayList<>();
+
 
     public GoodsAdapter(List<Goods> goodsList, Context context) {
         this.context = context;
@@ -64,14 +56,9 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             Goods goods = goodsList.get(position);
             holder.initItem(position, goods);
         }
-        holder.itemView.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                for (PopupWindow popupWindow : popupWindowList) {
-                    popupWindow.dismiss();
-                }
-                return false;
-            }
+        holder.itemView.setOnTouchListener((v, event) -> {
+            hideItemMenu();
+            return false;
         });
     }
 
@@ -92,6 +79,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         notifyItemRangeChanged(positionStart, itemCount);
     }
 
+
     public class GoodsViewHolder extends RecyclerView.ViewHolder {
         ImageView ivCreatorAvatar;
         TextView tvCreatorName;
@@ -100,9 +88,8 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         TextView tvGoodsName;
         TextView tvGoodsDetail;
         MultiPhotoRecyclerView rvGoodsPhoto;
-        TextView tvShare;
         ImageView ivMore;
-        TextView tvDelete;
+        MenuView menuView;
 
 
         public GoodsViewHolder(View itemView) {
@@ -116,9 +103,10 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             rvGoodsPhoto = itemView.findViewById(R.id.rv_item_goods_photo);
             rvGoodsPhoto.addItemDecoration(new GridSpacingItemDecoration(3, 5, true));
             ivMore = itemView.findViewById(R.id.iv_item_more);
+            menuView = itemView.findViewById(R.id.mv_item_menu);
         }
 
-        public void initItem(int position, Goods goods) {
+        void initItem(int position, Goods goods) {
             GlideApp.with(context).load(goods.getCreatorAvatar() == null ? R.drawable.icon_default_avatar : goods.getCreatorAvatar())
                     .circleCrop().placeholder(R.drawable.icon_default_avatar).into(ivCreatorAvatar);
             tvCreatorName.setText(goods.getCreatorName());
@@ -144,44 +132,34 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
         }
 
         private void initMoreMenu(int position, Goods goods) {
-            View view = LayoutInflater.from(context).inflate(R.layout.menu_item_more, null);
-
             ivMore.setOnClickListener(v -> {
-                for (PopupWindow i : popupWindowList) {
-                    i.dismiss();
+                hideItemMenu();
+                menuView.setVisibility(View.VISIBLE);
+                menuViewList.add(menuView);
+            });
+            menuView.setGoods(goods);
+            menuView.setDeleteCallback(new MenuView.DeleteCallback() {
+                @Override
+                public void success() {
+                    GoodsAdapter.this.goodsList.remove(position);
+                    GoodsAdapter.this.notifyItemRemoved(position);
+                    GoodsAdapter.this.notifyItemRangeChanged(position, GoodsAdapter.this.goodsList.size());
+                    hideItemMenu();
                 }
-                PopupWindow popupWindow = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-                popupWindowList.add(popupWindow);
-                popupWindow.showAsDropDown(ivMore, -DimensUtils.dip2pixel(130f), -DimensUtils.dip2pixel(35f));
-            });
-            tvShare = view.findViewById(R.id.tv_item_share);
-            tvShare.setOnClickListener(v -> {
-                Intent shareIntent = new Intent(Intent.ACTION_SEND);
-//                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(goods.getPhotoList().get(0)));
-                shareIntent.putExtra(Intent.EXTRA_TEXT, goods.getDetail());
-                shareIntent.putExtra(Intent.EXTRA_SUBJECT, goods.getName());
-                shareIntent.setType("image/*");
-                context.startActivity(Intent.createChooser(shareIntent, "test"));
-            });
-            tvDelete = view.findViewById(R.id.tv_item_delete);
-            tvDelete.setOnClickListener(v -> {
-                DataRepository.INSTANCE.deleteByObjectId(goods, new IBmobCallback<String>() {
-                    @Override
-                    public void success(@Nullable String result) {
-                        GoodsAdapter.this.goodsList.remove(position);
-                        GoodsAdapter.this.notifyItemRemoved(position);
-                        GoodsAdapter.this.notifyItemRangeChanged(position, GoodsAdapter.this.goodsList.size());
-                    }
 
-                    @Override
-                    public void error(@Nullable Throwable throwable) {
-                        ToastUtil.showToast("删除失败：" + throwable.toString());
-                    }
-                });
-                for (PopupWindow i : popupWindowList) {
-                    i.dismiss();
+                @Override
+                public void fail() {
+                    hideItemMenu();
                 }
             });
         }
     }
+
+    public void hideItemMenu() {
+        for (MenuView menuView : menuViewList) {
+            menuView.setVisibility(View.GONE);
+        }
+        menuViewList.clear();
+    }
+
 }
