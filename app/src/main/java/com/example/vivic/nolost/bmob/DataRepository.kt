@@ -7,6 +7,7 @@ import cn.bmob.v3.exception.BmobException
 import cn.bmob.v3.listener.FindListener
 import cn.bmob.v3.listener.QueryListener
 import cn.bmob.v3.listener.SaveListener
+import cn.bmob.v3.listener.UpdateListener
 import com.example.vivic.nolost.bean.Goods
 import com.example.vivic.nolost.bean.MyUser
 import io.reactivex.disposables.Disposable
@@ -57,10 +58,28 @@ object DataRepository {
     /**
      * 根据objectId查询
      */
-    fun <T> queryByObjdectId(bmobQuery: BmobQuery<T>){
-        bmobQuery.findObjects(object :FindListener<T>(){
+    fun <T> queryByObjdectId(bmobQuery: BmobQuery<T>) {
+        bmobQuery.findObjects(object : FindListener<T>() {
             override fun done(p0: MutableList<T>?, p1: BmobException?) {
 
+            }
+
+        })
+    }
+
+    /**
+     * 根据ID删除数据
+     */
+    fun deleteByObjectId(bmobObject: BmobObject, iBmobCallback: IBmobCallback<String>) {
+        bmobObject.delete(bmobObject.objectId, object : UpdateListener() {
+            override fun done(bmobException: BmobException?) {
+                if (bmobException == null) {
+                    Log.d(TAG, "deleteByObjectId success")
+                    iBmobCallback.success(null)
+                } else {
+                    Log.d(TAG, "deleteByObjectId failed,BmobException:$bmobException")
+                    iBmobCallback.error(bmobException)
+                }
             }
 
         })

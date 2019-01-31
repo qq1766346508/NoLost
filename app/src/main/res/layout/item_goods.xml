@@ -2,7 +2,8 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <ImageView
         android:id="@+id/iv_item_goods_avatar"
@@ -22,12 +23,11 @@
         app:layout_constraintGuide_percent="0.2" />
 
     <ImageView
-        android:id="@+id/iv_item_share"
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginTop="8dp"
-        android:src="@drawable/ic_share_blue_600_24dp"
+        android:id="@+id/iv_item_more"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="8dp"
+        android:src="@drawable/ic_more_horiz_black_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:text="一三二"
+        tools:text="一三二"
         android:textColor="@android:color/black"
         android:textSize="14sp"
         android:textStyle="bold"
@@ -71,7 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="物品名称:手机"
+            tools:text="物品名称:手机"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             app:layout_constraintTop_toBottomOf="@+id/content" />
@@ -81,7 +81,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="物品详情：安康机sadfas asfsafasfasfsadffafsdfdfdfdfdfdfaafdasdfasfasfs得分阿卡丽"
+            tools:text="物品详情：安康机sadfas asfsafasfasfsadffafsdfdfdfdfdfdfaafdasdfasfasfs得分阿卡丽"
             android:textColor="@android:color/black"
             android:textSize="14sp" />
 
@@ -99,7 +99,7 @@
             android:layout_marginTop="8dp"
             android:drawableStart="@drawable/ic_location_on_blue_800_18dp"
             android:maxLength="15"
-            android:text="足球场是大事发生范阿斯顿法德萨发的"
+            tools:text="足球场是大事发生范阿斯顿法德萨发的"
             android:textColor="@android:color/holo_blue_dark"
             android:textSize="11sp" />
     </LinearLayout>

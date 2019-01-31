@@ -22,6 +22,11 @@ public class DimensUtils {
         return (int) (dpValue * scale + 0.5f);
     }
 
+    public static int dip2pixel(float dpValue) {
+        return dip2pixel(NoLostApplication.getContext(), dpValue);
+    }
+
+
     public static int pixel2dip(Context context, float pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);

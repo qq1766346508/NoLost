@@ -12,6 +12,7 @@ import com.example.vivic.nolost.R
 import com.example.vivic.nolost.bean.Goods
 import com.example.vivic.nolost.fragment.BaseFragment
 import com.example.vivic.nolost.lost.GoodsAdapter
+import com.example.vivic.nolost.lost.fragment.LostViewModel.QUERY_LIMIT
 import kotlinx.android.synthetic.main.fragment_lost.*
 
 /*
@@ -20,9 +21,6 @@ import kotlinx.android.synthetic.main.fragment_lost.*
 class LostFragment : BaseFragment() {
     companion object {
         private val TAG = LostFragment::class.java.simpleName
-        public val QUERY_LIMIT = 10
-        private val GOODS_UPDATE_COUNT = 1
-
         fun newInstance(loadModel: Int): LostFragment {
             val fragment = LostFragment()
             fragment.arguments = Bundle().apply {
