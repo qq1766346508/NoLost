@@ -24,13 +24,12 @@
 
     <com.example.vivic.nolost.lost.MenuView
         android:id="@+id/mv_item_menu"
-        android:visibility="gone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="@+id/iv_item_more"
         app:layout_constraintEnd_toStartOf="@id/iv_item_more"
-        app:layout_constraintTop_toTopOf="@+id/iv_item_more"
-        />
+        app:layout_constraintTop_toTopOf="@+id/iv_item_more" />
 
     <ImageView
         android:id="@+id/iv_item_more"

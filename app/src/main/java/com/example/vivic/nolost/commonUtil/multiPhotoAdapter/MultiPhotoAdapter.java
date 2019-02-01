@@ -38,6 +38,7 @@ public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.Ph
     }
 
     public MultiPhotoAdapter(Context context) {
+        this.photoPathList = new ArrayList<>();
         this.context = context;
     }
 
@@ -89,7 +90,7 @@ public class MultiPhotoAdapter extends RecyclerView.Adapter<MultiPhotoAdapter.Ph
 
     public class PhotoViewHolder extends RecyclerView.ViewHolder {
 
-        private ImageView ivPhoto;
+        ImageView ivPhoto;
         ImageView ivDelete;
 
 

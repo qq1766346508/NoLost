@@ -3,8 +3,10 @@ package com.example.vivic.nolost.lost;
 import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import com.example.vivic.nolost.bean.Goods;
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.GridSpacingItemDecoration;
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter;
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoRecyclerView;
+import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil;
 import com.example.vivic.nolost.lost.activity.HistoryActivity;
 
 import java.util.ArrayList;
@@ -45,9 +48,7 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
     @Override
     public GoodsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_goods, parent, false);
-        GoodsViewHolder holder = new GoodsViewHolder(itemView);
-        context = parent.getContext();
-        return holder;
+        return new GoodsViewHolder(itemView);
     }
 
     @Override
@@ -148,7 +149,8 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
                 }
 
                 @Override
-                public void fail() {
+                public void fail(Throwable throwable) {
+                    ToastUtil.showToast("删除失败：" + throwable.toString());
                     hideItemMenu();
                 }
             });

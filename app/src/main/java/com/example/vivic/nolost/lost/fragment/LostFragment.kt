@@ -129,6 +129,7 @@ class LostFragment : BaseFragment() {
                 lostViewModel!!.querySkip += QUERY_LIMIT
             } else if (it?.size == 0) {
                 srl_lost_refresh.finishLoadMoreWithNoMoreData()
+                srl_lost_refresh.setEnableLoadMore(false)
             }
         })
 
@@ -153,6 +154,7 @@ class LostFragment : BaseFragment() {
     private fun resetList() {
         goodsAdapter?.clearData()
         lostViewModel!!.querySkip = 0
+        srl_lost_refresh.setEnableLoadMore(true)
     }
 
     //另一种查询方法

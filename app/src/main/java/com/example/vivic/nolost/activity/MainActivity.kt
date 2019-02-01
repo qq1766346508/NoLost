@@ -190,4 +190,8 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(0, 0)
+    }
 }

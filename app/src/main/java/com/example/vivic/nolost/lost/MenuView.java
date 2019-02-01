@@ -24,7 +24,7 @@ public class MenuView extends FrameLayout {
     private View div;
     private Goods goods;
     private DeleteCallback deleteCallback;
-
+    private MyUser currentUser = BmobUser.getCurrentUser(MyUser.class);
 
 
     public MenuView(Context context, @Nullable AttributeSet attrs) {
@@ -55,7 +55,7 @@ public class MenuView extends FrameLayout {
             @Override
             public void error(@org.jetbrains.annotations.Nullable Throwable throwable) {
                 if (deleteCallback != null) {
-                    deleteCallback.fail();
+                    deleteCallback.fail(throwable);
                 }
             }
         });
@@ -73,13 +73,15 @@ public class MenuView extends FrameLayout {
     interface DeleteCallback {
         void success();
 
-        void fail();
+        void fail(Throwable throwable);
     }
 
     public void setGoods(Goods goods) {
         this.goods = goods;
-        if (BmobUser.getCurrentUser(MyUser.class) != null && BmobUser.getCurrentUser(MyUser.class).getObjectId().equals(goods.getCreatorObjectId())) {
+        if (currentUser != null && currentUser.getObjectId().equals(goods.getCreatorObjectId())) {
             tvDelete.setVisibility(VISIBLE);
+        }else {
+            tvDelete.setVisibility(GONE);
         }
     }
 
