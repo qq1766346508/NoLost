@@ -20,6 +20,7 @@ import com.example.vivic.nolost.R
 import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.bmob.UserRepository
 import com.example.vivic.nolost.commonUtil.BindEventBus
+import com.example.vivic.nolost.commonUtil.DataCleanManager
 import com.example.vivic.nolost.commonUtil.confirmDialog.ConfirmDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.login.LogOutEvent
@@ -52,6 +53,19 @@ class MainActivity : BaseActivity() {
     private var tvNickname: TextView? = null
     private var itemLogout: MenuItem? = null
     private var clBackground: ConstraintLayout? = null
+    private val cleanCacheDialog: ConfirmDialog by lazy {
+        ConfirmDialog.Builder()
+                .content("确认清理缓存(${DataCleanManager.getCacheSize(cacheDir) + DataCleanManager.getCacheSize(externalCacheDir)})")
+                .confirmText("确定")
+                .confirmListener(object : ConfirmDialog.Builder.ConfirmListener() {
+                    override fun onConfirm() {
+                        DataCleanManager.cleanExternalCache(applicationContext)
+                        DataCleanManager.cleanInternalCache(applicationContext)
+                    }
+                })
+                .cancelText("取消")
+                .build()
+    }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -91,7 +105,7 @@ class MainActivity : BaseActivity() {
                     UserCenterActivity.getActivity(this@MainActivity, BmobUser.getCurrentUser(MyUser::class.java).objectId)
                 }
                 R.id.nav_weather -> ToastUtil.showToast("天气")
-                R.id.nav_setting -> ToastUtil.showToast("设置")
+                R.id.nav_setting -> cleanCacheDialog.show(this@MainActivity)
                 R.id.nav_logout -> ConfirmDialog.Builder()
                         .content("确定注销？")
                         .confirmListener(object : ConfirmDialog.Builder.ConfirmListener() {

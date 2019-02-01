@@ -4,6 +4,10 @@ import android.graphics.Rect;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+/**
+ * 网格布局万能间距类
+ * spacing>spaceCount能使用，即间距要大于列数
+ */
 public class GridSpacingItemDecoration extends RecyclerView.ItemDecoration {
 
     private int spanCount;
