@@ -41,9 +41,7 @@ import org.greenrobot.eventbus.ThreadMode
 @BindEventBus
 class MainActivity : BaseActivity() {
     companion object {
-
         private val TAG = MainActivity::class.java.simpleName
-        private val REQUEST_CODE_PUBLISH = 0
     }
 
     //DrawerView的子控件实例无法直接通过id获取
@@ -55,7 +53,7 @@ class MainActivity : BaseActivity() {
     private var clBackground: ConstraintLayout? = null
     private val cleanCacheDialog: ConfirmDialog by lazy {
         ConfirmDialog.Builder()
-                .content("确认清理缓存(${DataCleanManager.getCacheSize(cacheDir) + DataCleanManager.getCacheSize(externalCacheDir)})")
+                .content("确认清理缓存(${DataCleanManager.getCacheSize(cacheDir)}")
                 .confirmText("确定")
                 .confirmListener(object : ConfirmDialog.Builder.ConfirmListener() {
                     override fun onConfirm() {
