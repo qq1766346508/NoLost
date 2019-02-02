@@ -28,7 +28,7 @@ import org.greenrobot.eventbus.EventBus
 /**
  * 注册,成功后会跳去个人中心
  * 登录，成功之后退出登录页
- * 第三方登录，成功之后退出登录页dd
+ * 第三方登录，成功之后退出登录页
  */
 class LoginActivity : BaseActivity() {
 
