@@ -22,6 +22,7 @@ import com.example.vivic.nolost.bmob.UserRepository
 import com.example.vivic.nolost.commonUtil.BindEventBus
 import com.example.vivic.nolost.commonUtil.DataCleanManager
 import com.example.vivic.nolost.commonUtil.confirmDialog.ConfirmDialog
+import com.example.vivic.nolost.commonUtil.dimensUtil.DimensUtils
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.login.LogOutEvent
 import com.example.vivic.nolost.login.LoginActivity
@@ -53,20 +54,6 @@ class MainActivity : BaseActivity() {
     private var tvNickname: TextView? = null
     private var itemLogout: MenuItem? = null
     private var clBackground: ConstraintLayout? = null
-    private val cleanCacheDialog: ConfirmDialog by lazy {
-        ConfirmDialog.Builder()
-                .content("确认清理缓存(${DataCleanManager.getCacheSize(cacheDir) + DataCleanManager.getCacheSize(externalCacheDir)})")
-                .confirmText("确定")
-                .confirmListener(object : ConfirmDialog.Builder.ConfirmListener() {
-                    override fun onConfirm() {
-                        DataCleanManager.cleanExternalCache(applicationContext)
-                        DataCleanManager.cleanInternalCache(applicationContext)
-                    }
-                })
-                .cancelText("取消")
-                .build()
-    }
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -105,7 +92,20 @@ class MainActivity : BaseActivity() {
                     UserCenterActivity.getActivity(this@MainActivity, BmobUser.getCurrentUser(MyUser::class.java).objectId)
                 }
                 R.id.nav_weather -> ToastUtil.showToast("天气")
-                R.id.nav_setting -> cleanCacheDialog.show(this@MainActivity)
+                R.id.nav_setting -> {
+                    Log.d(TAG, "cleanInternalCache:${DataCleanManager.getCacheSize(cacheDir)},cleanExternalCache:${DataCleanManager.getCacheSize(externalCacheDir)}}")
+                    ConfirmDialog.Builder()
+                            .content("确认清理缓存(${DataCleanManager.getFormatSize(DataCleanManager.getFolderSize(cacheDir) + DataCleanManager.getFolderSize(externalCacheDir))})")
+                            .confirmText("确定")
+                            .confirmListener(object : ConfirmDialog.Builder.ConfirmListener() {
+                                override fun onConfirm() {
+                                    DataCleanManager.cleanInternalCache(this@MainActivity)
+                                    DataCleanManager.cleanExternalCache(this@MainActivity)
+                                }
+                            })
+                            .build()
+                            .show(this@MainActivity)
+                }
                 R.id.nav_logout -> ConfirmDialog.Builder()
                         .content("确定注销？")
                         .confirmListener(object : ConfirmDialog.Builder.ConfirmListener() {
@@ -164,7 +164,7 @@ class MainActivity : BaseActivity() {
                     else -> ivGender?.setImageResource(R.drawable.icon_gender_secret)
                 }
             }
-            GlideApp.with(this).asDrawable().override(clBackground?.width!!, clBackground?.height!!).centerCrop().load(userEvent.myUser.background).into(object : SimpleTarget<Drawable>() {
+            GlideApp.with(this).asDrawable().override(DimensUtils.dip2pixel(250f), DimensUtils.dip2pixel(180f)).centerCrop().load(userEvent.myUser.background).into(object : SimpleTarget<Drawable>() {
                 override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
                     clBackground?.background = resource
                 }

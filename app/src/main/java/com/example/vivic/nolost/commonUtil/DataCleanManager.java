@@ -110,7 +110,11 @@ public class DataCleanManager {
     private static void deleteFilesByDirectory(File directory) {
         if (directory != null && directory.exists() && directory.isDirectory()) {
             for (File item : directory.listFiles()) {
-                item.delete();
+                if (item.isDirectory()) {
+                    deleteFilesByDirectory(item);
+                } else {
+                    item.delete();
+                }
             }
         }
     }
@@ -175,7 +179,7 @@ public class DataCleanManager {
      * @param size
      * @return
      */
-    public static String getFormatSize(double size) {
+    public static String getFormatSize(long size) {
         double kiloByte = size / 1024;
         if (kiloByte < 1) {
             return size + "Byte";
