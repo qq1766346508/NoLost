@@ -10,6 +10,7 @@ import com.example.vivic.nolost.GlideApp
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.MyUser
+import com.example.vivic.nolost.bmob.ChatRepository
 import com.example.vivic.nolost.lost.fragment.LoadMode
 import com.example.vivic.nolost.lost.fragment.LostFragment
 import com.example.vivic.nolost.userCenter.UserCenterActivity
@@ -36,6 +37,7 @@ class HistoryActivity : BaseActivity() {
         initView()
     }
 
+
     private fun initView() {
         supportFragmentManager.beginTransaction().replace(R.id.fl_history_container, LostFragment.newInstance(LoadMode.LOAD_MODE_HISTORY, creatorObjectId)).commitAllowingStateLoss()
         iv_history_back.setOnClickListener { finish() }
@@ -48,11 +50,19 @@ class HistoryActivity : BaseActivity() {
                     GlideApp.with(this@HistoryActivity).asDrawable().thumbnail(0.1f).load(queryUser?.background
                             ?: R.drawable.noicon120).override(iv_history_bg.width).centerCrop().into(iv_history_bg)
                     tv_history_username.text = queryUser?.username
+                    updateuserInfo()
                 }
             }
         })
         iv_history_avatar.setOnClickListener {
             UserCenterActivity.getActivity(this@HistoryActivity, queryUser?.objectId)
         }
+        tv_history_chat.setOnClickListener {
+            startActivity(Intent(this@HistoryActivity, ChatActivity::class.java))
+        }
+    }
+
+    private fun updateuserInfo() {
+        ChatRepository.updateUserInfo(queryUser?.objectId, queryUser?.username, queryUser?.avatar)
     }
 }

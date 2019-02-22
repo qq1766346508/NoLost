@@ -12,12 +12,17 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
+import cn.bmob.newim.BmobIM
+import cn.bmob.newim.core.ConnectionStatus
+import cn.bmob.newim.listener.ConnectStatusChangeListener
 import cn.bmob.v3.BmobUser
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.example.vivic.nolost.GlideApp
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.bean.MyUser
+import com.example.vivic.nolost.bmob.ChatRepository
+import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.bmob.UserRepository
 import com.example.vivic.nolost.commonUtil.BindEventBus
 import com.example.vivic.nolost.commonUtil.DataCleanManager
@@ -27,6 +32,7 @@ import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.login.LogOutEvent
 import com.example.vivic.nolost.login.LoginActivity
 import com.example.vivic.nolost.login.UserEvent
+import com.example.vivic.nolost.lost.activity.ChatActivity
 import com.example.vivic.nolost.lost.activity.HistoryActivity
 import com.example.vivic.nolost.lost.activity.PublishActivity
 import com.example.vivic.nolost.lost.fragment.LoadMode
@@ -169,12 +175,24 @@ class MainActivity : BaseActivity() {
                     clBackground?.background = resource
                 }
             })
+            //更新单一本地用户信息
+            ChatRepository.connect(userEvent.myUser.objectId, object : IBmobCallback<String> {
+                override fun success(result: String?) {
+                    ChatRepository.updateUserInfo(userEvent.myUser.objectId, userEvent.myUser.username, userEvent.myUser.avatar)
+                }
+
+                override fun error(throwable: Throwable?) {
+                    ToastUtil.showToast(throwable.toString())
+                }
+
+            })
         } else {
             GlideApp.with(this).load(R.drawable.icon_default_avatar).circleCrop().into(ivAvatar!!)
             tvNickname?.text = ""
             itemLogout?.isVisible = false
             ivGender?.visibility = View.INVISIBLE
             clBackground?.setBackgroundColor(resources.getColor(R.color.standard_color))
+            ChatRepository.disConnect()
         }
     }
 
@@ -196,6 +214,16 @@ class MainActivity : BaseActivity() {
         return true
     }
 
+
+    override fun onResume() {
+        super.onResume()
+        BmobIM.getInstance().setOnConnectStatusChangeListener(object : ConnectStatusChangeListener() {
+            override fun onChange(status: ConnectionStatus) {
+                Log.i(ChatActivity.TAG, "ConnectionStatus.msg : ${status.msg}")
+            }
+        })
+    }
+
     override fun onBackPressed() { //处理返回键先关闭抽屉
         if (dl_main_drawer.isDrawerOpen(GravityCompat.START)) {
             dl_main_drawer.closeDrawer(GravityCompat.START)
@@ -207,5 +235,10 @@ class MainActivity : BaseActivity() {
     override fun finish() {
         super.finish()
         overridePendingTransition(0, 0)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ChatRepository.disConnect()
     }
 }
