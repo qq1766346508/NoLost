@@ -29,15 +29,20 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".lost.activity.ChatActivity"></activity>
+        <activity android:name=".chat.FriendActivity"></activity>
+        <activity
+            android:name=".chat.ChatActivity"
+            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.BaseActivity"
             android:screenOrientation="portrait"
             android:theme="@style/baseActivity" />
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/app_name"></activity>
-        <activity android:name=".login.LoginActivity" />
+            android:label="@string/app_name" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".search.SearchActivity"
             android:windowSoftInputMode="adjustResize" />

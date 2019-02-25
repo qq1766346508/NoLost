@@ -25,6 +25,7 @@ public class NoLostApplication extends Application {
         context = getApplicationContext();
         Bmob.initialize(this, Application_ID);
         MobSDK.init(this);
+
         LeakCanaryUtils.install(this);
         UserRepository.INSTANCE.fetchUserInfo();
         //teset

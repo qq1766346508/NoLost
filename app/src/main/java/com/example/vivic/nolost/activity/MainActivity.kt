@@ -24,6 +24,8 @@ import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.bmob.ChatRepository
 import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.bmob.UserRepository
+import com.example.vivic.nolost.chat.ChatActivity
+import com.example.vivic.nolost.chat.FriendActivity
 import com.example.vivic.nolost.commonUtil.BindEventBus
 import com.example.vivic.nolost.commonUtil.DataCleanManager
 import com.example.vivic.nolost.commonUtil.confirmDialog.ConfirmDialog
@@ -32,7 +34,6 @@ import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.login.LogOutEvent
 import com.example.vivic.nolost.login.LoginActivity
 import com.example.vivic.nolost.login.UserEvent
-import com.example.vivic.nolost.lost.activity.ChatActivity
 import com.example.vivic.nolost.lost.activity.HistoryActivity
 import com.example.vivic.nolost.lost.activity.PublishActivity
 import com.example.vivic.nolost.lost.fragment.LoadMode
@@ -98,6 +99,13 @@ class MainActivity : BaseActivity() {
                     UserCenterActivity.getActivity(this@MainActivity, BmobUser.getCurrentUser(MyUser::class.java).objectId)
                 }
                 R.id.nav_weather -> ToastUtil.showToast("天气")
+                R.id.nav_contact -> {
+                    if (BmobUser.getCurrentUser(MyUser::class.java) == null) {
+                        startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                    } else {
+                        startActivity(Intent(this@MainActivity, FriendActivity::class.java))
+                    }
+                }
                 R.id.nav_setting -> {
                     Log.d(TAG, "cleanInternalCache:${DataCleanManager.getCacheSize(cacheDir)},cleanExternalCache:${DataCleanManager.getCacheSize(externalCacheDir)}}")
                     ConfirmDialog.Builder()
@@ -220,6 +228,9 @@ class MainActivity : BaseActivity() {
         BmobIM.getInstance().setOnConnectStatusChangeListener(object : ConnectStatusChangeListener() {
             override fun onChange(status: ConnectionStatus) {
                 Log.i(ChatActivity.TAG, "ConnectionStatus.msg : ${status.msg}")
+                if (status != ConnectionStatus.CONNECTED && BmobUser.getCurrentUser(MyUser::class.java) != null) {
+                    ChatRepository.connect(BmobUser.getCurrentUser(MyUser::class.java).objectId, null) //重连
+                }
             }
         })
     }

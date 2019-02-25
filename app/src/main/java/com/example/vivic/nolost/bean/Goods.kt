@@ -27,6 +27,6 @@ class Goods : BmobObject() {
                 ",location:$location" +
                 ",detail:$detail" +
                 ",photoList:$photoList" +
-                "\ncreatorObjectId:${creatorObjectId}creatorName:$creatorName,creatorAvatar:$creatorAvatar \n"
+                "\ncreatorObjectId:$creatorObjectId,creatorName:$creatorName,creatorAvatar:$creatorAvatar \n"
     }
 }

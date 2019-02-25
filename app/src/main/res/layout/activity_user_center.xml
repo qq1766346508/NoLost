@@ -13,10 +13,10 @@
         android:background="@color/standard_color">
 
         <ImageView
-            android:background="@drawable/btn_selector"
             android:id="@+id/iv_user_center_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/btn_selector"
             android:padding="16dp"
             android:src="@drawable/ic_arrow_back_white_24dp" />
 
@@ -38,9 +38,9 @@
 
         <FrameLayout
             android:id="@+id/fl_user_avatar"
-            android:background="@drawable/btn_selector"
             android:layout_width="match_parent"
-            android:layout_height="75dp">
+            android:layout_height="75dp"
+            android:background="@drawable/btn_selector">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,26 +50,21 @@
                 android:textColor="#000"
                 android:textSize="16sp" />
 
-            <android.support.v7.widget.CardView
+
+            <ImageView
+                android:id="@+id/iv_user_center_avatar"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
                 android:layout_gravity="end|center_vertical"
                 android:layout_marginEnd="35dp"
-                app:cardCornerRadius="3dp">
-
-                <ImageView
-                    android:id="@+id/iv_user_center_avatar"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/icon_default_avatar" />
-            </android.support.v7.widget.CardView>
+                android:src="@drawable/icon_default_avatar" />
 
             <ImageView
-                android:layout_marginEnd="8dp"
-android:id="@+id/iv_user_center_avatar_aw"
+                android:id="@+id/iv_user_center_avatar_aw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_keyboard_arrow_right_grey_500_24dp" />
 
             <View
@@ -80,11 +75,11 @@ android:id="@+id/iv_user_center_avatar_aw"
         </FrameLayout>
 
         <FrameLayout
-            android:background="@drawable/btn_selector"
-
             android:id="@+id/fl_user_username"
+
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="60dp"
+            android:background="@drawable/btn_selector">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -103,11 +98,11 @@ android:id="@+id/iv_user_center_avatar_aw"
                 tools:text="苏州大白牙" />
 
             <ImageView
-                android:layout_marginEnd="8dp"
                 android:id="@+id/iv_user_center_username_aw"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_keyboard_arrow_right_grey_500_24dp" />
 
             <View
@@ -118,11 +113,11 @@ android:id="@+id/iv_user_center_avatar_aw"
         </FrameLayout>
 
         <FrameLayout
-            android:background="@drawable/btn_selector"
-
             android:id="@+id/fl_user_center_gender"
+
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="60dp"
+            android:background="@drawable/btn_selector">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -136,16 +131,16 @@ android:id="@+id/iv_user_center_avatar_aw"
                 android:id="@+id/iv_user_center_gender"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:src="@drawable/icon_gender_secret"
                 android:layout_gravity="center_vertical|end"
-                android:layout_marginEnd="35dp" />
+                android:layout_marginEnd="35dp"
+                android:src="@drawable/icon_gender_secret" />
 
             <ImageView
                 android:id="@+id/iv_user_center_gender_aw"
-                android:layout_marginEnd="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_keyboard_arrow_right_grey_500_24dp" />
 
             <View
@@ -156,11 +151,11 @@ android:id="@+id/iv_user_center_avatar_aw"
         </FrameLayout>
 
         <FrameLayout
-            android:background="@drawable/btn_selector"
-
             android:id="@+id/fl_user_contact"
+
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="60dp"
+            android:background="@drawable/btn_selector">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -179,12 +174,12 @@ android:id="@+id/iv_user_center_avatar_aw"
                 tools:text="15626142594" />
 
             <ImageView
-                android:layout_marginEnd="8dp"
                 android:id="@+id/iv_user_center_contact_aw"
-
                 android:layout_width="wrap_content"
+
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_keyboard_arrow_right_grey_500_24dp" />
 
             <View
@@ -195,11 +190,11 @@ android:id="@+id/iv_user_center_avatar_aw"
         </FrameLayout>
 
         <FrameLayout
-            android:background="@drawable/btn_selector"
-
             android:id="@+id/fl_user_location"
+
             android:layout_width="match_parent"
-            android:layout_height="60dp">
+            android:layout_height="60dp"
+            android:background="@drawable/btn_selector">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -219,10 +214,10 @@ android:id="@+id/iv_user_center_avatar_aw"
 
             <ImageView
                 android:id="@+id/iv_user_center_location_aw"
-                android:layout_marginEnd="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical|end"
+                android:layout_marginEnd="8dp"
                 android:src="@drawable/ic_keyboard_arrow_right_grey_500_24dp" />
 
             <View

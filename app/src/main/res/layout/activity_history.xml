@@ -58,37 +58,32 @@
                     android:id="@+id/tv_history_chat"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginEnd="6dp"
+                    android:background="@drawable/btn_selector"
+                    android:drawableStart="@drawable/ic_chat_white_24dp"
+                    android:drawablePadding="4dp"
                     android:gravity="center"
                     android:shadowColor="#000"
                     android:shadowDx="3"
                     android:shadowDy="3"
                     android:shadowRadius="2"
-                    android:background="@drawable/btn_selector"
-                    android:drawablePadding="4dp"
-                    android:layout_marginEnd="6dp"
-                    android:drawableStart="@drawable/ic_chat_white_24dp"
                     android:text="私聊"
                     android:textColor="#fff"
                     android:textSize="18sp"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
             </android.support.constraint.ConstraintLayout>
 
-            <android.support.v7.widget.CardView
+
+            <ImageView
+                android:id="@+id/iv_history_avatar"
                 android:layout_width="80dp"
                 android:layout_height="80dp"
                 android:layout_gravity="end|bottom"
                 android:layout_marginEnd="20dp"
-                android:layout_marginBottom="30dp"
-                app:cardCornerRadius="10dp"
-                app:cardElevation="8dp">
-
-                <ImageView
-                    android:id="@+id/iv_history_avatar"
-                    android:layout_width="100dp"
-                    android:layout_height="100dp" />
-            </android.support.v7.widget.CardView>
+                android:layout_marginBottom="30dp" />
 
             <TextView
                 android:id="@+id/tv_history_username"
@@ -101,9 +96,9 @@
                 android:shadowDx="3"
                 android:shadowDy="3"
                 android:shadowRadius="2"
-                android:text="发布历adsfadsfasd史"
                 android:textColor="#fff"
-                android:textSize="14sp" />
+                android:textSize="14sp"
+                tools:text="发布历adsfadsfasd史" />
 
 
         </android.support.design.widget.CollapsingToolbarLayout>

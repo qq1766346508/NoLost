@@ -5,11 +5,14 @@ import cn.bmob.newim.BmobIM
 import cn.bmob.newim.bean.BmobIMUserInfo
 import cn.bmob.newim.listener.ConnectListener
 import cn.bmob.v3.exception.BmobException
-import com.example.vivic.nolost.lost.activity.ChatActivity
+import com.example.vivic.nolost.chat.ChatActivity
 
 object ChatRepository {
     val TAG = ChatRepository::class.java.simpleName
 
+    /**
+     * 更新本地用户信息
+     */
     fun updateUserInfo(userId: String?, name: String?, avatar: String?) {
         Log.d(TAG, "updateUserInfo,userId: $userId,name:$name,avatar:$avatar ")
         BmobIM.getInstance().updateUserInfo(BmobIMUserInfo().apply {
@@ -19,6 +22,10 @@ object ChatRepository {
         })
     }
 
+
+    /**
+     * 服务器连接
+     */
     fun connect(userId: String, iBmobCallback: IBmobCallback<String>?) {
         Log.d(TAG, "connect,userId: $userId")
         BmobIM.connect(userId, object : ConnectListener() {

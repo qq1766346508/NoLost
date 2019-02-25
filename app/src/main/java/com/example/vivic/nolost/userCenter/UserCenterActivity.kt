@@ -78,7 +78,7 @@ class UserCenterActivity : BaseActivity() {
     }
 
     private fun checkIsVistor() {
-        if (intent.getStringExtra("creatorObjectId") == BmobUser.getCurrentUser(MyUser::class.java).objectId) {
+        if (BmobUser.getCurrentUser(MyUser::class.java) != null && intent.getStringExtra("creatorObjectId") == BmobUser.getCurrentUser(MyUser::class.java).objectId) {
             currentUser = BmobUser.getCurrentUser(MyUser::class.java)
         } else { //访客状态
             fl_user_avatar.isEnabled = false
@@ -106,7 +106,7 @@ class UserCenterActivity : BaseActivity() {
 
     private fun loadUserInfo() {
         Log.i(TAG, "currentUse :$currentUser")
-        GlideApp.with(this).load(currentUser?.avatar).placeholder(R.drawable.icon_default_avatar).into(iv_user_center_avatar)
+        GlideApp.with(this).load(currentUser?.avatar).placeholder(R.drawable.icon_default_avatar).circleCrop().into(iv_user_center_avatar)
         tv_user_center_username.text = currentUser?.username
         currentUser?.gender?.let {
             when (GenderHelper.formatGender(it)) {
