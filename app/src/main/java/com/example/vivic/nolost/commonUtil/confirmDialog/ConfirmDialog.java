@@ -24,8 +24,6 @@ import android.widget.TextView;
 
 import com.example.vivic.nolost.R;
 
-import java.lang.ref.WeakReference;
-
 public class ConfirmDialog extends DialogFragment {
     public static final String TAG = "ConfirmDialog";
 
@@ -101,8 +99,8 @@ public class ConfirmDialog extends DialogFragment {
             tvCancel.setText(mBuilder.cancel);
         }
         tvCancel.setOnClickListener(v -> {
-            if (mBuilder.cancelListener != null && mBuilder.cancelListener.get() != null) {
-                mBuilder.cancelListener.get().onCancel();
+            if (mBuilder.cancelListener != null) {
+                mBuilder.cancelListener.onCancel();
             }
             v.postDelayed(new Runnable() {
                 @Override
@@ -120,8 +118,8 @@ public class ConfirmDialog extends DialogFragment {
             tvConfirm.setText(mBuilder.confirm);
         }
         tvConfirm.setOnClickListener(v -> {
-            if (mBuilder.confirmListener != null && mBuilder.confirmListener.get() != null) {
-                mBuilder.confirmListener.get().onConfirm();
+            if (mBuilder.confirmListener != null) {
+                mBuilder.confirmListener.onConfirm();
             }
             v.postDelayed(new Runnable() {
                 @Override
@@ -274,8 +272,8 @@ public class ConfirmDialog extends DialogFragment {
         private long hideDelay;
         private boolean canceledOnTouchOutside = true;
         private int styleId;
-        private WeakReference<ConfirmListener> confirmListener;
-        private WeakReference<CancelListener> cancelListener;
+        private ConfirmListener confirmListener;
+        private CancelListener cancelListener;
         private boolean showFullScreen;
 
         public Builder showFullScreen(boolean showFullScreen) {
@@ -324,12 +322,12 @@ public class ConfirmDialog extends DialogFragment {
         }
 
         public Builder confirmListener(ConfirmListener listener) {
-            this.confirmListener = new WeakReference<>(listener);
+            this.confirmListener = listener;
             return this;
         }
 
         public Builder cancelListener(CancelListener listener) {
-            this.cancelListener = new WeakReference<>(listener);
+            this.cancelListener = listener;
             return this;
         }
 
