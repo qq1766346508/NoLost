@@ -29,9 +29,15 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:appComponentFactory">
-        <activity android:name=".chat.FriendActivity"></activity>
+        <activity android:name=".chat.FriendActivity">
+            <intent-filter>
+                <action android:name="ACTION_FRIEND_ACTIVITY" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".chat.ChatActivity"
+            android:launchMode="singleTop"
             android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".activity.BaseActivity"

@@ -28,9 +28,10 @@ class ChatActivity : BaseActivity(), MessageListHandler {
 
 
     private var user: MyUser? = null
-    private var conversationEntrance: BmobIMConversation? = null
-    private var messageManager: BmobIMConversation? = null //会话入口
-    private var targetIMUserInfo: BmobIMUserInfo? = null //消息管理
+    private var conversationEntrance: BmobIMConversation? = null //会话入口
+    private var messageManager: BmobIMConversation? = null //消息管理
+    private var targetIMUserInfo: BmobIMUserInfo? = null
+    private var targetConversation: BmobIMConversation? = null //好友页跳转
     private var chatMessageAdapter: ChatMessageAdapter? = null
     private val inputMethodManager: InputMethodManager by lazy {
         getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -40,10 +41,18 @@ class ChatActivity : BaseActivity(), MessageListHandler {
     companion object {
         val TAG = ChatActivity::class.simpleName
         val TARGET_USER = "target_user"
+        val TARGET_CONVERSATION = "target_conversation"
 
         fun startChatActivity(activity: Activity, bmobIMUserInfo: BmobIMUserInfo) {
             val intent = Intent(activity, ChatActivity::class.java).apply {
                 this.putExtra(TARGET_USER, bmobIMUserInfo)
+            }
+            activity.startActivity(intent)
+        }
+
+        fun startChatActivity(activity: Activity, bmobIMConversation: BmobIMConversation?) {
+            val intent = Intent(activity, ChatActivity::class.java).apply {
+                this.putExtra(TARGET_CONVERSATION, bmobIMConversation)
             }
             activity.startActivity(intent)
         }
@@ -59,7 +68,7 @@ class ChatActivity : BaseActivity(), MessageListHandler {
     }
 
     private fun loadHistory() {
-        messageManager?.queryMessages(BmobIMMessage(), 100, object : MessagesQueryListener() {
+        messageManager?.queryMessages(BmobIMMessage(), 200, object : MessagesQueryListener() {
             override fun done(list: MutableList<BmobIMMessage>?, bmobException: BmobException?) {
                 if (bmobException == null) {
                     list?.let {
@@ -85,8 +94,8 @@ class ChatActivity : BaseActivity(), MessageListHandler {
         btn_chat_send.setOnClickListener {
             sendMessage()
         }
-        tv_chat_target.text = targetIMUserInfo?.name
-        chatMessageAdapter = ChatMessageAdapter(null, targetIMUserInfo)
+        tv_chat_target.text = conversationEntrance?.conversationTitle
+        chatMessageAdapter = ChatMessageAdapter(null, conversationEntrance?.conversationIcon)
         rv_chat_container.adapter = chatMessageAdapter
         rv_chat_container.layoutManager = LinearLayoutManager(this)
         rv_chat_container.scrollToPosition(chatMessageAdapter?.messageList?.size!! - 1)
@@ -94,7 +103,13 @@ class ChatActivity : BaseActivity(), MessageListHandler {
 
     private fun initChat() {
         targetIMUserInfo = intent.getSerializableExtra(TARGET_USER) as? BmobIMUserInfo
-        conversationEntrance = BmobIM.getInstance().startPrivateConversation(targetIMUserInfo, null);
+        targetConversation = intent.getSerializableExtra(TARGET_CONVERSATION) as? BmobIMConversation
+        targetIMUserInfo?.let {
+            conversationEntrance = BmobIM.getInstance().startPrivateConversation(targetIMUserInfo, null);
+        }
+        targetConversation?.let {
+            conversationEntrance = it
+        }
         messageManager = BmobIMConversation.obtain(BmobIMClient.getInstance(), conversationEntrance);
     }
 
@@ -120,7 +135,12 @@ class ChatActivity : BaseActivity(), MessageListHandler {
     override fun onMessageReceive(messageList: MutableList<MessageEvent>?) {
         Log.d(TAG, "onMessageReceive:$messageList")
         messageList?.let {
-            chatMessageAdapter?.addChatMessage(getChatMessageList(messageList))
+            if (!rv_chat_container.canScrollVertically(1)) {
+                chatMessageAdapter?.addChatMessage(getChatMessageList(it))
+                rv_chat_container.scrollToPosition(chatMessageAdapter?.messageList?.size!! - 1)
+            } else {
+                chatMessageAdapter?.addChatMessage(getChatMessageList(it))
+            }
         }
     }
 
@@ -152,5 +172,10 @@ class ChatActivity : BaseActivity(), MessageListHandler {
     override fun onPause() {
         super.onPause()
         BmobIM.getInstance().removeMessageListHandler(this)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        messageManager?.updateLocalCache()
     }
 }

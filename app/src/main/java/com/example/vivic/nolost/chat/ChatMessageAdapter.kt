@@ -14,10 +14,10 @@ import com.example.vivic.nolost.GlideApp
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.bean.MyUser
 
-class ChatMessageAdapter(messageList: MutableList<ChatMessage>?, targetIMUserInfo: BmobIMUserInfo?) : RecyclerView.Adapter<ChatMessageAdapter.ChatMessageHolder>() {
+class ChatMessageAdapter(messageList: MutableList<ChatMessage>?, targetAvatar: String?) : RecyclerView.Adapter<ChatMessageAdapter.ChatMessageHolder>() {
 
     var messageList: MutableList<ChatMessage>? = null
-    private var targetIMUserInfo: BmobIMUserInfo? = null
+    private var targetAvatar: String? = null
     private var context: Context? = null
 
     init {
@@ -26,7 +26,7 @@ class ChatMessageAdapter(messageList: MutableList<ChatMessage>?, targetIMUserInf
         } else {
             this.messageList = mutableListOf()
         }
-        this.targetIMUserInfo = targetIMUserInfo
+        this.targetAvatar = targetAvatar
     }
 
     companion object {
@@ -75,7 +75,7 @@ class ChatMessageAdapter(messageList: MutableList<ChatMessage>?, targetIMUserInf
             if (chatMessage.messageType == ChatMessage.TYPE_SEND) {
                 GlideApp.with(context!!).load(BmobUser.getCurrentUser(MyUser::class.java).avatar).circleCrop().into(ivAvatar!!)
             } else if (chatMessage.messageType == ChatMessage.TYPE_RECEIVE) {
-                GlideApp.with(context!!).load(targetIMUserInfo?.avatar).circleCrop().into(ivAvatar!!)
+                GlideApp.with(context!!).load(targetAvatar).circleCrop().into(ivAvatar!!)
             }
         }
     }

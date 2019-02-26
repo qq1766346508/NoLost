@@ -14,7 +14,7 @@
     <item
         android:id="@+id/nav_contact"
         android:icon="@drawable/ic_people_white_24dp"
-        android:title="聊天"></item>
+        android:title="聊天列表"></item>
     <item
         android:id="@+id/nav_setting"
         android:icon="@drawable/ic_settings_white_24dp"

@@ -21,20 +21,35 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:textColor="#000000"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/tv_item_friend_avatar"
         app:layout_constraintTop_toTopOf="parent"
-        tools:text="TextView" />
+        tools:text="小名" />
 
     <TextView
         android:id="@+id/tv_item_friend_count"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
         android:layout_marginTop="8dp"
+        android:gravity="center"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
-        tools:text="1"
+        tools:text="11"
+        android:textColor="#fff"
+        android:textSize="12sp"
+        android:background="@drawable/bg_red_round_text"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_item_friend_content"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="7dp"
+        tools:text="TextView"
+        app:layout_constraintStart_toStartOf="@+id/tv_item_friend_name"
+        app:layout_constraintTop_toBottomOf="@+id/tv_item_friend_name" />
 
 </android.support.constraint.ConstraintLayout>

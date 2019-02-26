@@ -183,10 +183,29 @@ class MainActivity : BaseActivity() {
                     clBackground?.background = resource
                 }
             })
+            connectIM(userEvent.myUser)
+        } else {
+            GlideApp.with(this).load(R.drawable.icon_default_avatar).circleCrop().into(ivAvatar!!)
+            tvNickname?.text = ""
+            itemLogout?.isVisible = false
+            ivGender?.visibility = View.INVISIBLE
+            clBackground?.setBackgroundColor(resources.getColor(R.color.standard_color))
+        }
+    }
+
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    fun logout(logOutEvent: LogOutEvent) {
+        updateNavigation(UserEvent(false, null))
+        ChatRepository.disConnect()
+    }
+
+    private fun connectIM(myUser: MyUser) {
+        Log.d(TAG, "currentStatus::${BmobIM.getInstance().currentStatus.msg}")
+        if (BmobIM.getInstance().currentStatus != (ConnectionStatus.CONNECTED)) {
             //更新单一本地用户信息
-            ChatRepository.connect(userEvent.myUser.objectId, object : IBmobCallback<String> {
+            ChatRepository.connect(myUser.objectId, object : IBmobCallback<String> {
                 override fun success(result: String?) {
-                    ChatRepository.updateUserInfo(userEvent.myUser.objectId, userEvent.myUser.username, userEvent.myUser.avatar)
+                    ChatRepository.updateUserInfo(myUser.objectId, myUser.username, myUser.avatar)
                 }
 
                 override fun error(throwable: Throwable?) {
@@ -194,19 +213,9 @@ class MainActivity : BaseActivity() {
                 }
 
             })
-        } else {
-            GlideApp.with(this).load(R.drawable.icon_default_avatar).circleCrop().into(ivAvatar!!)
-            tvNickname?.text = ""
-            itemLogout?.isVisible = false
-            ivGender?.visibility = View.INVISIBLE
-            clBackground?.setBackgroundColor(resources.getColor(R.color.standard_color))
-            ChatRepository.disConnect()
+        } else if (BmobIM.getInstance().currentStatus == ConnectionStatus.CONNECTED) {
+            ChatRepository.updateUserInfo(myUser.objectId, myUser.username, myUser.avatar)
         }
-    }
-
-    @Subscribe(threadMode = ThreadMode.MAIN)
-    fun logout(logOutEvent: LogOutEvent) {
-        updateNavigation(UserEvent(false, null))
     }
 
 

@@ -52,7 +52,7 @@ public class CommonBottomDialog extends BottomSheetDialog {
         }
         if (builder.cancelButtomShow) {
             mCancelBtn.setVisibility(View.VISIBLE);
-            mCancelBtn.setText(builder.cancel == null ? "cancel" : builder.cancel);
+            mCancelBtn.setText(builder.cancel == null ? "取消" : builder.cancel);
             mCancelBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

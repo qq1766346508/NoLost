@@ -51,9 +51,9 @@ MobSDK {
                 shareByAppClient true
 
             }
-            MobAPI {
-                versionCode "3.4.0"
-            }
+//            MobAPI {
+//                versionCode "3.4.0"
+//            }
         }
     }
 }
