@@ -96,6 +96,7 @@ class ChatActivity : BaseActivity(), MessageListHandler {
         }
         tv_chat_target.text = conversationEntrance?.conversationTitle
         chatMessageAdapter = ChatMessageAdapter(null, conversationEntrance?.conversationIcon)
+        chatMessageAdapter?.targetUserId = conversationEntrance?.conversationId.toString()
         rv_chat_container.adapter = chatMessageAdapter
         rv_chat_container.layoutManager = LinearLayoutManager(this)
         rv_chat_container.scrollToPosition(chatMessageAdapter?.messageList?.size!! - 1)

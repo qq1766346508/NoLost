@@ -1,6 +1,7 @@
 package com.example.vivic.nolost.userCenter
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -41,12 +42,12 @@ class UserCenterActivity : BaseActivity() {
         const val EDIT_CONTENT = "edit_content"
         const val EDIT_RESULT = "edit_result"
 
-        fun getActivity(activity: Activity, creatorObjectId: String?) {
-            val intent = Intent(activity, UserCenterActivity::class.java).apply {
+        fun goToActivity(context: Context, creatorObjectId: String?) {
+            val intent = Intent(context, UserCenterActivity::class.java).apply {
                 this.putExtra("creatorObjectId", creatorObjectId)
 
             }
-            activity.startActivity(intent)
+            context.startActivity(intent)
         }
     }
 

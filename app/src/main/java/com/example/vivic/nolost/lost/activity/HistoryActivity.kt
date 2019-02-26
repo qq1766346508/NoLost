@@ -62,7 +62,7 @@ class HistoryActivity : BaseActivity() {
             }
         })
         iv_history_avatar.setOnClickListener {
-            UserCenterActivity.getActivity(this@HistoryActivity, queryUser?.objectId)
+            UserCenterActivity.goToActivity(this@HistoryActivity, queryUser?.objectId)
         }
         tv_history_chat.setOnClickListener {
             if (currentUser == null) {

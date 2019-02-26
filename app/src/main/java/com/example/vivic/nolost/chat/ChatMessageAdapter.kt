@@ -8,17 +8,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import cn.bmob.newim.bean.BmobIMUserInfo
 import cn.bmob.v3.BmobUser
 import com.example.vivic.nolost.GlideApp
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.bean.MyUser
+import com.example.vivic.nolost.userCenter.UserCenterActivity
 
+/***
+ * 聊天对话消息 适配器
+ */
 class ChatMessageAdapter(messageList: MutableList<ChatMessage>?, targetAvatar: String?) : RecyclerView.Adapter<ChatMessageAdapter.ChatMessageHolder>() {
 
     var messageList: MutableList<ChatMessage>? = null
     private var targetAvatar: String? = null
     private var context: Context? = null
+    var targetUserId: String? = null
 
     init {
         if (messageList != null) {
@@ -76,6 +80,11 @@ class ChatMessageAdapter(messageList: MutableList<ChatMessage>?, targetAvatar: S
                 GlideApp.with(context!!).load(BmobUser.getCurrentUser(MyUser::class.java).avatar).circleCrop().into(ivAvatar!!)
             } else if (chatMessage.messageType == ChatMessage.TYPE_RECEIVE) {
                 GlideApp.with(context!!).load(targetAvatar).circleCrop().into(ivAvatar!!)
+            }
+            ivAvatar?.setOnClickListener {
+                targetUserId?.let {
+                    UserCenterActivity.goToActivity(context!!, if (chatMessage.messageType == ChatMessage.TYPE_SEND) BmobUser.getCurrentUser(MyUser::class.java).objectId else it)
+                }
             }
         }
     }

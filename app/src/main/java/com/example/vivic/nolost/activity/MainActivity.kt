@@ -24,10 +24,10 @@ import com.example.vivic.nolost.bean.MyUser
 import com.example.vivic.nolost.bmob.ChatRepository
 import com.example.vivic.nolost.bmob.IBmobCallback
 import com.example.vivic.nolost.bmob.UserRepository
-import com.example.vivic.nolost.chat.ChatActivity
 import com.example.vivic.nolost.chat.FriendActivity
 import com.example.vivic.nolost.commonUtil.BindEventBus
 import com.example.vivic.nolost.commonUtil.DataCleanManager
+import com.example.vivic.nolost.commonUtil.NetworkUtil
 import com.example.vivic.nolost.commonUtil.confirmDialog.ConfirmDialog
 import com.example.vivic.nolost.commonUtil.dimensUtil.DimensUtils
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
@@ -96,7 +96,7 @@ class MainActivity : BaseActivity() {
                 R.id.nav_user -> if (BmobUser.getCurrentUser(MyUser::class.java) == null) {
                     startActivity(Intent(this@MainActivity, LoginActivity::class.java))
                 } else {
-                    UserCenterActivity.getActivity(this@MainActivity, BmobUser.getCurrentUser(MyUser::class.java).objectId)
+                    UserCenterActivity.goToActivity(this@MainActivity, BmobUser.getCurrentUser(MyUser::class.java).objectId)
                 }
                 R.id.nav_weather -> ToastUtil.showToast("天气")
                 R.id.nav_contact -> {
@@ -236,8 +236,12 @@ class MainActivity : BaseActivity() {
         super.onResume()
         BmobIM.getInstance().setOnConnectStatusChangeListener(object : ConnectStatusChangeListener() {
             override fun onChange(status: ConnectionStatus) {
-                Log.i(ChatActivity.TAG, "ConnectionStatus.msg : ${status.msg}")
-                if (status != ConnectionStatus.CONNECTED && BmobUser.getCurrentUser(MyUser::class.java) != null) {
+                Log.d(TAG, "ConnectionStatus.msg : ${status.msg}")
+                if (BmobUser.getCurrentUser(MyUser::class.java) != null && status == ConnectionStatus.DISCONNECT) {
+                    if (!NetworkUtil.isConnected()) {
+                        ToastUtil.showToast("当前无网络")
+                        return
+                    }
                     ChatRepository.connect(BmobUser.getCurrentUser(MyUser::class.java).objectId, null) //重连
                 }
             }

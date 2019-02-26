@@ -13,6 +13,9 @@ import com.example.vivic.nolost.commonUtil.bottomDialog.CommonBottomDialog
 import kotlinx.android.synthetic.main.activity_friend.*
 
 
+/**
+ * 聊天列表
+ */
 class FriendActivity : BaseActivity(), MessageListHandler {
 
 

@@ -17,7 +17,7 @@ import org.json.JSONObject
 import java.util.*
 
 object UserRepository {
-    private val TAG = javaClass.simpleName
+    private val TAG = UserRepository::class.java.simpleName
     public val LAST_PLATFORM = "LAST_PLATFORM"
 
     /**
@@ -46,7 +46,7 @@ object UserRepository {
         return myUser.login(object : SaveListener<MyUser>() {
             override fun done(user: MyUser?, bmobException: BmobException?) {
                 if (bmobException == null) {
-                    Log.d(TAG, "loginbyUser success,Myuser:$user")
+                    Log.d(TAG, "loginbyUser success,MyUser:$user")
                     iBmobCallback.success(user)
                 } else {
                     Log.d(TAG, "loginbyUser failed,BmobException:$bmobException")
@@ -87,7 +87,7 @@ object UserRepository {
         }
         plat.platformActionListener = object : PlatformActionListener {
             override fun onComplete(platform: Platform, i: Int, hashMap: HashMap<String, Any>) { //成功回调在子线程，ui修改要回到主线程
-                Log.d(TAG, "onComplete: ${platform.db.exportData()}")
+                Log.d(TAG, "loginByShareSdk,onComplete: ${platform.db.exportData()}")
                 val snsType = getNameThird(platform.name)
                 val accessToken = platform.db.token
                 val expiresIn = platform.db.expiresIn.toString()
@@ -231,9 +231,9 @@ object UserRepository {
     fun logOut() {
         val currentUser = BmobUser.getCurrentUser(MyUser::class.java)
         if (currentUser == null) {
-            Log.d(TAG, "currentUser == null")
+            Log.d(TAG, "logOut currentUser == null")
         } else {
-            Log.i(TAG, "currentUser is $currentUser")
+            Log.i(TAG, "logOut currentUser is $currentUser")
             BmobUser.logOut()
             Log.d(TAG, "logOut")
         }

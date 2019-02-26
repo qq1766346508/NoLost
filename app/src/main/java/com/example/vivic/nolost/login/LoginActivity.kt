@@ -86,7 +86,7 @@ class LoginActivity : BaseActivity() {
 
                 override fun error(throwable: Throwable?) {
                     val exception = throwable as BmobException
-                    ToastUtil.showToast("sign fail," + exception.toString())
+                    ToastUtil.showToast("sign fail,$exception")
                     btn_sign.isEnabled = true
                 }
             }))
@@ -164,7 +164,7 @@ class LoginActivity : BaseActivity() {
 
             override fun error(throwable: Throwable?) {
                 val exception = throwable as BmobException
-                ToastUtil.showToast("login fail," + exception.toString())
+                ToastUtil.showToast("login fail,$exception")
                 btn_login.isEnabled = true
             }
         }))

@@ -12,6 +12,9 @@ import cn.bmob.newim.bean.BmobIMConversation
 import com.example.vivic.nolost.GlideApp
 import com.example.vivic.nolost.R
 
+/**
+ *聊天列表适配器
+ */
 class FriendAdapter : RecyclerView.Adapter<FriendAdapter.ViewHolder>() {
 
     var friendList: MutableList<BmobIMConversation>? = null
