@@ -175,6 +175,25 @@ public class ConfirmDialog extends DialogFragment {
         }
     }
 
+    public void clearListener() {
+        if (mBuilder != null) {
+            mBuilder.confirmListener = null;
+            mBuilder.cancelListener = null;
+        }
+    }
+
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        clearListener();
+    }
+
+    @Override
+    public void dismissAllowingStateLoss() {
+        super.dismissAllowingStateLoss();
+        clearListener();
+    }
+
     public void hide() {
         try {
             dismissAllowingStateLoss();

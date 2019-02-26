@@ -7,13 +7,15 @@
     android:orientation="horizontal">
 
     <TextView
+        android:padding="4dp"
         android:id="@+id/tv_item_message_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="16dp"
         android:layout_marginBottom="8dp"
         android:maxWidth="250dp"
+        android:background="#802e8abb"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/iv_item_message_avatar"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,10 +25,19 @@
         android:id="@+id/iv_item_message_avatar"
         android:layout_width="30dp"
         android:layout_height="30dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="10dp"
         android:layout_marginEnd="8dp"
         android:src="@drawable/icon_default_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_triangle_send"
+        app:layout_constraintStart_toEndOf="@+id/tv_item_message_content"
+        app:layout_constraintTop_toTopOf="@+id/tv_item_message_content" />
+
 
 </android.support.constraint.ConstraintLayout>
