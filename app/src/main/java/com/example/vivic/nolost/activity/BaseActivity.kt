@@ -1,7 +1,11 @@
 package com.example.vivic.nolost.activity
 
+import android.content.Context
+import android.content.ContextWrapper
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.inputmethod.InputMethodManager
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.commonUtil.BindEventBus
 import io.reactivex.disposables.CompositeDisposable
@@ -9,6 +13,8 @@ import io.reactivex.disposables.Disposable
 import me.imid.swipebacklayout.lib.SwipeBackLayout
 import me.imid.swipebacklayout.lib.app.SwipeBackActivity
 import org.greenrobot.eventbus.EventBus
+import java.lang.reflect.Field
+import java.util.*
 
 open class BaseActivity : SwipeBackActivity() {
     companion object {
@@ -45,7 +51,52 @@ open class BaseActivity : SwipeBackActivity() {
         if (javaClass.isAnnotationPresent(BindEventBus::class.java)) {
             EventBus.getDefault().unregister(this)
         }
+        fixInputMethodLeak()
         unSubscribe()
+    }
+
+    /**
+     * 修复输入法内存泄漏问题
+     */
+    protected fun fixInputMethodLeak() {
+        val imm = applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        releaseFieldsAsNull(imm, Arrays.asList("mCurRootView", "mServedView", "mNextServedView"))
+    }
+
+    /**
+     * 给所有的view去除当前的context引用
+     *
+     * @param inst
+     * @param names
+     */
+    protected fun releaseFieldsAsNull(inst: Any?, names: List<String>?) {
+        if (null == inst || null == names || names.isEmpty()) {
+            return
+        }
+        var fields: Array<Field>? = null
+        fields = inst.javaClass.declaredFields
+        if (fields != null && fields.isNotEmpty()) {
+            for (field in fields) {
+                if (names.contains(field.name)) {
+                    try {
+                        if (!field.isAccessible) {
+                            field.isAccessible = true
+                        }
+                        val objGet = field.get(inst)
+                        if (objGet != null && objGet is View) {
+                            if (objGet.context === this) { // 被InputMethodManager持有引用的context是想要目标销毁的
+                                field.set(inst, null) // 置空，破坏掉path to gc节点
+                            } else if (objGet.context is ContextWrapper && (objGet.context as ContextWrapper).baseContext === this) { // 被InputMethodManager持有引用的TintContextWrapper是想要目标销毁的
+                                field.set(inst, null) // 置空，破坏掉path to gc节点
+                            }
+                        }
+                    } catch (throwable: Throwable) {
+                        throwable.printStackTrace()
+                    }
+
+                }
+            }
+        }
     }
 
     fun addSubscribe(disposable: Disposable) {
