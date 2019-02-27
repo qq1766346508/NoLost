@@ -64,10 +64,11 @@ public class MenuView extends FrameLayout {
     public void share() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
 //                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(goods.getPhotoList().get(0)));
-        shareIntent.putExtra(Intent.EXTRA_TEXT, goods.getDetail());
+        String text = "物品名称：" + goods.getName() + "\n物品详情：" + goods.getDetail() + "\n丢失地点：" + goods.getLocation();
+        shareIntent.putExtra(Intent.EXTRA_TEXT, text);
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, goods.getName());
         shareIntent.setType("image/*");
-        context.startActivity(Intent.createChooser(shareIntent, "test"));
+        context.startActivity(Intent.createChooser(shareIntent, "share"));
     }
 
     interface DeleteCallback {
@@ -80,7 +81,7 @@ public class MenuView extends FrameLayout {
         this.goods = goods;
         if (currentUser != null && currentUser.getObjectId().equals(goods.getCreatorObjectId())) {
             tvDelete.setVisibility(VISIBLE);
-        }else {
+        } else {
             tvDelete.setVisibility(GONE);
         }
     }
