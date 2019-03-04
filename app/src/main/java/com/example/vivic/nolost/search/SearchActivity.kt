@@ -8,7 +8,6 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
-import com.example.vivic.nolost.bean.Goods
 import com.example.vivic.nolost.lost.fragment.LoadMode
 import com.example.vivic.nolost.lost.fragment.LostFragment
 import com.example.vivic.nolost.lost.fragment.LostViewModel
@@ -45,7 +44,7 @@ class SearchActivity : BaseActivity() {
         inputMethodManager.showSoftInput(ed_search_content, 0)
         btn_search_option.setOnClickListener { showSearchOption() }
         iv_search_go.setOnClickListener { queryByKey() }
-        lostFragment = LostFragment.newInstance(LoadMode.LOAD_MODE_SEARCH)
+        lostFragment = LostFragment.newInstance(LoadMode.LOAD_MODE_KEY)
         supportFragmentManager?.beginTransaction()?.replace(R.id.search_container, lostFragment!!)?.commitAllowingStateLoss()
     }
 

@@ -91,7 +91,7 @@ class LostFragment : BaseFragment() {
             resetList()
             addSubscribe(when (loadModel) {
                 LoadMode.LOAD_MODE_NORMAL -> lostViewModel?.loadGoods()
-                LoadMode.LOAD_MODE_SEARCH -> lostViewModel?.loadGoodsByKey()
+                LoadMode.LOAD_MODE_KEY -> lostViewModel?.loadGoodsByKey()
                 LoadMode.LOAD_MODE_OPTION -> lostViewModel?.loadGoodsByOption()
                 LoadMode.LOAD_MODE_HISTORY -> lostViewModel?.loadGoodsByUser(creatorObjectId)
                 else -> {
@@ -103,7 +103,7 @@ class LostFragment : BaseFragment() {
         srl_lost_refresh.setOnLoadMoreListener { refreshLayout ->
             addSubscribe(when (loadModel) {
                 LoadMode.LOAD_MODE_NORMAL -> lostViewModel?.loadGoods()
-                LoadMode.LOAD_MODE_SEARCH -> lostViewModel?.loadGoodsByKey()
+                LoadMode.LOAD_MODE_KEY -> lostViewModel?.loadGoodsByKey()
                 LoadMode.LOAD_MODE_OPTION -> lostViewModel?.loadGoodsByOption()
                 LoadMode.LOAD_MODE_HISTORY -> lostViewModel?.loadGoodsByUser(creatorObjectId)
                 else -> {
@@ -137,12 +137,14 @@ class LostFragment : BaseFragment() {
             //如果optionGoods,发生了改变则要清空列表
             it?.let {
                 resetList()
+                loadModel = LoadMode.LOAD_MODE_OPTION //用作刷新用
                 lostViewModel?.loadGoodsByOption()
             }
         })
         lostViewModel?.key?.observe(this, Observer { it ->
             it?.let {
                 resetList()
+                loadModel = LoadMode.LOAD_MODE_KEY//用作刷新用
                 lostViewModel?.loadGoodsByKey()
             }
         })
