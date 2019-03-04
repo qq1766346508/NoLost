@@ -74,6 +74,13 @@ class MainActivity : BaseActivity() {
         supportActionBar?.setDisplayShowTitleEnabled(false)
         tl_main_toolbar.setOnMenuItemClickListener { item ->
             when (item.itemId) {
+                R.id.menu_friend -> {
+                    if (BmobUser.getCurrentUser(MyUser::class.java) == null) {
+                        startActivity(Intent(this@MainActivity, LoginActivity::class.java))
+                    } else {
+                        startActivity(Intent(this@MainActivity, FriendActivity::class.java))
+                    }
+                }
                 R.id.menu_search -> startActivity(Intent(this@MainActivity, SearchActivity::class.java))
                 R.id.menu_add -> if (BmobUser.getCurrentUser(MyUser::class.java) != null) {
                     startActivity(Intent(this@MainActivity, PublishActivity::class.java))

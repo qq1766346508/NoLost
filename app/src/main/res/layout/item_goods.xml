@@ -90,6 +90,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
+            android:textDirection="locale"
             android:textColor="@android:color/black"
             android:textSize="14sp"
             tools:text="物品详情：安康机sadfas asfsafasfasfsadffafsdfdfdfdfdfdfaafdasdfasfasfs得分阿卡丽" />

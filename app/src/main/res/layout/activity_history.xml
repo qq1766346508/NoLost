@@ -58,7 +58,7 @@
                     android:id="@+id/tv_history_chat"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="6dp"
+                    android:paddingEnd="6dp"
                     android:background="@drawable/btn_selector"
                     android:drawableStart="@drawable/ic_chat_white_24dp"
                     android:drawablePadding="4dp"
