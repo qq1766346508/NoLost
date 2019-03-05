@@ -99,6 +99,8 @@ dependencies {
 
     implementation 'com.github.chrisbanes:PhotoView:2.0.0'
     implementation 'me.imid.swipebacklayout.lib:library:1.1.0'
+
+    implementation 'com.amap.api:location:latest.integration'
 }
 repositories {
     mavenCentral()

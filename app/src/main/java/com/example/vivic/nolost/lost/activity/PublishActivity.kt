@@ -1,9 +1,13 @@
 package com.example.vivic.nolost.lost.activity
 
+import android.Manifest
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.GridLayoutManager
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,6 +15,9 @@ import android.util.Log
 import android.view.inputmethod.InputMethodManager
 import cn.bmob.v3.BmobUser
 import cn.bmob.v3.datatype.BmobFile
+import com.amap.api.location.AMapLocationClient
+import com.amap.api.location.AMapLocationClientOption
+import com.example.vivic.nolost.NoLostApplication
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.Goods
@@ -37,6 +44,7 @@ class PublishActivity : BaseActivity() {
     companion object {
         val TAG = PublishActivity::class.java.simpleName
         const val REQUEST_CODE_TAKE_PHOTO = 0
+        val WRITE_COARSE_LOCATION_REQUEST_CODE = 1
     }
 
     private val inputMethodManager: InputMethodManager by lazy {
@@ -47,6 +55,9 @@ class PublishActivity : BaseActivity() {
     }
 
     private var photoAdapter: MultiPhotoAdapter? = null
+    //声明AMapLocationClient类对象
+    var mLocationClient: AMapLocationClient? = null
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,12 +113,44 @@ class PublishActivity : BaseActivity() {
                 this.putExtra(TAKE_MODE, PickMultiple)
                 this.putExtra(TAKE_LIMIT, 9 - photoAdapter?.photoPathList?.size!!)
             }
-            if (photoAdapter?.photoPathList?.size==9){
+            if (photoAdapter?.photoPathList?.size == 9) {
                 ToastUtil.showToast("最多选择9张")
                 return@setOnClickListener
             }
             startActivityForResult(intent, REQUEST_CODE_TAKE_PHOTO)
         }
+        //定位服务
+        btn_publish_location.setOnClickListener {
+            if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION)
+                    != PackageManager.PERMISSION_GRANTED) {
+                //申请WRITE_EXTERNAL_STORAGE权限
+                ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_COARSE_LOCATION),
+                        WRITE_COARSE_LOCATION_REQUEST_CODE);//自定义的code
+            } else {
+                initLocation()
+            }
+        }
+    }
+
+    fun initLocation() {
+        mLocationClient = AMapLocationClient(NoLostApplication.getContext())
+        val mLocationOption = AMapLocationClientOption().apply {
+            this.isOnceLocation = true
+        }
+        mLocationClient?.setLocationOption(mLocationOption)
+        mLocationClient?.setLocationListener { amapLocation ->
+            amapLocation?.let {
+                if (it.errorCode == 0) {
+                    Log.d(TAG, "location success,poi:${it.description}")
+                    et_publish_goodslocation.setText(it.description)
+                    et_publish_goodslocation.setSelection(it.description.length)
+                    //成功
+                } else {
+                    Log.e(TAG, "location Error, ErrCode:${it.errorCode}, errInfo:${it.errorInfo}");
+                }
+            }
+        }
+        mLocationClient?.startLocation()
     }
 
     /**
@@ -180,5 +223,28 @@ class PublishActivity : BaseActivity() {
             }
         }
         super.onActivityResult(requestCode, resultCode, data)
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            WRITE_COARSE_LOCATION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    initLocation()
+                } else {
+                    ToastUtil.showToast("没有权限")
+                }
+            }
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        mLocationClient?.stopLocation();
+    }
+
+    override fun onDestroy() {
+        mLocationClient?.onDestroy()
+        super.onDestroy()
     }
 }

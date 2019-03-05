@@ -90,8 +90,8 @@
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:gravity="center_vertical"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp">
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -127,8 +127,9 @@
             android:layout_width="match_parent"
             android:layout_height="65dp"
             android:gravity="center_vertical"
-            android:paddingEnd="10dp"
-            android:paddingStart="10dp">
+            android:orientation="horizontal"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -141,8 +142,9 @@
 
 
             <android.support.design.widget.TextInputLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:theme="@style/ed_option_content"
                 app:counterEnabled="true"
                 app:counterMaxLength="15"
@@ -159,6 +161,13 @@
                     android:textSize="14sp"
                     tools:text="大幅度发的大幅度发的注册青蛙二人他才坐下来吃做小车" />
             </android.support.design.widget.TextInputLayout>
+
+            <Button
+                android:id="@+id/btn_publish_location"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:background="@drawable/ic_location_on_blue_800_18dp" />
+
         </LinearLayout>
 
         <LinearLayout

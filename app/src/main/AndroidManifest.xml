@@ -20,6 +20,12 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 通知震动 -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!--用于申请调用A-GPS模块-->
+    <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
+    <!--用于申请获取蓝牙信息进行室内定位-->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+
     <application
         android:name=".NoLostApplication"
         android:allowBackup="true"
@@ -92,6 +98,11 @@
             android:process=":bmobcore" />
         <service android:name="cn.bmob.newim.core.service.ReConnectService" />
         <service android:name="cn.bmob.newim.core.service.HeartBeatService" />
+
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="425e13ec72f40780bbdc526b9bd73ebc" />
+        <service android:name="com.amap.api.location.APSService"></service>
     </application>
 
 </manifest>
