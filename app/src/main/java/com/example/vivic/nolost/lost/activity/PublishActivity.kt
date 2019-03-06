@@ -93,7 +93,7 @@ class PublishActivity : BaseActivity() {
             photoAdapter?.photoPathList?.let {
                 //如果没有图片则可以直接上传信息
                 if (it.size == 0) {
-                    SaveGoodsInfo(null)
+                    saveGoodsInfo(null)
                 } else {
                     upLoadMultiPhoto(photoAdapter?.photoPathList)
                 }
@@ -161,7 +161,7 @@ class PublishActivity : BaseActivity() {
         FileRepository.uploadBatchFile(photoList!!, object : FileRepository.IFileBatchCallback {
             override fun success(files: MutableList<BmobFile>, urls: MutableList<String>?) {
                 if (photoList.size == urls?.size) {
-                    SaveGoodsInfo(urls)
+                    saveGoodsInfo(urls)
                 }
             }
 
@@ -177,7 +177,7 @@ class PublishActivity : BaseActivity() {
 
     }
 
-    private fun SaveGoodsInfo(photoList: MutableList<String>?) {
+    private fun saveGoodsInfo(photoList: MutableList<String>?) {
         val goods = Goods().apply {
             this.creatorObjectId = BmobUser.getCurrentUser(MyUser::class.java).objectId
             this.creatorName = BmobUser.getCurrentUser(MyUser::class.java).username
@@ -244,6 +244,7 @@ class PublishActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
+        mLocationClient?.setLocationListener(null)
         mLocationClient?.onDestroy()
         super.onDestroy()
     }
