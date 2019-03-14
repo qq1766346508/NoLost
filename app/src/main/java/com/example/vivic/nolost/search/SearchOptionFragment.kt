@@ -3,28 +3,28 @@ package com.example.vivic.nolost.search
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.app.DialogFragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import com.example.vivic.nolost.R
-import com.example.vivic.nolost.R.id.*
 import com.example.vivic.nolost.activity.BaseActivity
 import com.example.vivic.nolost.bean.Goods
 import com.example.vivic.nolost.bean.Goods.Companion.TYPE_ALL
 import com.example.vivic.nolost.bean.Goods.Companion.TYPE_FOUND
 import com.example.vivic.nolost.bean.Goods.Companion.TYPE_LOST
+import com.example.vivic.nolost.fragment.BaseDialog
 import com.example.vivic.nolost.lost.fragment.LostViewModel
 import kotlinx.android.synthetic.main.fragment_search_option.*
 
-class SearchOptionFragment : DialogFragment() {
+class SearchOptionFragment : BaseDialog() {
+    override fun getTagName(): String {
+        return TAG
+    }
+
     private var rootView: View? = null
     private var lostViewModel: LostViewModel? = null
-//    private var lastCheck: Int? = null
-//    private var lastName: String? = null
-//    private var lastLocation: String? = null
 
     companion object {
 
@@ -98,23 +98,5 @@ class SearchOptionFragment : DialogFragment() {
         dismissAllowingStateLoss()
     }
 
-
-    fun show(context: Context) {
-        try {
-            val fm = (context as BaseActivity).supportFragmentManager
-            val ft = fm.beginTransaction()
-            val fragment = fm.findFragmentByTag(TAG)
-            if (fragment != null) {
-                ft.remove(fragment)
-            }
-            if (this.isAdded) {
-                return
-            }
-            ft.add(this, TAG)
-            ft.commitAllowingStateLoss()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 
 }

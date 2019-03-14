@@ -61,8 +61,7 @@ public class ProgressBarDialog extends DialogFragment {
             if (this.isAdded()) {
                 return;
             }
-            fragmentTransaction.add(this, TAG);
-            fragmentTransaction.commitAllowingStateLoss();
+            fragmentTransaction.add(this, TAG).commitAllowingStateLoss();
         } catch (Exception e) {
             e.printStackTrace();
         }

@@ -17,6 +17,7 @@ import cn.bmob.v3.BmobUser
 import cn.bmob.v3.datatype.BmobFile
 import com.amap.api.location.AMapLocationClient
 import com.amap.api.location.AMapLocationClientOption
+import com.amap.api.location.AMapLocationListener
 import com.example.vivic.nolost.NoLostApplication
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
@@ -36,6 +37,7 @@ import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter.L
 import com.example.vivic.nolost.commonUtil.progressBarDialog.ProgressBarDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import kotlinx.android.synthetic.main.activity_publish.*
+import java.lang.ref.WeakReference
 
 
 class PublishActivity : BaseActivity() {
@@ -57,6 +59,7 @@ class PublishActivity : BaseActivity() {
     private var photoAdapter: MultiPhotoAdapter? = null
     //声明AMapLocationClient类对象
     var mLocationClient: AMapLocationClient? = null
+    private var mLocationListener: WeakReference<AMapLocationListener>? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -138,18 +141,18 @@ class PublishActivity : BaseActivity() {
             this.isOnceLocation = true
         }
         mLocationClient?.setLocationOption(mLocationOption)
-        mLocationClient?.setLocationListener { amapLocation ->
+        mLocationListener = WeakReference(AMapLocationListener { amapLocation ->
             amapLocation?.let {
                 if (it.errorCode == 0) {
                     Log.d(TAG, "location success,poi:${it.description}")
                     et_publish_goodslocation.setText(it.description)
                     et_publish_goodslocation.setSelection(it.description.length)
-                    //成功
                 } else {
                     Log.e(TAG, "location Error, ErrCode:${it.errorCode}, errInfo:${it.errorInfo}");
                 }
             }
-        }
+        })
+        mLocationClient?.setLocationListener(mLocationListener?.get())
         mLocationClient?.startLocation()
     }
 
@@ -244,7 +247,7 @@ class PublishActivity : BaseActivity() {
     }
 
     override fun onDestroy() {
-        mLocationClient?.setLocationListener(null)
+        mLocationListener = null
         mLocationClient?.onDestroy()
         super.onDestroy()
     }

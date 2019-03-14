@@ -46,13 +46,13 @@ open class BaseActivity : SwipeBackActivity() {
 //    }
 
     override fun onDestroy() {
+        unSubscribe()
         super.onDestroy()
         Log.d(TAG, "onDestroy: " + javaClass.simpleName)
         if (javaClass.isAnnotationPresent(BindEventBus::class.java)) {
             EventBus.getDefault().unregister(this)
         }
         fixInputMethodLeak()
-        unSubscribe()
     }
 
     /**

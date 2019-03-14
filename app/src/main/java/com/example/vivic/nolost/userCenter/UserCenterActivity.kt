@@ -24,7 +24,6 @@ import com.example.vivic.nolost.commonUtil.CommonTakePhotoActivity.TakeMode.TAKE
 import com.example.vivic.nolost.commonUtil.bottomDialog.CommonBottomDialog
 import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.login.UserEvent
-import com.example.vivic.nolost.lost.activity.HistoryActivity
 import kotlinx.android.synthetic.main.activity_user_center.*
 import org.greenrobot.eventbus.EventBus
 import java.io.File
@@ -93,7 +92,7 @@ class UserCenterActivity : BaseActivity() {
             iv_user_center_contact_aw.visibility = View.GONE
             iv_user_center_location_aw.visibility = View.GONE
             val query = BmobQuery<MyUser>()
-            query.getObject(intent.getStringExtra("creatorObjectId"), object : QueryListener<MyUser>() {
+            addSubscribe(query.getObject(intent.getStringExtra("creatorObjectId"), object : QueryListener<MyUser>() {
                 override fun done(p0: MyUser?, p1: BmobException?) {
                     if (p1 == null) {
                         currentUser = p0
@@ -101,12 +100,12 @@ class UserCenterActivity : BaseActivity() {
                         initView()
                     }
                 }
-            })
+            }))
         }
     }
 
     private fun loadUserInfo() {
-        Log.i(TAG, "currentUse :$currentUser")
+        Log.i(TAG, "currentUser :$currentUser")
         GlideApp.with(this).load(currentUser?.avatar).placeholder(R.drawable.icon_default_avatar).circleCrop().into(iv_user_center_avatar)
         tv_user_center_username.text = currentUser?.username
         currentUser?.gender?.let {
