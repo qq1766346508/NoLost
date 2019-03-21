@@ -44,7 +44,9 @@
         <activity
             android:name=".chat.ChatActivity"
             android:launchMode="singleTop"
-            android:windowSoftInputMode="adjustPan" />
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:windowSoftInputMode="stateHidden"
+            />
         <activity
             android:name=".activity.BaseActivity"
             android:screenOrientation="portrait"
