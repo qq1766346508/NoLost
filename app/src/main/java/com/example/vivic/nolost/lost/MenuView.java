@@ -14,6 +14,7 @@ import com.example.vivic.nolost.bean.Goods;
 import com.example.vivic.nolost.bean.MyUser;
 import com.example.vivic.nolost.bmob.DataRepository;
 import com.example.vivic.nolost.bmob.IBmobCallback;
+import com.example.vivic.nolost.commonUtil.confirmDialog.ConfirmDialog;
 
 import cn.bmob.v3.BmobUser;
 
@@ -38,7 +39,18 @@ public class MenuView extends FrameLayout {
         View view = LayoutInflater.from(context).inflate(R.layout.menu_item_more, this);
         tvDelete = view.findViewById(R.id.tv_item_delete);
         tvShare = view.findViewById(R.id.tv_item_share);
-        tvDelete.setOnClickListener(v -> delete()
+        tvDelete.setOnClickListener(v -> {
+                    new ConfirmDialog.Builder()
+                            .confirmListener(new ConfirmDialog.Builder.ConfirmListener() {
+                                @Override
+                                public void onConfirm() {
+                                    delete();
+                                }
+                            })
+                            .content("确定删除？")
+                            .build()
+                            .show(context);
+                }
         );
         tvShare.setOnClickListener(v -> share());
     }

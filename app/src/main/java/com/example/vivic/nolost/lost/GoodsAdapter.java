@@ -6,7 +6,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -102,7 +101,10 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             tvGoodsName = itemView.findViewById(R.id.tv_item_goods_name);
             tvGoodsDetail = itemView.findViewById(R.id.tv_item_goods_details);
             rvGoodsPhoto = itemView.findViewById(R.id.rv_item_goods_photo);
+            GridLayoutManager manager = new GridLayoutManager(context, 3);
+            rvGoodsPhoto.setLayoutManager(manager);
             rvGoodsPhoto.addItemDecoration(new GridSpacingItemDecoration(3, 5, true));
+            rvGoodsPhoto.requestLayout();
             ivMore = itemView.findViewById(R.id.iv_item_more);
             menuView = itemView.findViewById(R.id.mv_item_menu);
         }

@@ -99,8 +99,7 @@
             android:id="@+id/rv_item_goods_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layoutManager="android.support.v7.widget.GridLayoutManager"
-            app:spanCount="3" />
+            />
 
         <TextView
             android:id="@+id/tv_item_goods_location"

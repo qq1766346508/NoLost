@@ -100,6 +100,9 @@ class ChatActivity : BaseActivity(), MessageListHandler {
         rv_chat_container.adapter = chatMessageAdapter
         rv_chat_container.layoutManager = LinearLayoutManager(this)
         rv_chat_container.scrollToPosition(chatMessageAdapter?.messageList?.size!! - 1)
+        ed_chat_message.setOnClickListener {
+            rv_chat_container.scrollToPosition(chatMessageAdapter?.messageList?.size!! - 1)
+        }
     }
 
     private fun initChat() {

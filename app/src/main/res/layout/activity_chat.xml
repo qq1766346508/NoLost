@@ -69,12 +69,14 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            tools:text="asdfsafdasfsafsafsafsdafsasfasfasadfdsafsadfsafsfsadfsfasf" />
+            tools:text="sdsd" />
 
         <Button
             android:id="@+id/btn_chat_send"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:background="@drawable/selector_bg_btn"
+            android:textColor="@color/standard_color"
             android:text="发送" />
     </LinearLayout>
 

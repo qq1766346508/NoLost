@@ -14,8 +14,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.vivic.nolost.R;
+import com.example.vivic.nolost.fragment.BaseDialog;
 
-public class ProgressBarDialog extends DialogFragment {
+public class ProgressBarDialog extends BaseDialog {
 
 
     public static final String TAG = ProgressBarDialog.class.getSimpleName();
@@ -50,21 +51,9 @@ public class ProgressBarDialog extends DialogFragment {
         pbSingleBar.setProgress(curPercent);
     }
 
-    public void show(FragmentActivity fragmentActivity) {
-        try {
-            FragmentManager fragmentManager = fragmentActivity.getSupportFragmentManager();
-            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-            Fragment fragment = fragmentManager.findFragmentByTag(ProgressBarDialog.TAG);
-            if (fragment != null) {
-                fragmentTransaction.remove(fragment);
-            }
-            if (this.isAdded()) {
-                return;
-            }
-            fragmentTransaction.add(this, TAG).commitAllowingStateLoss();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 
+    @Override
+    protected String getTagName() {
+        return ProgressBarDialog.class.getSimpleName();
+    }
 }

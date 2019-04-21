@@ -4,7 +4,6 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.os.Bundle
 import android.util.Log
-import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.activity.BaseActivity
@@ -35,12 +34,6 @@ class SearchActivity : BaseActivity() {
     private fun initView() {
         iv_search_back.setOnClickListener { finish() }
         ed_search_content.requestFocus()
-        ed_search_content.setOnEditorActionListener { _, actionId, _ ->
-            if (actionId == EditorInfo.IME_ACTION_DONE) {
-                queryByKey()
-            }
-            false
-        }
         inputMethodManager.showSoftInput(ed_search_content, 0)
         btn_search_option.setOnClickListener { showSearchOption() }
         iv_search_go.setOnClickListener { queryByKey() }

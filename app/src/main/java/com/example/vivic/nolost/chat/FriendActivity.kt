@@ -1,6 +1,8 @@
 package com.example.vivic.nolost.chat
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
@@ -19,13 +21,11 @@ import kotlinx.android.synthetic.main.activity_friend.*
 class FriendActivity : BaseActivity(), MessageListHandler {
 
 
-    private var conversationList: MutableList<BmobIMConversation>? = null
     private var adapter: FriendAdapter? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(com.example.vivic.nolost.R.layout.activity_friend)
-        conversationList = BmobIM.getInstance().loadAllConversation()
         initView()
     }
 
@@ -72,7 +72,13 @@ class FriendActivity : BaseActivity(), MessageListHandler {
     }
 
     override fun onMessageReceive(p0: MutableList<MessageEvent>?) {
-        reflashFriendList()
+        //先让数据库用户更新了，该页面再更新
+        Handler(Looper.getMainLooper()).postDelayed(
+                {
+                    reflashFriendList()
+                }
+                , 1000
+        )
     }
 
 }

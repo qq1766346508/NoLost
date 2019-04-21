@@ -55,6 +55,7 @@ public class LostViewModel extends ViewModel {
      * 无条件搜索，一般用在首页加载
      */
     public Disposable loadGoods() {
+        Log.d(TAG, "loadGoods: ");
         BmobQuery<Goods> bmobQuery = new BmobQuery<>();
         bmobQuery.setLimit(QUERY_LIMIT);
         bmobQuery.order("-createdAt");
@@ -83,6 +84,7 @@ public class LostViewModel extends ViewModel {
      * 通过精准筛选过滤
      */
     public Disposable loadGoodsByOption() {
+        Log.d(TAG, "loadGoodsByOption: option = "+ optionGoods.getValue().toString());
         Goods goods = optionGoods.getValue();
         List<BmobQuery<Goods>> list = new ArrayList<>();
         BmobQuery<Goods> q1 = new BmobQuery<>();
@@ -118,6 +120,7 @@ public class LostViewModel extends ViewModel {
      * key:关键字
      */
     public Disposable loadGoodsByKey() {
+        Log.d(TAG, "loadGoodsByKey: key = "+ key.getValue().toString());
         String optionKey = key.getValue();
         if (!TextUtils.isEmpty(optionKey)) {
             List<BmobQuery<Goods>> list = new ArrayList<>();

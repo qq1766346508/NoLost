@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.bean.Goods
+import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import com.example.vivic.nolost.fragment.BaseFragment
 import com.example.vivic.nolost.lost.GoodsAdapter
 import com.example.vivic.nolost.lost.fragment.LostViewModel.QUERY_LIMIT
@@ -67,6 +68,7 @@ class LostFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.i(TAG,"onViewCreated")
         lostViewModel = ViewModelProviders.of(activity!!).get(LostViewModel::class.java)
         initview()
         initObserver()
@@ -74,6 +76,7 @@ class LostFragment : BaseFragment() {
 
 
     private fun initview() {
+        Log.i(TAG,"initview")
         rv_lost_content.layoutManager = LinearLayoutManager(context)
         goodsAdapter = GoodsAdapter(context)
         rv_lost_content.adapter = goodsAdapter
@@ -123,6 +126,7 @@ class LostFragment : BaseFragment() {
 
     private fun initObserver() {
         lostViewModel?.totalGoodList?.observe(this, android.arch.lifecycle.Observer {
+            Log.i(TAG,"goods list size = ${it?.size}")
             if (it?.size != 0) {
                 srl_lost_refresh.resetNoMoreData()
                 goodsAdapter?.addData(it)
@@ -130,6 +134,7 @@ class LostFragment : BaseFragment() {
             } else if (it?.size == 0) {
                 srl_lost_refresh.finishLoadMoreWithNoMoreData()
                 srl_lost_refresh.setEnableLoadMore(false)
+                ToastUtil.showToast("查询为空")
             }
         })
 
@@ -154,6 +159,7 @@ class LostFragment : BaseFragment() {
      * 清空列表，步长归零
      */
     private fun resetList() {
+        Log.i(TAG,"resetList")
         goodsAdapter?.clearData()
         lostViewModel!!.querySkip = 0
         srl_lost_refresh.setEnableLoadMore(true)

@@ -64,6 +64,7 @@ class PublishActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.d(TAG, "onCreate")
         setContentView(R.layout.activity_publish)
         initView()
     }
@@ -111,6 +112,7 @@ class PublishActivity : BaseActivity() {
         photoAdapter?.setLoadMode(LOAD_FILE)
         rv_publish_photo.adapter = photoAdapter
         rv_publish_photo.addItemDecoration(GridSpacingItemDecoration(3, 5, true))
+        rv_publish_photo.requestLayout()
         btn_add_photo.setOnClickListener {
             val intent = Intent(this@PublishActivity, CommonTakePhotoActivity::class.java).apply {
                 this.putExtra(TAKE_MODE, PickMultiple)
@@ -149,6 +151,7 @@ class PublishActivity : BaseActivity() {
                     et_publish_goodslocation.setSelection(it.description.length)
                 } else {
                     Log.e(TAG, "location Error, ErrCode:${it.errorCode}, errInfo:${it.errorInfo}");
+                    ToastUtil.showToast("定位失败")
                 }
             }
         })

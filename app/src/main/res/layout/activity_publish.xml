@@ -216,12 +216,11 @@
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="30dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_marginBottom="10dp"
                     android:text="@string/publish_goodsphoto_title"
                     android:textColor="#000"
@@ -229,12 +228,14 @@
 
                 <Button
                     android:id="@+id/btn_add_photo"
-                    android:layout_width="55dp"
-                    android:layout_height="20dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
                     android:layout_gravity="end"
-                    android:background="@color/standard_color"
+                    android:padding="0dp"
+                    android:includeFontPadding="true"
                     android:text="@string/publish_goodsphoto_add"
-                    android:textColor="#fff"
+                    android:background="@drawable/selector_bg_btn"
+                    android:textColor="@color/standard_color"
                     android:textSize="12sp" />
             </FrameLayout>
 
@@ -243,8 +244,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                app:layoutManager="android.support.v7.widget.GridLayoutManager"
-                app:spanCount="3"></android.support.v7.widget.RecyclerView>
+                >
+
+            </android.support.v7.widget.RecyclerView>
 
 
         </LinearLayout>

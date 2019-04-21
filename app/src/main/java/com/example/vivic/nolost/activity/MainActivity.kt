@@ -51,7 +51,6 @@ class MainActivity : BaseActivity() {
     companion object {
 
         private val TAG = MainActivity::class.java.simpleName
-        private val REQUEST_CODE_PUBLISH = 0
     }
 
     //DrawerView的子控件实例无法直接通过id获取
@@ -105,7 +104,6 @@ class MainActivity : BaseActivity() {
                 } else {
                     UserCenterActivity.goToActivity(this@MainActivity, BmobUser.getCurrentUser(MyUser::class.java).objectId)
                 }
-                R.id.nav_weather -> ToastUtil.showToast("天气")
                 R.id.nav_contact -> {
                     if (BmobUser.getCurrentUser(MyUser::class.java) == null) {
                         startActivity(Intent(this@MainActivity, LoginActivity::class.java))
@@ -158,7 +156,7 @@ class MainActivity : BaseActivity() {
         //进入主页面初始化抽屉
         val currentUser = BmobUser.getCurrentUser(MyUser::class.java)
         if (currentUser != null) {
-            Log.i(TAG, "currentUser: " + currentUser.toString())
+            Log.i(TAG, "currentUser: $currentUser")
             updateNavigation(UserEvent(true, currentUser))
         } else {
             Log.i(TAG, "currentUser == null ")
