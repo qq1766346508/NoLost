@@ -26,7 +26,7 @@ public class NoLostApplication extends Application {
         Bmob.initialize(this, Application_ID);
         MobSDK.init(this);
 
-        LeakCanaryUtils.install(this);
+//        LeakCanaryUtils.install(this);
         UserRepository.INSTANCE.fetchUserInfo();
         //teset
         if (getApplicationInfo().packageName.equals(getMyProcessName())) {

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -15,17 +16,23 @@ import com.example.vivic.nolost.bean.MyUser;
 import com.example.vivic.nolost.bmob.DataRepository;
 import com.example.vivic.nolost.bmob.IBmobCallback;
 import com.example.vivic.nolost.commonUtil.confirmDialog.ConfirmDialog;
+import com.example.vivic.nolost.login.LogOutEvent;
+import com.example.vivic.nolost.login.UserEvent;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import cn.bmob.v3.BmobUser;
 
 public class MenuView extends FrameLayout {
+    private static final String TAG = "MenuView";
     private Context context;
     private TextView tvDelete;
     private TextView tvShare;
     private View div;
     private Goods goods;
     private DeleteCallback deleteCallback;
-    private MyUser currentUser = BmobUser.getCurrentUser(MyUser.class);
 
 
     public MenuView(Context context, @Nullable AttributeSet attrs) {
@@ -91,10 +98,17 @@ public class MenuView extends FrameLayout {
 
     public void setGoods(Goods goods) {
         this.goods = goods;
+        updateDeleteVisiblity();
+    }
+
+    private void updateDeleteVisiblity() {
+        MyUser currentUser = BmobUser.getCurrentUser(MyUser.class);
         if (currentUser != null && currentUser.getObjectId().equals(goods.getCreatorObjectId())) {
             tvDelete.setVisibility(VISIBLE);
+            Log.i(TAG, "showDelete: ");
         } else {
             tvDelete.setVisibility(GONE);
+            Log.i(TAG, "hideDelete: ");
         }
     }
 
@@ -102,5 +116,29 @@ public class MenuView extends FrameLayout {
         this.deleteCallback = deleteCallback;
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void showDelete(UserEvent userEvent) {
+        if (userEvent.loginResult) {
+            updateDeleteVisiblity();
+        }
+    }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void hideDelete(LogOutEvent event) {
+        updateDeleteVisiblity();
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Log.i(TAG, "onAttachedToWindow: ");
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        Log.i(TAG, "onDetachedFromWindow: ");
+        EventBus.getDefault().unregister(this);
+    }
 }

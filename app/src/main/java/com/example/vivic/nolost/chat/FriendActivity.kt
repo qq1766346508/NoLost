@@ -11,6 +11,10 @@ import cn.bmob.newim.bean.BmobIMConversation
 import cn.bmob.newim.event.MessageEvent
 import cn.bmob.newim.listener.MessageListHandler
 import com.example.vivic.nolost.activity.BaseActivity
+import com.example.vivic.nolost.bean.MyUser
+import com.example.vivic.nolost.bmob.ChatRepository
+import com.example.vivic.nolost.bmob.IBmobCallback
+import com.example.vivic.nolost.bmob.UserRepository
 import com.example.vivic.nolost.commonUtil.bottomDialog.CommonBottomDialog
 import kotlinx.android.synthetic.main.activity_friend.*
 
@@ -68,7 +72,24 @@ class FriendActivity : BaseActivity(), MessageListHandler {
 
     private fun reflashFriendList() {
         adapter?.clearFriend()
-        adapter?.addFriend(BmobIM.getInstance().loadAllConversation())
+        val list = BmobIM.getInstance().loadAllConversation()
+        list.forEach {
+            addSubscribe(UserRepository.queryUserByObject(it.conversationId, object : IBmobCallback<MyUser> {
+                override fun success(user: MyUser?) {
+                    ChatRepository.updateUserInfo(user!!.objectId, user.username, user.avatar)
+                    it.conversationIcon = user.avatar
+                    it.conversationTitle = user.username
+                    BmobIM.getInstance().updateConversation(it)
+                }
+
+                override fun error(throwable: Throwable?) {
+
+                }
+            }))
+        }
+
+
+        adapter?.addFriend(list)
     }
 
     override fun onMessageReceive(p0: MutableList<MessageEvent>?) {

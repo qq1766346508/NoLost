@@ -207,49 +207,53 @@
             </android.support.design.widget.TextInputLayout>
         </LinearLayout>
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/ll_add_photo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
             android:padding="10dp">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="30dp">
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline_photo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.8" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:text="@string/publish_goodsphoto_title"
-                    android:textColor="#000"
-                    android:textSize="14sp" />
+            <TextView
+                android:id="@+id/tv_photo_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:text="@string/publish_goodsphoto_title"
+                android:textColor="#000"
+                android:textSize="14sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-                <Button
-                    android:id="@+id/btn_add_photo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="30dp"
-                    android:layout_gravity="end"
-                    android:padding="0dp"
-                    android:includeFontPadding="true"
-                    android:text="@string/publish_goodsphoto_add"
-                    android:background="@drawable/selector_bg_btn"
-                    android:textColor="@color/standard_color"
-                    android:textSize="12sp" />
-            </FrameLayout>
+            <ImageView
+                android:id="@+id/btn_add_photo"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:src="@drawable/ic_add_blue_300_24dp"
+                android:background="@drawable/selector_bg_btn"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/guideline_photo"
+                app:layout_constraintTop_toBottomOf="@+id/tv_photo_title" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_publish_photo"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                >
+                app:layout_constraintEnd_toStartOf="@id/guideline_photo"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_photo_title">
 
             </android.support.v7.widget.RecyclerView>
 
 
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
 
 
     </LinearLayout>

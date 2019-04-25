@@ -15,36 +15,37 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:background="@drawable/btn_selector"
             android:id="@+id/iv_search_back"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:background="@drawable/btn_selector"
             android:padding="16dp"
             android:src="@drawable/ic_arrow_back_white_24dp" />
 
         <android.support.design.widget.TextInputEditText
             android:id="@+id/ed_search_content"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
+            android:layout_weight="1"
+            android:ellipsize="end"
             android:focusable="true"
             android:focusableInTouchMode="true"
-            android:ellipsize="end"
-            android:lines="1"
             android:hint="@string/search_hint"
             android:maxLength="12"
+            android:maxLines="1"
+            android:inputType="text"
             android:textColor="#fff"
             android:textColorHint="#fff"
             android:textSize="14sp"
             android:theme="@style/ed_search_content" />
 
         <ImageView
-            android:background="@drawable/btn_selector"
             android:id="@+id/iv_search_go"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_vertical"
+            android:background="@drawable/btn_selector"
             android:padding="8dp"
             android:src="@drawable/ic_search_white_24dp" />
 
@@ -68,10 +69,10 @@
     </FrameLayout>
 
     <!--<com.wang.avi.AVLoadingIndicatorView-->
-        <!--android:id="@+id/av_search_loading"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_gravity="center"-->
-        <!--app:indicatorColor="@color/standard_color"-->
-        <!--app:indicatorName="PacmanIndicator" />-->
+    <!--android:id="@+id/av_search_loading"-->
+    <!--android:layout_width="wrap_content"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:layout_gravity="center"-->
+    <!--app:indicatorColor="@color/standard_color"-->
+    <!--app:indicatorName="PacmanIndicator" />-->
 </FrameLayout>

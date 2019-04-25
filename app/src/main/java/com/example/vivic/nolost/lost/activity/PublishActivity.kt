@@ -112,7 +112,6 @@ class PublishActivity : BaseActivity() {
         photoAdapter?.setLoadMode(LOAD_FILE)
         rv_publish_photo.adapter = photoAdapter
         rv_publish_photo.addItemDecoration(GridSpacingItemDecoration(3, 5, true))
-        rv_publish_photo.requestLayout()
         btn_add_photo.setOnClickListener {
             val intent = Intent(this@PublishActivity, CommonTakePhotoActivity::class.java).apply {
                 this.putExtra(TAKE_MODE, PickMultiple)

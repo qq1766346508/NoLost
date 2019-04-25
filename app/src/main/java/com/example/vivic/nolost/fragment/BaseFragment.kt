@@ -26,7 +26,7 @@ open class BaseFragment : Fragment() {
 
     override fun onDestroy() {
         super.onDestroy()
-        LeakCanaryUtils.watch(this)
+//        LeakCanaryUtils.watch(this)
         if (this.javaClass.isAnnotationPresent(BindEventBus::class.java)) {
             EventBus.getDefault().unregister(this)
         }

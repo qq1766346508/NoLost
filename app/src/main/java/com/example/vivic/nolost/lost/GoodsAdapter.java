@@ -101,10 +101,6 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             tvGoodsName = itemView.findViewById(R.id.tv_item_goods_name);
             tvGoodsDetail = itemView.findViewById(R.id.tv_item_goods_details);
             rvGoodsPhoto = itemView.findViewById(R.id.rv_item_goods_photo);
-            GridLayoutManager manager = new GridLayoutManager(context, 3);
-            rvGoodsPhoto.setLayoutManager(manager);
-            rvGoodsPhoto.addItemDecoration(new GridSpacingItemDecoration(3, 5, true));
-            rvGoodsPhoto.requestLayout();
             ivMore = itemView.findViewById(R.id.iv_item_more);
             menuView = itemView.findViewById(R.id.mv_item_menu);
         }
@@ -125,6 +121,9 @@ public class GoodsAdapter extends RecyclerView.Adapter<GoodsAdapter.GoodsViewHol
             MultiPhotoAdapter multiPhotoAdapter = new MultiPhotoAdapter(context);
             multiPhotoAdapter.setEditable(false);
             multiPhotoAdapter.setLoadMode(LOAD_INTERNET);
+            GridLayoutManager manager = new GridLayoutManager(context, 3);
+            rvGoodsPhoto.setLayoutManager(manager);
+            rvGoodsPhoto.addItemDecoration(new GridSpacingItemDecoration(3, 5, true));
             rvGoodsPhoto.setAdapter(multiPhotoAdapter);
             multiPhotoAdapter.addPhotoPath(goods.getPhotoList());
             ivCreatorAvatar.setOnClickListener(view -> {

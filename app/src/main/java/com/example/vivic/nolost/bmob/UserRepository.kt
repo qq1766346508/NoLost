@@ -213,9 +213,9 @@ object UserRepository {
         })
     }
 
-    fun queryUserByObject(objectId: String, iBmobCallback: IBmobCallback<MyUser>) {
+    fun queryUserByObject(objectId: String, iBmobCallback: IBmobCallback<MyUser>):Disposable {
         val query = BmobQuery<MyUser>()
-        query.getObject(objectId, object : QueryListener<MyUser>() {
+        return query.getObject(objectId, object : QueryListener<MyUser>() {
             override fun done(myUser: MyUser?, bmobException: BmobException?) {
                 if (bmobException == null) {
                     Log.d(TAG, "queryByUser success,user:$myUser")

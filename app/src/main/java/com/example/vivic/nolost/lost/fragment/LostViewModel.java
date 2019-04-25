@@ -8,6 +8,8 @@ import android.util.Log;
 
 import com.example.vivic.nolost.bean.Goods;
 import com.example.vivic.nolost.bmob.DataRepository;
+import com.example.vivic.nolost.commonUtil.NetworkUtil;
+import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,10 @@ public class LostViewModel extends ViewModel {
 
     public Disposable getGoodList(BmobQuery<Goods> bmobQuery) {
         boolean isCache = bmobQuery.hasCachedResult(Goods.class);
+        if (!NetworkUtil.isConnected()) {
+            ToastUtil.showToast("当前无网络");
+            return null;
+        }
 
         return DataRepository.INSTANCE.queryData(bmobQuery, new FindListener<Goods>() {
             @Override
@@ -84,7 +90,7 @@ public class LostViewModel extends ViewModel {
      * 通过精准筛选过滤
      */
     public Disposable loadGoodsByOption() {
-        Log.d(TAG, "loadGoodsByOption: option = "+ optionGoods.getValue().toString());
+        Log.d(TAG, "loadGoodsByOption: option = " + optionGoods.getValue().toString());
         Goods goods = optionGoods.getValue();
         List<BmobQuery<Goods>> list = new ArrayList<>();
         BmobQuery<Goods> q1 = new BmobQuery<>();
@@ -120,7 +126,7 @@ public class LostViewModel extends ViewModel {
      * key:关键字
      */
     public Disposable loadGoodsByKey() {
-        Log.d(TAG, "loadGoodsByKey: key = "+ key.getValue().toString());
+        Log.d(TAG, "loadGoodsByKey: key = " + key.getValue().toString());
         String optionKey = key.getValue();
         if (!TextUtils.isEmpty(optionKey)) {
             List<BmobQuery<Goods>> list = new ArrayList<>();
