@@ -136,6 +136,9 @@ public class LostViewModel extends ViewModel {
             BmobQuery<Goods> q3 = new BmobQuery<>();
             q3.addWhereEqualTo("detail", optionKey);
             list.add(q3);
+            BmobQuery<Goods> q4 = new BmobQuery<>();
+            q4.addWhereEqualTo("creatorName", optionKey);
+            list.add(q4);
             BmobQuery<Goods> mainQuery = new BmobQuery<>();
             mainQuery.or(list);
             mainQuery.setLimit(QUERY_LIMIT);

@@ -83,8 +83,10 @@ class FriendAdapter : RecyclerView.Adapter<FriendAdapter.ViewHolder>() {
         fun initView(bmobIMConversation: BmobIMConversation) {
             GlideApp.with(context!!).load(bmobIMConversation.conversationIcon).circleCrop().into(ivAvatar!!)
             tvName?.text = bmobIMConversation.conversationTitle
-            bmobIMConversation.messages.let {
-                tvContent?.text = bmobIMConversation.messages[0].content
+            bmobIMConversation.messages?.let {
+                if (it.size > 0) {
+                    tvContent?.text = bmobIMConversation.messages[0].content
+                }
             }
             tvCount?.text = BmobIM.getInstance().getUnReadCount(bmobIMConversation.conversationId).toString()
             if (tvCount?.text!! == "0") {
