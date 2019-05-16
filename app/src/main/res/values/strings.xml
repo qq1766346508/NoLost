@@ -29,6 +29,7 @@
     <string name="publish_goodsphoto_title">图片描述:</string>
     <string name="publish_goodsphoto_add">添加图片</string>
     <string name="publish_goods_save">提交</string>
+    <string name="cliptext">复制这段话进入NoLost：</string>
 
 
 </resources>

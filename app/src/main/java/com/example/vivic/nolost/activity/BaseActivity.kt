@@ -1,5 +1,6 @@
 package com.example.vivic.nolost.activity
 
+import android.content.ClipboardManager
 import android.content.Context
 import android.content.ContextWrapper
 import android.os.Bundle
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import com.example.vivic.nolost.R
 import com.example.vivic.nolost.commonUtil.BindEventBus
+import com.example.vivic.nolost.lost.activity.GoodsDetailActivity
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import me.imid.swipebacklayout.lib.SwipeBackLayout
@@ -22,6 +24,9 @@ open class BaseActivity : SwipeBackActivity() {
     }
 
     private var compositeDisposable: CompositeDisposable? = null
+    private var clipboard: ClipboardManager? = null
+    private var clipId: String? = null
+    private var hasUsed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +38,13 @@ open class BaseActivity : SwipeBackActivity() {
         overridePendingTransition(R.anim.activity_right_to_left_in, R.anim.activity_right_to_left_out)
         val maxMemory = (Runtime.getRuntime().maxMemory() / (1024 * 1024)).toInt()
         Log.d(TAG, "Max memory is " + maxMemory + "MB")
+        addClipListener()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Log.d(TAG, "onResume")
+        ToGoodsDetailActivity()
     }
 
     override fun finish() {
@@ -40,10 +52,6 @@ open class BaseActivity : SwipeBackActivity() {
         overridePendingTransition(R.anim.activity_left_to_right_in, R.anim.activity_left_to_right_out)
     }
 
-//    override fun onBackPressed() {
-//        super.onBackPressed()
-//        unSubscribe()
-//    }
 
     override fun onDestroy() {
         unSubscribe()
@@ -53,6 +61,37 @@ open class BaseActivity : SwipeBackActivity() {
             EventBus.getDefault().unregister(this)
         }
         fixInputMethodLeak()
+    }
+
+    private fun addClipListener() {
+        if (clipboard == null) {
+            Log.d(TAG, "addClipListener")
+            clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as? ClipboardManager
+            clipboard?.addPrimaryClipChangedListener {
+                val clipData = clipboard?.primaryClip
+                clipData?.let {
+                    if (it.itemCount > 0) {
+                        val cliptext = it.getItemAt(0).text
+                        val text = getString(R.string.cliptext)
+                        if (cliptext.indexOf(text) != -1) {
+                            clipId = cliptext.substring(cliptext.indexOf(text) + text.length)
+                            hasUsed = false
+                            Log.i(TAG, "当前粘贴板内容id为：$clipId")
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun ToGoodsDetailActivity() {
+        clipId?.let {
+            if (!hasUsed) {
+                Log.d(TAG, "ToGoodsDetailActivity")
+                GoodsDetailActivity.getActivity(this, it)
+                hasUsed = true
+            }
+        }
     }
 
     /**

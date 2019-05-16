@@ -99,19 +99,16 @@ public class LostViewModel extends ViewModel {
             list.add(q1);
         }
         BmobQuery<Goods> q2 = new BmobQuery<>();
-
         if (!TextUtils.isEmpty(goods.getName())) {
             q2.addWhereEqualTo("name", goods.getName());
             list.add(q2);
 
         }
         BmobQuery<Goods> q3 = new BmobQuery<>();
-
         if (!TextUtils.isEmpty(goods.getLocation())) {
             q3.addWhereEqualTo("location", goods.getLocation());
             list.add(q3);
         }
-
         BmobQuery<Goods> bmobQuery = new BmobQuery<>();
         bmobQuery.setLimit(QUERY_LIMIT);
         bmobQuery.order("-createdAt");

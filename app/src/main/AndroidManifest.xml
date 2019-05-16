@@ -20,9 +20,9 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" /> <!-- 通知震动 -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
-    <!--用于申请调用A-GPS模块-->
+    <!-- 用于申请调用A-GPS模块 -->
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
-    <!--用于申请获取蓝牙信息进行室内定位-->
+    <!-- 用于申请获取蓝牙信息进行室内定位 -->
     <uses-permission android:name="android.permission.BLUETOOTH" />
     <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 
@@ -38,15 +38,15 @@
         <activity android:name=".chat.FriendActivity">
             <intent-filter>
                 <action android:name="ACTION_FRIEND_ACTIVITY" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".chat.ChatActivity"
-            android:launchMode="singleTop"
             android:configChanges="keyboardHidden|orientation|screenSize"
-            android:windowSoftInputMode="stateHidden"
-            />
+            android:launchMode="singleTop"
+            android:windowSoftInputMode="stateHidden" />
         <activity
             android:name=".activity.BaseActivity"
             android:screenOrientation="portrait"
@@ -103,8 +103,15 @@
 
         <meta-data
             android:name="com.amap.api.v2.apikey"
-            android:value="425e13ec72f40780bbdc526b9bd73ebc" />
-        <service android:name="com.amap.api.location.APSService"></service>
+            android:value="5ed1a2b64c8c1dcb9904a47809f9f896" />
+        <!--上高德地图更改,这个是我宿舍的-->
+
+        <service android:name="com.amap.api.location.APSService" />
+
+        <activity android:name=".lost.activity.GoodsDetailActivity"
+            android:launchMode="singleTask">
+
+        </activity>
     </application>
 
 </manifest>

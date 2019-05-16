@@ -83,7 +83,10 @@ public class MenuView extends FrameLayout {
     public void share() {
         Intent shareIntent = new Intent(Intent.ACTION_SEND);
 //                shareIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse(goods.getPhotoList().get(0)));
-        String text = "物品名称：" + goods.getName() + "\n物品详情：" + goods.getDetail() + "\n丢失地点：" + goods.getLocation();
+        String text = "物品名称：" + goods.getName() +
+                ",物品详情：" + goods.getDetail() +
+                ",丢失地点：" + goods.getLocation() +","+
+                getContext().getString(R.string.cliptext) + goods.getObjectId();
         shareIntent.putExtra(Intent.EXTRA_TEXT, text);
         shareIntent.putExtra(Intent.EXTRA_SUBJECT, goods.getName());
         shareIntent.setType("image/*");

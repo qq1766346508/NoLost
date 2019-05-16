@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".lost.activity.GoodsDetailActivity">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/standard_color">
+
+        <ImageView
+            android:id="@+id/iv_goods_detail_back"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/btn_selector"
+            android:padding="16dp"
+            android:src="@drawable/ic_arrow_back_white_24dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="物品详情"
+            android:textColor="#fff"
+            android:textSize="18sp" />
+    </LinearLayout>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/iv_goods_detail_avatar"
+            android:layout_width="34dp"
+            android:layout_height="34dp"
+            android:layout_marginTop="8dp"
+            android:src="@drawable/icon_default_avatar"
+            app:layout_constraintEnd_toStartOf="@+id/gl_0.15v"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <android.support.constraint.Guideline
+            android:id="@+id/gl_0.15v"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            app:layout_constraintGuide_percent="0.2" />
+
+
+        <TextView
+            android:id="@+id/tv_goods_detail_createor"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:textColor="@android:color/black"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/gl_0.15v"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="一三二" />
+
+        <TextView
+            android:id="@+id/tv_goods_detail_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2018-01-01 12:00:00"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="12sp"
+            app:layout_constraintStart_toStartOf="@id/gl_0.15v"
+            app:layout_constraintTop_toBottomOf="@+id/tv_goods_detail_createor" />
+
+
+        <LinearLayout
+            android:id="@+id/content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/gl_0.15v"
+            app:layout_constraintTop_toBottomOf="@id/tv_goods_detail_time">
+
+
+            <TextView
+                android:id="@+id/tv_goods_detail_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                app:layout_constraintTop_toBottomOf="@+id/content"
+                tools:text="物品名称:手机" />
+
+            <TextView
+                android:id="@+id/tv_goods_detail_details"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:textDirection="locale"
+                android:textColor="@android:color/black"
+                android:textSize="14sp"
+                tools:text="物品详情：安康机sadfas asfsafasfasfsadffafsdfdfdfdfdfdfaafdasdfasfasfs得分阿卡丽" />
+
+            <com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoRecyclerView
+                android:id="@+id/rv_goods_detail_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                />
+
+            <TextView
+                android:id="@+id/tv_goods_detail_location"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:drawableStart="@drawable/ic_location_on_blue_800_18dp"
+                android:maxLength="15"
+                android:textColor="@android:color/holo_blue_dark"
+                android:textSize="11sp"
+                tools:text="足球场是大事发生范阿斯顿法德萨发的" />
+        </LinearLayout>
+
+
+
+    </android.support.constraint.ConstraintLayout>
+
+</LinearLayout>
