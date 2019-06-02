@@ -17,6 +17,7 @@ import com.example.vivic.nolost.bean.Goods
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.GridSpacingItemDecoration
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter
 import com.example.vivic.nolost.commonUtil.multiPhotoAdapter.MultiPhotoAdapter.LOAD_INTERNET
+import com.example.vivic.nolost.commonUtil.toastUtil.ToastUtil
 import kotlinx.android.synthetic.main.activity_goods_detail.*
 
 class GoodsDetailActivity : BaseActivity() {
@@ -51,6 +52,8 @@ class GoodsDetailActivity : BaseActivity() {
                     loadGoods(goods)
                 } else {
                     Log.d(TAG, "query clipid fail ,exception = $exception")
+                    ToastUtil.showToast("该遗失物品信息已被删除")
+                    finish()
                 }
             }
         })
